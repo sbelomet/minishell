@@ -1,32 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils1.c                                           :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/23 13:13:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/23 14:58:01 by sbelomet         ###   ########.fr       */
+/*   Created: 2023/10/12 10:58:03 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/24 13:25:13 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_free(t_base base)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	t_var	*tmp1;
-	t_var	*tmp2;
+	int		len_s1;
+	int		tlen;
+	int		i;
+	char	*res;
 
-	tmp1 = base.first_var;
-	if (tmp1)
+	len_s1 = ft_strlen(s1);
+	tlen = len_s1 + ft_strlen(s2);
+	res = (char *)malloc(tlen * sizeof(char) + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (s1[i])
 	{
-		while (tmp1)
-		{
-			tmp2 = tmp1->next;
-			free(tmp1->name);
-			free(tmp1->value);
-			free(tmp1);
-			tmp1 = tmp2;
-		}
+		res[i] = s1[i];
+		i++;
 	}
+	i = 0;
+	while (s2[i])
+	{
+		res[len_s1 + i] = s2[i];
+		i++;
+	}
+	res[len_s1 + i] = '\0';
+	return (res);
 }
