@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/01/24 10:34:59 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/01/25 15:32:16 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ HEADERS		=	-I includes
 SRC_DIR		=	srcs/
 OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
+LIBRL		=	-L libs/readline
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 LEAKS		=	leaks --atExit -- 
@@ -39,7 +40,8 @@ RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 
 #Sources
 
-FILES		=	main variables_utils1 variables_utils2 error_utils1 prompt
+FILES		=	main variables_utils1 variables_utils2 error_utils1 prompt base_init \
+				signals_utils1
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
@@ -50,7 +52,7 @@ all:			$(OBJ_DIR) $(NAME)
 $(NAME):		$(OBJ)
 					@echo "$(RAINBOW)$(RAINBOW)$(RAINBOW)$(DEF_COLOR)"
 					@make -C libs/ft_printf
-					$(CC) $(CFLAGS) $(OBJ) $(LIBFTPRINTF) $(HEADERS) -lreadline -o $(NAME)
+					$(CC) $(CFLAGS) $(OBJ) $(LIBFTPRINTF) $(LIBRL) $(HEADERS) -lreadline -o $(NAME)
 					@echo ""
 					@echo "$(GREEN)$(NAME) est compilé !$(DEF_COLOR)🥶🥶🥶"
 					@echo "$(RAINBOW)$(RAINBOW)$(RAINBOW)$(DEF_COLOR)"
