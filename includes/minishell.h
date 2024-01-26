@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/25 11:54:17 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/26 10:18:52 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,8 @@ void	ft_get_curdir(t_base *base);
 /* SIGNALS UTILS */
 void	ft_ctrl_slash(int signum);
 void	ft_ctrl_c(int signum);
+
+/* LEXER */
+void	ft_lexer_start(t_base *base, char *line);
 
 #endif

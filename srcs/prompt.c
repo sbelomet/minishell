@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/25 14:40:10 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/26 15:27:56 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	ft_prompt(t_base *base)
 {
 	char	*rl;
 	char	*prompt;
+	char	*line;
 
 	while (1)
 	{
@@ -49,14 +50,16 @@ void	ft_prompt(t_base *base)
 		free(prompt);
 		if (!rl)
 			break ;
-		if (ft_strlen(rl) > 0)
+		line = ft_strtrim(rl, " \n\t");
+		if (ft_strlen(line) > 0)
 		{
 			add_history(rl);
-			if (ft_strncmp("print", rl, 5) == 0)
+			if (ft_strncmp("print", line, 5) == 0)
 				ft_print_vars(*base);
 			else
-				ft_add_var(base, rl);
+				ft_add_var(base, line);
 		}
 		free(rl);
+		free(line);
 	}
 }

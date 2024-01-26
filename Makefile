@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/01/25 15:32:16 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/01/26 10:20:21 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 #Sources
 
 FILES		=	main variables_utils1 variables_utils2 error_utils1 prompt base_init \
-				signals_utils1
+				signals_utils1 lexer
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
