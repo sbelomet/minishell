@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/26 15:27:56 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:27:27 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_format_prompt(t_base *base)
 	tmp = ft_strjoin(base->curdir, " $> ");
 	if (!tmp)
 		ft_error(base, "malloc()");
-	prompt = ft_strjoin(B_WHITE"[MINISHELL] "WHITE, tmp);
+	prompt = ft_strjoin("[MINISHELL] ", tmp);
 	if (!prompt)
 		ft_error(base, "malloc()");
 	free(tmp);
@@ -57,7 +57,7 @@ void	ft_prompt(t_base *base)
 			if (ft_strncmp("print", line, 5) == 0)
 				ft_print_vars(*base);
 			else
-				ft_add_var(base, line);
+				ft_lexer_start(base, line);
 		}
 		free(rl);
 		free(line);

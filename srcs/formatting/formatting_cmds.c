@@ -1,31 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   formatting_cmds.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 09:37:58 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 14:37:01 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/01/30 14:47:15 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_current_path(void)
+static int	check_err_builtin(t_cmd *cmd)
 {
-	char	*path;
+	t_arg	*arg;
+	int		count;
 
-	path = getcwd(NULL, 0);
-	if (path == NULL)
-		perror("getcwd() Error\n");
-	return (path);
+	count = 0;
+	arg = get_first_arg(cmd);
+	if (is_cd_builtin(cmd))
+	{
+		while (arg)
+		{
+			count++;
+			arg = arg->next;
+		}
+	}
+	if (count > 1)
+	{
+		ft_putstr_fd("cd: too many arguments.\n", STDOUT_FILENO);
+		return (0);
+	}
+	return (1);
 }
 
-char	*get_home_path(t_base *base)
+void	format_command(t_base *base)
 {
-	t_var	*env_var;
-
-	env_var = ft_findvar(base->first_var, "HOME");
-	return (env_var->value);
+	format_builtins();
+	format_cmds_args();
+	format_binaries();
 }

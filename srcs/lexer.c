@@ -6,100 +6,111 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/26 15:43:45 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/30 14:52:14 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_iswhitespace(char c)
+char 	*ft_findvar_value(t_base *base, char *name)
 {
-	if (c == ' ' || c == '\n' || c == '\t')
-		return (1);
-	return (0);
+	t_var	*tmp;
+
+	tmp = ft_findvar(base->first_var, ++name);
+	if (tmp)
+		return (tmp->value);
+	return ("");
 }
 
-int	ft_isquote(char c)
+char	*ft_extract_word(t_base *base, char *line, int *index)
 {
-	if (c == '\'' || c == '"')
-		return (1);
-	return (0);
+	int		start;
+	int		len;
+	char	*res;
+	char	*tmp;
+
+	start = *index;
+	len = 0;
+	while (line[*index] && !ft_isspecial(line[*index]))
+	{
+		(*index)++;
+		len++;
+	}
+	tmp = ft_substr(line, start, len);
+	if (!tmp)
+		return (NULL);
+	if (*tmp == '$')
+	{
+		res = ft_findvar_value(base, tmp);
+		free(tmp);
+		tmp = ft_strdup(res);
+		return (tmp);
+	}
+	return (tmp);
 }
 
-int	ft_isseparator(char c)
+char	*ft_extract_sep(char *line, int *index)
 {
-	if (c == '<' || c == '>' || c == '&' || c == '|' || c == '=')
-		return (1);
-	return (0);
-}
+	int		start;
+	int		len;
+	char	*res;
 
-int	ft_isspecial(char c)
-{
-	if (c == '$' || ft_isseparator(c) || ft_isquote(c)
-		|| ft_iswhitespace(c))
-		return (1);
-	return (0);
+	start = *index;
+	len = 0;
+	while (line[*index] && ft_isseparator(line[*index]))
+	{
+		(*index)++;
+		len++;
+	}
+	res = ft_substr(line, start, len);
+	if (!res)
+		return (NULL);
+	return (res);
 }
 
 void	ft_lexer_start(t_base *base, char *line)
 {
 	int		i;
-	int		len;
-	int		start;
 	char	*token;
+	int		after_cmd;
+	int		after_redir;
 
 	i = 0;
+	after_cmd = 0;
+	after_redir = 0;
 	while (line[i])
 	{
 		if (!ft_isspecial(line[i]))
 		{
-			start = i;
-			len = 0;
-			while (line[i] && !ft_isspecial(line[i]))
-			{
-				i++;
-				len++;
-			}
-			token = ft_substr(line, start, len);
+			token = ft_extract_word(base, line, &i);
 			if (!token)
 				ft_error(base, "malloc()");
-			ft_tokenize(base, token, 0);
+			if (!after_cmd && !after_redir)
+			{
+				ft_tokenize(base, token, TOKEN_CMD);
+				after_cmd = 1;
+			}
+			else if (!after_cmd && after_redir)
+			{
+				ft_tokenize(base, token, TOKEN_FILE);
+				after_redir = 0;
+			}
+			else if (after_cmd && !after_redir)
+				ft_tokenize(base, token, TOKEN_ARG);
 			free(token);
 		}
 		else if (ft_isseparator(line[i]))
 		{
-			start = i;
-			len = 0;
-			while (line[i] && ft_isseparator(line[i]))
-			{
-				i++;
-				len++;
-			}
-			token = ft_substr(line, start, len);
+			token = ft_extract_sep(line, &i);
 			if (!token)
 				ft_error(base, "malloc()");
-			ft_tokenize(base, token, 1);
-			free(token);
-		}
-		else if (line[i] == '$')
-		{
-			i++;
-			start = i;
-			len = 0;
-			while (line[i] && ft_isalnum(line[i]))
-			{
-				i++;
-				len++;
-			}
-			token = ft_substr(line, start, len);
-			if (!token)
-				ft_error(base, "malloc()");
-			ft_tokenize(base, token, 2);
+			if (*token == '<' || *token == '>')
+				after_redir = 1;
+			after_cmd = 0;
+			ft_tokenize(base, token, TOKEN_SEP);
 			free(token);
 		}
 		while (line[i] && ft_iswhitespace(line[i]))
-		{
 			i++;
-		}
 	}
 }

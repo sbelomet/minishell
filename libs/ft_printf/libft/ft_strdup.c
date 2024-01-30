@@ -1,26 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 10:06:30 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 15:43:54 by lgosselk         ###   ########.fr       */
+/*   Created: 2023/10/12 09:51:24 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/30 14:43:53 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-int	echo(t_cmd *cmd)
+char	*ft_strdup(const char *s1)
 {
-	if (!cmd->arg)
-		ft_putstr_fd("\n", cmd->fd_out);
-	else
+	char	*s2;
+	int		i;
+
+	i = ft_strlen(s1);
+	s2 = (char *)malloc(i * sizeof(char) + 1);
+	if (!s2)
+		return (NULL);
+	i = 0;
+	while (s1[i])
 	{
-		ft_putstr_fd(cmd->arg, cmd->fd_out);
-		if (cmd->flags)
-			ft_putstr_fd("\n", cmd->fd_out);
+		s2[i] = s1[i];
+		i++;
 	}
-	return (0);
+	s2[i] = '\0';
+	return (s2);
 }

@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 10:06:30 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 15:43:54 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/30 11:06:23 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int	echo(t_cmd *cmd)
+void	ft_tokenize(t_base *base, char *value, int type)
 {
-	if (!cmd->arg)
-		ft_putstr_fd("\n", cmd->fd_out);
-	else
+	/* if (type == TOKEN_WORD && )
 	{
-		ft_putstr_fd(cmd->arg, cmd->fd_out);
-		if (cmd->flags)
-			ft_putstr_fd("\n", cmd->fd_out);
-	}
-	return (0);
+		if ()
+	} */
+	printf("token: %s, type: %d\n", value, type);
+	(void)base;
 }

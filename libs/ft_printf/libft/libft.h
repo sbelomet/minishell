@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:17:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/23 15:58:57 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:38:32 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,17 @@
 # include <stdio.h>
 # include <unistd.h>
 
-typedef struct s_list
+typedef struct	s_list
 {
 	void			*content;
 	struct s_list	*next;
-}					t_list;
+}				t_list;
+
+typedef struct s_alloc
+{
+	void				*ptr;
+	struct s_alloc		*next;
+}				t_alloc;
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -61,5 +67,13 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+
+/* garbage collector */
+t_alloc	*malloc_new(void *content);
+void	ft_malloc_clear(t_alloc **lst);
+void	*ft_malloc(int size, t_alloc	**lst);
+int		malloc_add(t_alloc **lst, t_alloc *new_node);
+
+int		ft_equal_strs(const char *s1, const char *s2, int size);
 
 #endif

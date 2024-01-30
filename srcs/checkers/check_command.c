@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   check_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 09:37:58 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 10:53:33 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/01/30 11:22:18 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_current_path(void)
+int	is_cmd_bin(t_cmd *cmd)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (path == NULL)
-		perror("getcwd() Error\n");
-	return (path);
+	if (!cmd)
+		return (0);
+	if (cmd->id /* EQUAL TOKEN_BINARY */)
+		return (1);
+	return (0);
 }
 
-char	*get_home_path(t_base *base)
+int	is_cmd_builtin(t_cmd *cmd)
 {
-	t_var	*env_var;
-
-	env_var = ft_findvar(base->first_var, "HOME");
-	return (env_var->value);
+	if (!cmd)
+		return (0);
+	if (cmd->id /* EQUAL TOKEN_BUILTIN */)
+		return (1);
+	return (0);
 }

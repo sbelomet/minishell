@@ -1,43 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   base_init.c                                        :+:      :+:    :+:   */
+/*   ft_equal_strs.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/26 15:27:23 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 11:32:44 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/01/30 11:38:07 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_get_curdir(t_base *base)
+int	ft_equal_strs(const char *s1, const char *s2, int size)
 {
-	char	*pwd;
-	int		i;
+	int	i;
 
-	pwd = getcwd(NULL, 0);
-	ft_revstr(pwd);
+	if (size < 0)
+		size = ft_strlen(s1);
 	i = 0;
-	while (pwd[i])
+	while (s1[i] && s2[i] && i < size)
 	{
-		if (pwd[i] == '/')
-		{
-			base->curdir = ft_substr(pwd, 0, i);
-			ft_revstr(base->curdir);
-			free(pwd);
-			return ;
-		}
+		if (s1[i] != s2[i])
+			return (0);
 		i++;
 	}
-}
-
-void	ft_base_init(t_base *base, char **env)
-{
-	base->env = env;   
-    base->alloc = NULL;
-	base->first_var = NULL;
-	ft_get_env_vars(base, env);
-	ft_get_curdir(base);
+	if (i != size)
+		return (0);
+	return (1);
 }

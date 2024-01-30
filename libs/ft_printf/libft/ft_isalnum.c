@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 10:06:30 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 15:43:54 by lgosselk         ###   ########.fr       */
+/*   Created: 2023/10/09 13:27:05 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/30 11:10:44 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-int	echo(t_cmd *cmd)
+int	ft_isalnum(int c)
 {
-	if (!cmd->arg)
-		ft_putstr_fd("\n", cmd->fd_out);
-	else
-	{
-		ft_putstr_fd(cmd->arg, cmd->fd_out);
-		if (cmd->flags)
-			ft_putstr_fd("\n", cmd->fd_out);
-	}
-	return (0);
+	return ((c > 47 && c < 58) || (c > 64 && c < 91) || (c > 96 && c < 123));
 }

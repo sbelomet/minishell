@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 09:37:58 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 08:46:15 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/01/30 13:23:07 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../includes/minishell.h"
 
-char	*get_current_path(void)
+void	exec_line(t_base *base, char *line)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (path == NULL)
-		perror("getcwd() Error\n");
-	return (path);
-}
-
-char	*get_home_path(t_base *base)
-{
-	t_var	*env_var;
-
-	env_var = ft_findvar(base->first_var, "HOME");
-	return (env_var->value);
+	ft_lexer_start(base, line);
+	if (!errors_lexer(base))
+	{
+		
+	}
 }

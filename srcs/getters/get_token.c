@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   get_token.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 09:37:58 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 08:54:35 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/01/30 15:36:58 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_current_path(void)
+t_token	*get_first_token(t_base *base)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (path == NULL)
-		perror("getcwd() Error\n");
-	return (path);
+	if (base->first_token)
+		return (base->first_token);
+	return (0);
 }
 
-char	*get_home_path(t_base *base)
+t_token	*get_first_cmd(t_base *base)
 {
-	t_var	*env_var;
+    t_token *token;
 
-	env_var = ft_findvar(base->first_var, "HOME");
-	return (env_var->value);
+    token = get_first_token(base);
+    while (token)
+    {
+        if (is_token_cmd(token))
+            return (get_token_class(token));
+        token = token->next;
+    }
+    return (NULL);
 }

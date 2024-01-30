@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   get_args.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 09:37:58 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/30 11:47:22 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/01/30 11:51:31 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-char	*get_current_path(void)
+t_arg	*get_first_arg(t_cmd *cmd)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	if (path == NULL)
-		perror("getcwd() Error\n");
-	return (path);
-}
-
-char	*get_home_path(t_base *base)
-{
-	t_var	*env_var;
-
-	env_var = ft_findvar(base->first_var, "HOME");
-	return (env_var->value);
+	if (cmd->first_arg)
+		return (cmd->first_arg);
+	return (NULL);
 }
