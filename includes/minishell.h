@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/30 15:43:18 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/01/31 15:20:49 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,23 @@
 # define WHITE "\033[0;39m"
 # define B_WHITE "\033[1;39m"
 
-# define TOKEN_CMD 0
-# define TOKEN_BUILTIN 1
-# define TOKEN_BIN 2
-# define TOKEN_SEP 3
-# define TOKEN_PIPE 4
-# define TOKEN_REDIR 5
-# define TOKEN_FILE 6
-# define TOKEN_ARG 7
+enum e_types
+{
+	TOKEN_UNKNOWN,
+	TOKEN_CMD,
+	TOKEN_BUILTIN,
+	TOKEN_BIN,
+	TOKEN_ARG,
+	TOKEN_SEP,
+	TOKEN_PIPE,
+	TOKEN_REDIR,
+	TOKEN_FILE,
+};
 
 typedef struct s_token
 {
 	void			*type;
+	int				id;
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_token;
@@ -81,25 +86,25 @@ typedef struct s_cmd
 	int				id;
 	int				pid;
 	char			*arg;
-	char			*bin;
+	char			*path;
 	int				fd_in;
 	char			*flags;
 	char			**args;
 	int				fd_out;
-	char			*content;
+	char			*name;
 	t_arg			*first_arg;
 }					t_cmd;
 
 typedef struct s_base
 {
 	char			**env;
+	char			**builtins;
 	t_alloc			*alloc;
 	char			*curdir;
 	t_var			*first_var;
 	t_token			*first_token;
 	int				exit_status;
-	t_token			*first_token;
-}				t_base;
+}					t_base;
 
 /* PROMPT */
 void	ft_prompt(t_base *base);
@@ -111,7 +116,7 @@ void	ft_add_var(t_base *base, char *input);
 void	ft_get_env_vars(t_base *base, char **env);
 t_var	*ft_findvar(t_var *first_var, char *name);
 
-/* VARIABLES UTILS 2 */
+/* VARIABLES LIST UTILS 1 */
 t_var	*ft_last_var(t_var *first_var);
 t_var	*ft_new_var_node(char *name, char *value);
 void	ft_add_var_node(t_base *base, t_var *new_var);
@@ -121,7 +126,10 @@ void	ft_free(t_base base);
 int		errors_lexer(t_base *base);
 int		check_err_token_cmd(t_token *token);
 void	ft_error(t_base *base, char *message);
-int 	check_err_token_redirec(t_token *token);
+int		check_err_token_redirec(t_token *token);
+
+/* FREEING TOKENS */
+void	ft_free_tokens(t_base base);
 
 /* BASE INIT */
 void	ft_base_init(t_base *base, char **env);
@@ -163,20 +171,29 @@ int		print_env(t_var *env_list); /* ENV */
 int		exit_builtin(t_cmd *cmd, t_base *base); /* EXIT */
 
 /* LEXER */
+char	*ft_findvar_value(t_base *base, char *name);
 void	ft_lexer_start(t_base *base, char *line);
 
-/* LEXER UTILS1 */
+/* LEXER UTILS 1 */
 int		ft_iswhitespace(char c);
 int		ft_isquote(char c);
 int		ft_isseparator(char c);
 int		ft_isspecial(char c);
 
 /* TOKENS */
-void	ft_tokenize(t_base *base, char *value, int type);
+void	ft_tokenize(t_base *base, char *value, int id);
+
+/* TOKENS LIST UTILS 1 */
+t_token	*ft_last_token(t_token *first_token);
+t_token	*ft_new_token_node(int id);
+void	ft_add_token_node(t_base *base, t_token *new_token);
 
 /* TOKENS UTILS 1 */
-t_token	*ft_last_token(t_token *first_token);
-t_token	*ft_new_token_node(void);
-void	ft_add_token_node(t_base *base, t_token *new_token);
+int		ft_isbuiltin(t_base *base, char *cmd);
+int		ft_isbin(t_base *base, char *cmd);
+char	*ft_get_cmdpath(t_base *base, char *cmd);
+
+/* CMD LIST UTILS 1 */
+t_cmd	*ft_new_cmd_node(int id, char *path, char *name);
 
 #endif

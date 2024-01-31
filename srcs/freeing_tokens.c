@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_equal_strs.c                                    :+:      :+:    :+:   */
+/*   freeing_tokens.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 11:32:44 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 10:51:39 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/01/31 14:40:12 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/31 14:42:50 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_equal_strs(const char *s1, const char *s2)
+void	ft_free_tokens(t_base base)
 {
-	int	i;
+	t_token	*tmp1;
+	t_token	*tmp2;
 
-	if (ft_strlen(s1) != ft_strlen(s2))
-		return (0);
-	i = 0;
-	while (s1[i])
+	tmp1 = base.first_token;
+	if (tmp1)
 	{
-		if (s1[i] != s2[i])
-			return (0);
-		i++;
-	}
-	return (1);
+		while (tmp1)
+		{
+			tmp2 = tmp1->next;
+			/* if (tmp1->type)
+				free(tmp1->type); */
+			free(tmp1);
+			tmp1 = tmp2;
+		}
+	}	
 }

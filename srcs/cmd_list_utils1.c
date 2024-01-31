@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_equal_strs.c                                    :+:      :+:    :+:   */
+/*   cmd_list_utils1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 11:32:44 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 10:51:39 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/01/31 13:38:05 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/31 14:00:11 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_equal_strs(const char *s1, const char *s2)
+t_cmd	*ft_new_cmd_node(int id, char *path, char *name)
 {
-	int	i;
+	t_cmd	*res;
 
-	if (ft_strlen(s1) != ft_strlen(s2))
-		return (0);
-	i = 0;
-	while (s1[i])
-	{
-		if (s1[i] != s2[i])
-			return (0);
-		i++;
-	}
-	return (1);
+	res = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!res)
+		return (NULL);
+	res->id = id;
+	res->pid = -1;
+	res->path = path;
+	res->name = name;
+	res->fd_in = -1;
+	res->fd_out = -1;
+	res->first_arg = NULL;
+	return (res);
 }

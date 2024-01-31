@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:46:45 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/24 13:16:44 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:42:53 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_error(t_base *base, char *message)
 	exit(-1);
 }
 
-void	ft_free(t_base base)
+void	ft_free_vars(t_base base)
 {
 	t_var	*tmp1;
 	t_var	*tmp2;
@@ -35,7 +35,30 @@ void	ft_free(t_base base)
 			free(tmp1);
 			tmp1 = tmp2;
 		}
+	}	
+}
+
+void	ft_free_builtins(t_base base)
+{
+	int	i;
+
+	i = 0;
+	if (base.builtins)
+	{
+		while (base.builtins[i])
+		{
+			free(base.builtins[i]);
+			i++;
+		}
+		free(base.builtins);
 	}
+}
+
+void	ft_free(t_base base)
+{
+	ft_free_vars(base);
+	ft_free_tokens(base);
+	ft_free_builtins(base);
 	if (base.curdir)
 		free(base.curdir);
 }

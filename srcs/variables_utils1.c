@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:11:46 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/23 16:02:12 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/31 10:53:57 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ t_var	*ft_findvar(t_var *first_var, char *name)
 	res = first_var;
 	while (res)
 	{
-		if (ft_strncmp(name, res->name, ft_strlen(name)) == 0)
+		if (ft_equal_strs(name, res->name))
 			return (res);
 		res = res->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/30 11:27:27 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/01/31 14:36:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_prompt(t_base *base)
 		if (ft_strlen(line) > 0)
 		{
 			add_history(rl);
-			if (ft_strncmp("print", line, 5) == 0)
+			if (ft_equal_strs("print", line))
 				ft_print_vars(*base);
 			else
 				ft_lexer_start(base, line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:17:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/30 11:38:32 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/01/31 10:53:48 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,6 @@ void	ft_malloc_clear(t_alloc **lst);
 void	*ft_malloc(int size, t_alloc	**lst);
 int		malloc_add(t_alloc **lst, t_alloc *new_node);
 
-int		ft_equal_strs(const char *s1, const char *s2, int size);
+int		ft_equal_strs(const char *s1, const char *s2);
 
 #endif

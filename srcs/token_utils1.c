@@ -5,51 +5,79 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 10:50:09 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/30 10:56:52 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/01/31 10:24:08 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/01/31 13:57:20 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_last_token(t_token *first_token)
+int	ft_isbuiltin(t_base *base, char *cmd)
 {
-	t_token	*tmp;
+	int	i;
 
-	tmp = first_token;
-	if (tmp)
+	i = 0;
+	while (base->builtins[i])
 	{
-		while (tmp->next)
-		{
-			tmp = tmp->next;
-		}
+		if (ft_equal_strs(base->builtins[i], cmd))
+			return (1);
+		i++;
 	}
-	return (tmp);
+	return (0);
 }
 
-t_token	*ft_new_token_node(void)
+int	ft_isbin(t_base *base, char *cmd)
 {
-	t_token	*res;
+	char	**paths;
+	char	*path;
+	char	*tmp;
+	int		res;
+	int		i;
 
-	res = (t_token *)malloc(sizeof(t_token));
-	if (!res)
-		return (NULL);
-	res->type = NULL;
-	res->prev = NULL;
-	res->next = NULL;
+	path = ft_findvar_value(base, "$PATH");
+	paths = ft_split(path, ':');
+	res = 0;
+	i = -1;
+	while (paths[++i])
+	{
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, F_OK | X_OK) == 0)
+			res = 1;
+		free(path);
+	}
+	i = -1;
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
 	return (res);
 }
 
-void	ft_add_token_node(t_base *base, t_token *new_token)
+char	*ft_get_cmdpath(t_base *base, char *cmd)
 {
-	t_token	*last;
+	char	**paths;
+	char	*path;
+	char	*tmp;
+	char	*res;
+	int		i;
 
-	if (base->first_token)
+	path = ft_findvar_value(base, "$PATH");
+	paths = ft_split(path, ':');
+	res = NULL;
+	i = -1;
+	while (paths[++i])
 	{
-		last = ft_last_token(base->first_token);
-		last->next = new_token;
-		new_token->prev = last;
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, F_OK | X_OK) == 0)
+			res = ft_strdup(path);
+		free(path);
 	}
-	else
-		base->first_token = new_token;
+	i = -1;
+	while (paths[++i])
+		free(paths[i]);
+	free(paths);
+	return (res);
 }
