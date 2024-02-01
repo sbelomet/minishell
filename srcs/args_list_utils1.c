@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_list_utils1.c                                :+:      :+:    :+:   */
+/*   args_list_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 10:50:09 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 13:16:21 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/02/01 11:33:45 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/01 13:16:08 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*ft_last_token(t_token *first_token)
+t_arg	*ft_last_arg(t_arg *first_arg)
 {
-	t_token	*tmp;
+	t_arg	*tmp;
 
-	tmp = first_token;
+	tmp = first_arg;
 	if (tmp)
 	{
 		while (tmp->next)
@@ -27,30 +27,32 @@ t_token	*ft_last_token(t_token *first_token)
 	return (tmp);
 }
 
-t_token	*ft_new_token_node(int id)
+t_arg	*ft_new_arg_node(int id, char *name)
 {
-	t_token	*res;
+	t_arg	*res;
 
-	res = (t_token *)malloc(sizeof(t_token));
+	res = (t_arg *)malloc(sizeof(t_arg));
 	if (!res)
 		return (NULL);
-	res->type = NULL;
 	res->id = id;
+	res->name = name;
+	res->index = 0;
 	res->prev = NULL;
 	res->next = NULL;
 	return (res);
 }
 
-void	ft_add_token_node(t_base *base, t_token *new_token)
+void	ft_add_arg_node(t_cmd *cmd, t_arg *new_arg)
 {
-	t_token	*last;
+	t_arg	*last;
 
-	if (base->first_token)
+	if (cmd->first_arg)
 	{
-		last = ft_last_token(base->first_token);
-		last->next = new_token;
-		new_token->prev = last;
+		last = ft_last_arg(cmd->first_arg);
+		last->next = new_arg;
+		new_arg->prev = last;
+		new_arg->index++;
 	}
 	else
-		base->first_token = new_token;
+		cmd->first_arg = new_arg;
 }

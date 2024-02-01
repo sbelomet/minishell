@@ -12,32 +12,9 @@
 
 #include "../../includes/minishell.h"
 
-static int	check_err_builtin(t_cmd *cmd)
+int	format_command(t_base *base)
 {
-	t_arg	*arg;
-	int		count;
-
-	count = 0;
-	arg = get_first_arg(cmd);
-	if (is_cd_builtin(cmd))
-	{
-		while (arg)
-		{
-			count++;
-			arg = arg->next;
-		}
-	}
-	if (count > 1)
-	{
-		ft_putstr_fd("cd: too many arguments.\n", STDOUT_FILENO);
-		return (0);
-	}
-	return (1);
-}
-
-void	format_command(t_base *base)
-{
-	format_builtins();
-	format_cmds_args();
-	format_binaries();
+	format_builtins(base);
+	//format_cmds_args();
+	//format_binaries();
 }

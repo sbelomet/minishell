@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/30 14:52:14 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:32:28 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*ft_extract_word(t_base *base, char *line, int *index)
 	return (tmp);
 }
 
-char	*ft_extract_sep(char *line, int *index)
+char	*ft_extract_redir(char *line, int *index)
 {
 	int		start;
 	int		len;
@@ -57,7 +57,7 @@ char	*ft_extract_sep(char *line, int *index)
 
 	start = *index;
 	len = 0;
-	while (line[*index] && ft_isseparator(line[*index]))
+	while (line[*index] && ft_isredirection(line[*index]))
 	{
 		(*index)++;
 		len++;
@@ -97,18 +97,16 @@ void	ft_lexer_start(t_base *base, char *line)
 			}
 			else if (after_cmd && !after_redir)
 				ft_tokenize(base, token, TOKEN_ARG);
-			free(token);
 		}
-		else if (ft_isseparator(line[i]))
+		else if (ft_isredirection(line[i]))
 		{
-			token = ft_extract_sep(line, &i);
+			token = ft_extract_redir(line, &i);
 			if (!token)
 				ft_error(base, "malloc()");
 			if (*token == '<' || *token == '>')
 				after_redir = 1;
 			after_cmd = 0;
-			ft_tokenize(base, token, TOKEN_SEP);
-			free(token);
+			ft_tokenize(base, token, TOKEN_REDIR);
 		}
 		while (line[i] && ft_iswhitespace(line[i]))
 			i++;

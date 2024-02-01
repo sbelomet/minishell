@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/01/31 14:40:46 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/01 15:04:42 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,8 @@ RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 
 FILES		=	main variables_utils1 error_utils1 prompt base_init freeing_tokens \
 				signals_utils1 lexer tokens lexer_utils1 token_utils1 \
-				variables_list_utils1 token_list_utils1 cmd_list_utils1
+				variables_list_utils1 token_list_utils1 cmd_list_utils1 \
+				args_list_utils1 redir_list_utils1
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 

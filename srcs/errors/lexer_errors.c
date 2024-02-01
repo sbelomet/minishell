@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:24:49 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/30 14:20:17 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/01/31 10:13:28 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	errors_lexer(t_base *base)
 {
-	t_token	*token;
+	t_token		*token;
+	t_unknown	*unknown;
 
 	token = get_first_token(base);
 	while (token)
@@ -23,12 +24,16 @@ int	errors_lexer(t_base *base)
 			return (1);
 		if (is_token_redirec(token) && check_err_token_redirec(token))
 			return (1);
+		if (is_token_pipe(token) && check_err_token_pipe(token))
+			return (1);
 		if (is_token_unknown(token))
 		{
-			// get_class_token
-			// ft_printf content;
-			// update env status to 127  
+			unknown = get_token_class(token);
+			ft_printf("Error: Unknown token [%s]\n", unknown->name);
+			if (update_env(base, "?", ft_itoa(127)))
+				return (1);
 		}
 		token = token->next;
 	}
+	return (0);
 }

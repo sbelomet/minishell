@@ -1,46 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error_utils1.c                                     :+:      :+:    :+:   */
+/*   redir_list_utils1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/23 13:46:45 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 13:03:23 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/02/01 14:59:24 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/01 15:05:51 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_error(t_base *base, char *message)
+t_redir	*ft_new_redir_node(int id, char *name)
 {
-	perror(message);
-	ft_free(*base);
-	exit(-1);
-}
+	t_redir	*res;
 
-void	ft_free_vars(t_base base)
-{
-	t_var	*tmp1;
-	t_var	*tmp2;
-
-	tmp1 = base.first_var;
-	if (tmp1)
-	{
-		while (tmp1)
-		{
-			tmp2 = tmp1->next;
-			free(tmp1->name);
-			free(tmp1->value);
-			free(tmp1);
-			tmp1 = tmp2;
-		}
-	}	
-}
-
-void	ft_free(t_base base)
-{
-	ft_free_vars(base);
-	if (base.curdir)
-		free(base.curdir);
+	res = (t_redir *)malloc(sizeof(t_redir));
+	if (!res)
+		return (NULL);
+	res->id = id;
+	res->name = name;
+	res->fd_in = -1;
+	res->fd_out = -1;
+	res->file = NULL;
+	return (res);
 }

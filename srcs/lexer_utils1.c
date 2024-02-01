@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 12:07:38 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/30 14:10:30 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/01 14:28:25 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_isquote(char c)
 	return (0);
 }
 
-int	ft_isseparator(char c)
+int	ft_isredirection(char c)
 {
 	if (c == '<' || c == '>' || c == '&' || c == '|' || c == '=')
 		return (1);
@@ -35,7 +35,7 @@ int	ft_isseparator(char c)
 
 int	ft_isspecial(char c)
 {
-	if (ft_isseparator(c) || ft_isquote(c) || ft_iswhitespace(c))
+	if (ft_isredirection(c) || ft_isquote(c) || ft_iswhitespace(c))
 		return (1);
 	return (0);
 }

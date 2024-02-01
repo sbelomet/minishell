@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:19:13 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/30 13:15:02 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/01/31 11:28:05 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	is_token_cmd(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id /* // equal to TOKEN_BINARY and TOKEN_BUILTIN */)
+	if (token->id == TOKEN_BIN || token->id == TOKEN_BUILTIN)
 		return (1);
 	return (0);
 }
@@ -25,7 +25,16 @@ int	is_token_bin(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id /* // equal to TOKEN_BINARY */)
+	if (token->id == TOKEN_BIN)
+		return (1);
+	return (0);
+}
+
+int	is_token_builtin(t_token *token)
+{
+	if (!token)
+		return (0);
+	if (token->id == TOKEN_BUILTIN)
 		return (1);
 	return (0);
 }
@@ -34,7 +43,7 @@ int	is_token_redirec(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id /* // equal to all type of redirections */)
+	if (token->id == TOKEN_REDIR)
 		return (1);
 	return (0);
 }
@@ -43,16 +52,7 @@ int	is_token_pipe(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id /* // equal to TOKEN_PIPE */)
-		return (1);
-	return (0);
-}
-
-int	is_token_heredoc(t_token *token)
-{
-	if (!token)
-		return (0);
-	if (token->id /* // equal to TOKEN_HEREDOC */)
+	if (token->id == TOKEN_PIPE)
 		return (1);
 	return (0);
 }

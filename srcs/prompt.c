@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/31 14:36:26 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:48:04 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ void	ft_prompt(t_base *base)
 			else
 				ft_lexer_start(base, line);
 		}
+		ft_free_tokens(base->first_token);
+		base->first_token = NULL;
+		printf("freed tokens\n");
 		free(rl);
 		free(line);
 	}
