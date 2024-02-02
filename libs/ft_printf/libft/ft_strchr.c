@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_token.c                                   :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 16:04:17 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 16:06:15 by lgosselk         ###   ########.fr       */
+/*   Created: 2023/10/10 10:52:28 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/02 11:14:16 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-t_token *get_next_builtin(t_token *token)
+char	*ft_strchr(const char *s, int c)
 {
-	token = token->next;
-	while (token)
+	int	i;
+	int	len;
+
+	i = 0;
+	len = ft_strlen(s);
+	while (i < len + 1)
 	{
-		if (is_token_builtin(token))
-			return (token);
-		token = token->next;
+		if (s[i] == (char)c)
+			return ((char *)&s[i]);
+		i++;
 	}
 	return (NULL);
 }

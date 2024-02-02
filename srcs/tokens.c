@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 15:48:42 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:52:09 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 {
 	t_token	*res;
 	char	*path;
+	t_cmd	*test;
 
 	res = ft_new_token_node(TOKEN_UNKNOWN_CMD);
 	if (!res)
@@ -32,8 +33,6 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 	res->type = ft_new_cmd_node(res->id, path, cmd);
 	if (!res->type)
 		ft_error(base, "malloc()");
-	t_cmd *test;
-
 	test = (t_cmd *)res->type;
 	printf("name: %s, id: %d, path: %s\n", test->name, test->id, test->path);
 }
@@ -55,6 +54,7 @@ void	ft_add_cmd_arg(t_base *base, char *arg)
 void	ft_tokenize_redir(t_base *base, char *redir)
 {
 	t_token	*res;
+	t_redir	*test;
 
 	res = ft_new_token_node(ft_get_redir(redir));
 	if (!res)
@@ -63,15 +63,21 @@ void	ft_tokenize_redir(t_base *base, char *redir)
 	res->type = ft_new_redir_node(res->id, redir);
 	if (!res->type)
 		ft_error(base, "malloc()");
-	t_redir *test;
-
 	test = (t_redir *)res->type;
 	printf("name: %s, id: %d\n", test->name, test->id);
 }
 
 void	ft_add_redir_file(t_base *base, char *file)
 {
-	//TODO
+	t_token	*redir_token;
+	t_redir	*redir;
+
+	redir_token = ft_last_token(base->first_token);
+	redir = (t_redir *)redir_token->type;
+	if (redir->id == TOKEN_REDIR_HDOC)
+		redir->limiter = file;
+	else
+		redir->filepath = file;
 }
 
 void	ft_tokenize(t_base *base, char *val, int id)
@@ -92,5 +98,10 @@ void	ft_tokenize(t_base *base, char *val, int id)
 	else if (id == TOKEN_FILE)
 	{
 		ft_add_redir_file(base, val);
+	}
+	else if (id == TOKEN_VAR)
+	{
+		ft_add_var(base, val);
+		free(val);
 	}
 }

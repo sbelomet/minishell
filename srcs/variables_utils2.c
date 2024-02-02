@@ -1,41 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_utils1.c                                     :+:      :+:    :+:   */
+/*   variables_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 12:07:38 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 14:05:39 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/02 14:52:28 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_iswhitespace(char c)
+t_var	*ft_findvar(t_var *first_var, char *name)
 {
-	if (c == ' ' || c == '\n' || c == '\t')
-		return (1);
-	return (0);
+	t_var	*res;
+
+	res = first_var;
+	while (res)
+	{
+		if (ft_equal_strs(name, res->name))
+			return (res);
+		res = res->next;
+	}
+	return (NULL);
 }
 
-int	ft_isquote(char c)
+char	*ft_findvar_value(t_base *base, char *name)
 {
-	if (c == '\'' || c == '"')
-		return (1);
-	return (0);
-}
+	t_var	*tmp;
 
-int	ft_isredirection(char c)
-{
-	if (c == '<' || c == '>' || c == '&' || c == '|')
-		return (1);
-	return (0);
-}
-
-int	ft_isspecial(char c)
-{
-	if (ft_isredirection(c) || ft_isquote(c) || ft_iswhitespace(c))
-		return (1);
-	return (0);
+	tmp = ft_findvar(base->first_var, ++name);
+	if (tmp)
+		return (tmp->value);
+	return ("");
 }

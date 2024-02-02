@@ -6,21 +6,11 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 14:32:28 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:55:21 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char 	*ft_findvar_value(t_base *base, char *name)
-{
-	t_var	*tmp;
-
-	tmp = ft_findvar(base->first_var, ++name);
-	if (tmp)
-		return (tmp->value);
-	return ("");
-}
 
 char	*ft_extract_word(t_base *base, char *line, int *index)
 {
@@ -68,46 +58,64 @@ char	*ft_extract_redir(char *line, int *index)
 	return (res);
 }
 
+void	ft_find_noredir_word(t_base *base, char *line, int *i)
+{
+	char	*token;
+
+	token = ft_extract_word(base, line, i);
+	printf("token: %s\n", token);
+	if (!token)
+		ft_error(base, "malloc()");
+	if (!base->after_cmd && !base->after_redir)
+	{
+		if (ft_strchr(token, '='))
+			ft_tokenize(base, token, TOKEN_VAR);
+		else
+		{
+			ft_tokenize(base, token, TOKEN_CMD);
+			base->after_cmd = 1;
+		}
+	}
+	else if (!base->after_cmd && base->after_redir)
+	{
+		ft_tokenize(base, token, TOKEN_FILE);
+		base->after_redir = 0;
+	}
+	else if (base->after_cmd && !base->after_redir)
+		ft_tokenize(base, token, TOKEN_ARG);
+}
+
+void	ft_find_redir_word(t_base *base, char *line, int *i)
+{
+	char	*token;
+
+	token = ft_extract_redir(line, i);
+	if (!token)
+		ft_error(base, "malloc()");
+	if (*token == '<' || *token == '>')
+		base->after_redir = 1;
+	base->after_cmd = 0;
+	ft_tokenize(base, token, TOKEN_REDIR);
+}
+
 void	ft_lexer_start(t_base *base, char *line)
 {
 	int		i;
-	char	*token;
-	int		after_cmd;
-	int		after_redir;
+	char	*in_quotes;
 
 	i = 0;
-	after_cmd = 0;
-	after_redir = 0;
+	base->after_cmd = 0;
+	base->after_redir = 0;
 	while (line[i])
 	{
-		if (!ft_isspecial(line[i]))
+		if (ft_isquote(line[i]))
 		{
-			token = ft_extract_word(base, line, &i);
-			if (!token)
-				ft_error(base, "malloc()");
-			if (!after_cmd && !after_redir)
-			{
-				ft_tokenize(base, token, TOKEN_CMD);
-				after_cmd = 1;
-			}
-			else if (!after_cmd && after_redir)
-			{
-				ft_tokenize(base, token, TOKEN_FILE);
-				after_redir = 0;
-			}
-			else if (after_cmd && !after_redir)
-				ft_tokenize(base, token, TOKEN_ARG);
+			in_quotes = ft_extract_quotes(base, line, &i, line[i]);
 		}
+		else if (!ft_isspecial(line[i]))
+			ft_find_noredir_word(base, line, &i);
 		else if (ft_isredirection(line[i]))
-		{
-			token = ft_extract_redir(line, &i);
-			if (!token)
-				ft_error(base, "malloc()");
-			if (*token == '<' || *token == '>')
-				after_redir = 1;
-			after_cmd = 0;
-			ft_tokenize(base, token, TOKEN_REDIR);
-		}
+			ft_find_redir_word(base, line, &i);
 		while (line[i] && ft_iswhitespace(line[i]))
 			i++;
 	}

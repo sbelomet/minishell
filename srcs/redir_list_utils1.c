@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:59:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 15:05:51 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:13:32 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ t_redir	*ft_new_redir_node(int id, char *name)
 		return (NULL);
 	res->id = id;
 	res->name = name;
-	res->fd_in = -1;
-	res->fd_out = -1;
-	res->file = NULL;
+	res->fd_in = STDIN_FILENO;
+	res->fd_out = STDOUT_FILENO;
+	res->file_fd = -1;
+	res->limiter = NULL;
+	res->filepath = NULL;
 	return (res);
 }

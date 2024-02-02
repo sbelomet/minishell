@@ -15,6 +15,5 @@
 int	format_command(t_base *base)
 {
 	format_builtins(base);
-	//format_cmds_args();
-	//format_binaries();
+	format_binaries();
 }

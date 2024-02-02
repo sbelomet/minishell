@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:11:46 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/31 10:53:57 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/02 13:26:46 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,6 @@ void	ft_get_env_vars(t_base *base, char **env)
 		ft_add_var_node(base, var);
 		i++;
 	}
-}
-
-t_var	*ft_findvar(t_var *first_var, char *name)
-{
-	t_var	*res;
-
-	res = first_var;
-	while (res)
-	{
-		if (ft_equal_strs(name, res->name))
-			return (res);
-		res = res->next;
-	}
-	return (NULL);
 }
 
 void	ft_add_var(t_base *base, char *input)

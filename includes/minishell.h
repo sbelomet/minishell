@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 15:45:41 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:48:48 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ enum e_types
 	TOKEN_AND,
 	TOKEN_OR,
 	TOKEN_FILE,
+	TOKEN_VAR,
 	TOKEN_WORD
 };
 
@@ -57,19 +58,15 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-typedef struct s_file
-{
-	char			*path;
-	int				fd;
-}					t_file;
-
 typedef struct s_redir
 {
 	int				id;
 	int				fd_in;
 	int				fd_out;
+	int				file_fd;
 	char			*name;
-	t_file			*file;
+	char			*limiter;
+	char			*filepath;
 }					t_redir;
 
 typedef struct s_unknown
@@ -100,10 +97,8 @@ typedef struct s_cmd
 {
 	int				id;
 	int				pid;
-	char			*arg;
 	char			*path;
 	int				fd_in;
-	char			**args;
 	int				fd_out;
 	char			*name;
 	t_arg			*first_arg;
@@ -114,6 +109,8 @@ typedef struct s_base
 	char			**env;
 	t_alloc			*alloc;
 	char			*curdir;
+	int				after_cmd;
+	int				after_redir;
 	t_var			*first_var;
 	t_token			*first_token;
 	int				exit_status;
@@ -121,18 +118,6 @@ typedef struct s_base
 
 /* PROMPT */
 void	ft_prompt(t_base *base);
-
-/* VARIABLES UTILS 1 */
-char	*ft_get_var_name(char *var);
-char	*ft_get_var_value(char *var);
-void	ft_add_var(t_base *base, char *input);
-void	ft_get_env_vars(t_base *base, char **env);
-t_var	*ft_findvar(t_var *first_var, char *name);
-
-/* VARIABLES LIST UTILS 1 */
-t_var	*ft_last_var(t_var *first_var);
-t_var	*ft_new_var_node(char *name, char *value);
-void	ft_add_var_node(t_base *base, t_var *new_var);
 
 /* ERROR */
 void	ft_free(t_base base);
@@ -156,6 +141,8 @@ void	ft_ctrl_c(int signum);
 char	*get_current_path(void);
 t_arg	*get_first_arg(t_cmd *cmd);
 char	*get_home_path(t_base *base);
+t_cmd	*get_prev_cmd(t_token *token);
+t_cmd	*get_next_cmd(t_token *token);
 t_token	*get_first_token(t_base *base);
 void	*get_token_class(t_token *token);
 t_token	*get_first_builtin(t_base *base);
@@ -171,6 +158,7 @@ int		is_token_redirec(t_token *token);
 int		is_token_heredoc(t_token *token);
 int		is_token_unknown(t_token *token);
 int		is_token_builtin(t_token *token);
+int		is_token_basic_redir(t_token *token);
 int		is_builtin_cmd(char *name, t_cmd *cmd);
 
 /* UPDATES */
@@ -196,6 +184,9 @@ int		ft_isquote(char c);
 int		ft_isredirection(char c);
 int		ft_isspecial(char c);
 
+/* LEXER UTILS 2 */
+char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote);
+
 /* TOKENS */
 void	ft_tokenize(t_base *base, char *value, int id);
 
@@ -220,5 +211,20 @@ void	ft_add_arg_node(t_cmd *cmd, t_arg *new_arg);
 
 /* REDIR LIST UTILS 1 */
 t_redir	*ft_new_redir_node(int id, char *name);
+
+/* VARIABLES UTILS 1 */
+char	*ft_get_var_name(char *var);
+char	*ft_get_var_value(char *var);
+void	ft_add_var(t_base *base, char *input);
+void	ft_get_env_vars(t_base *base, char **env);
+
+/* VARIABLES UTILS 2 */
+t_var	*ft_findvar(t_var *first_var, char *name);
+char	*ft_findvar_value(t_base *base, char *name);
+
+/* VARIABLES LIST UTILS 1 */
+t_var	*ft_last_var(t_var *first_var);
+t_var	*ft_new_var_node(char *name, char *value);
+void	ft_add_var_node(t_base *base, t_var *new_var);
 
 #endif

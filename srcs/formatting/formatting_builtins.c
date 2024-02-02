@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:54:52 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 16:06:49 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/01 13:46:43 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static int	format_cd(t_base *base, t_cmd *cmd)
 		return (1);
 	}
 	return (1);
-	// handle cd options later
 }
 
 static int	format_exit(t_cmd *cmd)
@@ -70,18 +69,22 @@ static int	format_env(t_cmd *cmd)
 	return (1);
 }
 
-static int	format_echo(t_cmd *cmd)
+static int	format_export(t_cmd *cmd)
 {
 	t_arg	*arg;
 
 	arg = get_first_arg(cmd);
-	if (arg)
+	if (arg->next)
 	{
-		ft_putstr_fd("exit: too many arguments.\n", STDOUT_FILENO);
+		arg = arg->next;
+		while (arg)
+		{
+			ft_printf("export: '%s': not a valid identifier\n", arg->name);
+			arg = arg->next;
+		}
 		return (0);
 	}
 	return (1);
-	// TO DO
 }
 
 int	format_builtins(t_base *base)
@@ -97,10 +100,8 @@ int	format_builtins(t_base *base)
 			format_cd(base, cmd);
 		if (is_builtin_cmd("exit", cmd))
 			format_exit(cmd);
-		if (is_builtin_cmd("echo", cmd))
-		{
-			// strjoin all args and check for flag
-		}
+		if (is_builtin_cmd("export", cmd))
+			format_export(cmd);
 		if (is_builtin_cmd("env", cmd))
 			format_env(cmd);
 		token = get_next_builtin(token);

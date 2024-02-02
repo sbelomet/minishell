@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:40:12 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 15:22:25 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/02 14:01:31 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ void	ft_free_command(t_cmd *cmd)
 	printf("before freeing command\n");
 	if (cmd)
 	{
-		if (cmd->arg)
-		{
-			printf("before freeing arg\n");
-			free(cmd->arg);
-		}
 		if (cmd->path)
 		{
 			printf("after freeing path\n");
@@ -57,7 +52,7 @@ void	ft_free_command(t_cmd *cmd)
 
 void	ft_free_redirection(t_redir *redir)
 {
-	printf("before freeing command\n");
+	printf("before freeing redir\n");
 	if (redir)
 	{
 		if (redir->name)
@@ -65,14 +60,15 @@ void	ft_free_redirection(t_redir *redir)
 			printf("after freeing name\n");
 			free(redir->name);
 		}
-		if (redir->file)
+		if (redir->limiter)
+		{
+			printf("after freeing limiter\n");
+			free(redir->limiter);
+		}
+		if (redir->filepath)
 		{
 			printf("after freeing file\n");
-			if (redir->file->path)
-			{
-				free(redir->file->path);
-			}
-			free(redir->file);
+			free(redir->filepath);
 		}
 		free(redir);
 	}
@@ -91,10 +87,12 @@ void	ft_free_tokens(t_token *first_token)
 		{
 			tmp2 = tmp1->next;
 			id = tmp1->id;
-			printf("before checking command\n");
-			if (id == TOKEN_UNKNOWN || id == TOKEN_BUILTIN || id == TOKEN_BIN)
+			printf("before checking\n");
+			if (id == TOKEN_UNKNOWN_CMD || id == TOKEN_BUILTIN
+				|| id == TOKEN_BIN)
 				ft_free_command(tmp1->type);
-			else if (id == TOKEN_REDIR_IN || id == TOKEN_REDIR_OUT
+			else if (id == TOKEN_UNKNOWN_REDIR || id == TOKEN_REDIR_IN
+				|| id == TOKEN_REDIR_OUT
 				|| id == TOKEN_REDIR_APP || id == TOKEN_REDIR_HDOC
 				|| id == TOKEN_PIPE || id == TOKEN_AND || id == TOKEN_OR)
 				ft_free_redirection(tmp1->type);

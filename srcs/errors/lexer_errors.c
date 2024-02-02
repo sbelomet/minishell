@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:24:49 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 10:13:28 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:46:09 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	errors_lexer(t_base *base)
 			if (update_env(base, "?", ft_itoa(127)))
 				return (1);
 		}
+        // check token_unknown redir, cmd
 		token = token->next;
 	}
 	return (0);
