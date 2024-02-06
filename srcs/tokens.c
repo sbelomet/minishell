@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 14:52:09 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/06 13:17:05 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	ft_add_cmd_arg(t_base *base, char *arg)
 	if (!arg_node)
 		ft_error(base, "malloc()");
 	ft_add_arg_node(cmd, arg_node);
+	printf("name: %s, id: %d\n", cmd->first_arg->name, cmd->first_arg->id);
 }
 
 void	ft_tokenize_redir(t_base *base, char *redir)

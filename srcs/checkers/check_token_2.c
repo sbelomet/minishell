@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:19:27 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/01 15:02:20 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:37:36 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	is_token_unknown(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id == TOKEN_UNKNOWN)
+	if (token->id == TOKEN_UNKNOWN_CMD
+		|| token->id == TOKEN_UNKNOWN_REDIR)
 		return (1);
 	return (0);
 }
@@ -34,7 +35,7 @@ int	is_token_heredoc(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id == TOKEN_HEREDOC)
+	if (token->id == TOKEN_REDIR_HDOC)
 		return (1);
 	return (0);
 }
@@ -43,8 +44,8 @@ int	is_token_basic_redir(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id == TOKEN_APPENDREDIR || token->id == TOKEN_OUTREDIR
-		|| token->id == TOKEN_INREDIR)
+	if (token->id == TOKEN_REDIR_APP || token->id == TOKEN_REDIR_OUT
+		|| token->id == TOKEN_REDIR_IN)
 		return (1);
 	return (0);
 }

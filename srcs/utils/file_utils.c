@@ -1,35 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_errors.c                                      :+:      :+:    :+:   */
+/*   file_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/31 10:15:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/02 09:30:39 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/02/02 14:35:59 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/02/05 13:40:33 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	check_err_token_pipe(t_token *token)
+int	open_file(char *path, int type)
 {
-	t_redir	*redir;
+	int	file;
 
-	redir = get_token_class(token);
-	if (is_token_pipe(token))
+	file = 0;
+	if (type == 0)
+		file = open(path, O_RDONLY, 0644);
+	if (type == 1)
+		file = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (type == 2)
+		file = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (file < 0)
 	{
-		if (!is_token_cmd(token->next) || !token->next)
-		{
-			ft_printf("Error: command after pipe [%s] not found", redir->name);
-			return (1);
-		}
-		else if (!is_token_cmd(token->prev) || !token->prev)
-		{
-			ft_printf("Error: command before pipe [%s] not found", redir->name);
-			return (1);
-		}
-		return (0);
+		perror(path);
+		return (-1);
 	}
-	return (1);
+	return (file);
 }

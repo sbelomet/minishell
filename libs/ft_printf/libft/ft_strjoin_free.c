@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   formatting_cmds.c                                      :+:      :+:    :+:   */
+/*   ft_strjoin_free.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 14:37:01 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/30 14:47:15 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/02/06 12:09:41 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/06 14:05:52 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-int	format_command(t_base *base)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-	format_builtins(base);
-    format_redirections(base);
-	//format_binaries();
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	if (!res)
+		return (NULL);
+	free(s1);
+	free(s2);
+	return (res);
 }

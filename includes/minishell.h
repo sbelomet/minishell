@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 14:48:48 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/06 14:37:37 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 
 # define WHITE "\033[0;39m"
 # define B_WHITE "\033[1;39m"
+# define TMP_FILE "/tmp/minishell.tmp"
 
 enum e_types
 {
@@ -61,8 +62,6 @@ typedef struct s_token
 typedef struct s_redir
 {
 	int				id;
-	int				fd_in;
-	int				fd_out;
 	int				file_fd;
 	char			*name;
 	char			*limiter;
@@ -92,7 +91,6 @@ typedef struct s_arg
 	struct s_arg	*prev;
 }					t_arg;
 
-/* If token is a command and take args/flags !Provisoire! */
 typedef struct s_cmd
 {
 	int				id;
@@ -104,15 +102,20 @@ typedef struct s_cmd
 	t_arg			*first_arg;
 }					t_cmd;
 
+typedef struct s_lexvars
+{
+	int				after_cmd;
+	int				after_redir;
+}					t_lexvars;
+
 typedef struct s_base
 {
 	char			**env;
 	t_alloc			*alloc;
 	char			*curdir;
-	int				after_cmd;
-	int				after_redir;
 	t_var			*first_var;
 	t_token			*first_token;
+	t_lexvars		lexvars;
 	int				exit_status;
 }					t_base;
 
@@ -147,6 +150,8 @@ t_token	*get_first_token(t_base *base);
 void	*get_token_class(t_token *token);
 t_token	*get_first_builtin(t_base *base);
 t_token	*get_next_builtin(t_token *token);
+t_cmd	*get_prev_cmd_no_skip(t_token *token);
+t_cmd	*get_next_cmd_no_skip(t_token *token);
 
 /* CHECKERS */
 int		is_cmd_bin(t_cmd *cmd);
@@ -167,6 +172,17 @@ int		update_env(t_base *base, char *name, char *new_value);
 /* FORMATTING */
 int		format_command(t_base *base);
 int		format_builtins(t_base *base);
+int		format_redirections(t_base *base);
+int		manage_file_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
+int		manage_infile_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
+int		manage_outfile_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
+int		manage_outfile_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
+
+/* FILE UTILS */
+int		open_file(char *path, int type);
+
+/* EXEC */
+int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 
 /* BUILTINS */
 int		pwd(void); /* PWD */
@@ -186,6 +202,14 @@ int		ft_isspecial(char c);
 
 /* LEXER UTILS 2 */
 char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote);
+char	*ft_get_developped_vars(t_base *base, char *line);
+void	ft_develop_var(t_base *base, char **vars, char *line, int *i);
+char	*ft_extract_var_name(char *line, int *i);
+int		ft_nb_vars_in_quotes(char *line);
+
+/* LEXER UTILS 3 */
+char	*ft_make_quoted_line(t_base *base, char **vars, char *line);
+char	*ft_join_var_value(char *line, int start, int len, char **vars);
 
 /* TOKENS */
 void	ft_tokenize(t_base *base, char *value, int id);

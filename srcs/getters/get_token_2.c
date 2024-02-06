@@ -45,3 +45,29 @@ t_cmd   *get_prev_cmd(t_token *token)
 	}
 	return (NULL);
 }
+
+t_cmd	*get_prev_cmd_no_skip(t_token *token)
+{
+	while (token)
+	{
+		if (is_token_redirec(token))
+			return (NULL);
+		if (is_token_cmd(token))
+			return (get_token_class(token));
+		token = token->prev;
+	}
+	return (NULL);
+}
+
+t_cmd	*get_next_cmd_no_skip(t_token *token)
+{
+	while (token)
+	{
+		if (is_token_redirec(token))
+			return (NULL);
+		if (is_token_cmd(token))
+			return (get_token_class(token));
+		token = token->next;
+	}
+	return (NULL);
+}

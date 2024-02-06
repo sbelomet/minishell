@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:54:52 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/01 13:46:43 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:30:04 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	format_cd(t_base *base, t_cmd *cmd)
 	arg = get_first_arg(cmd);
 	if (!arg)
 	{
-		cmd->arg = get_home_path(base);
+		cmd->first_arg->name = get_home_path(base); // check is correct place
 		return (1);
 	}
 	return (1);
@@ -34,9 +34,9 @@ static int	format_exit(t_cmd *cmd)
 
 	i = -1;
 	arg = get_first_arg(cmd);
-	while (arg->value[++i])
+	while (arg->name[++i])
 	{
-		if (arg->value[i] < 48 || arg->value > 57)
+		if (arg->name[i] < 48 || arg->name > 57)
 		{
 			ft_putstr_fd("exit: numeric argumets required\n", STDOUT_FILENO);
 			return (1);

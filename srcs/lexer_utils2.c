@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 15:44:53 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:27:07 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,71 @@ int	ft_nb_vars_in_quotes(char *line)
 	return (count);
 }
 
+char	*ft_extract_var_name(char *line, int *i)
+{
+	int		start;
+	int		len;
+	char	*res;
+
+	start = *i;
+	(*i)++;
+	len = 1;
+	while (line[*i] && !ft_isspecial(line[*i]) && line[*i] != '$')
+	{
+		(*i)++;
+		len++;
+	}
+	printf("var name len: %d\n", len);
+	if (len == 1)
+		return ("");
+	res = ft_substr(line, start, len);
+	if (!res)
+		return (NULL);
+	return (res);
+}
+
+void	ft_develop_var(t_base *base, char **vars, char *line, int *i)
+{
+	static int	var_i = 0;
+	char		*name;
+
+	name = ft_extract_var_name(line, i);
+	if (!name)
+		ft_error(base, "malloc()");
+	printf("var name: %s\n", name);
+	vars[var_i] = ft_findvar_value(base, name);
+	printf("var[%d] = %s\n", var_i, vars[var_i]);
+	var_i++;
+	free(name);
+	if (var_i >= ft_nb_vars_in_quotes(line) - 1)
+		var_i = 0;
+}
+
 char	*ft_get_developped_vars(t_base *base, char *line)
 {
 	int		i;
-	int		var_i;
-	char	*tmp;
-	char	*var;
+	int		nb_vars;
+	char	*res;
 	char	**vars;
 
 	i = 0;
-	vars = (char **)malloc(sizeof(char *) * (ft_nb_vars_in_quotes(line) + 1));
+	nb_vars = ft_nb_vars_in_quotes(line);
+	printf("nb vars in quotes: %d\n", nb_vars);
+	vars = (char **)malloc(sizeof(char *) * nb_vars);
 	if (!vars)
 		ft_error(base, "malloc()");
-	var_i = 0;
 	while (line[i])
 	{
 		if (line[i] == '$')
-		{
-			ft_extract_var_name(line, &i);
-			vars[var_i] = ft_findvar_value(base, );
-		}
-		i++;
+			ft_develop_var(base, vars, line, &i);
+		else
+			i++;
 	}
-	if (!tmp)
-		ft_error(base, "malloc()");
-	
+	vars[nb_vars] = NULL;
+	printf("vars got\n");
+	res = ft_make_quoted_line(base, vars, line);
+	free(line);
+	return (res);
 }
 
 char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote)
@@ -60,11 +100,10 @@ char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote)
 	int		len;
 	int		start;
 	char	*res;
-	char	*tmp;
 
 	len = 0;
-	start = *i;
 	(*i)++;
+	start = *i;
 	while (line[*i] && line[*i] != quote)
 	{
 		(*i)++;
@@ -73,9 +112,11 @@ char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote)
 	res = ft_substr(line, start, len);
 	if (!res)
 		ft_error(base, "malloc()");
+	printf("without quotes: %s\n", res);
 	if (quote == '"')
 	{
-		res = ft_develop_vars(base, res);
+		res = ft_get_developped_vars(base, res);
 	}
+	(*i)++;
 	return (res);
 }

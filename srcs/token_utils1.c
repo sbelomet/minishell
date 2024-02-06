@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 10:24:08 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 12:08:31 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:49:55 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	ft_get_redir(char *redir)
 		return (TOKEN_REDIR_IN);
 	if (ft_equal_strs(redir, ">"))
 		return (TOKEN_REDIR_OUT);
-	if (ft_equal_strs(redir, "<<"))
+	if (ft_equal_strs(redir, ">>"))
 		return (TOKEN_REDIR_HDOC);
 	if (ft_equal_strs(redir, "<<"))
 		return (TOKEN_REDIR_APP);
