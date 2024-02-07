@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/06 15:27:07 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/07 11:33:20 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,14 @@ void	ft_develop_var(t_base *base, char **vars, char *line, int *i)
 	if (!name)
 		ft_error(base, "malloc()");
 	printf("var name: %s\n", name);
-	vars[var_i] = ft_findvar_value(base, name);
+	vars[var_i] = ft_strdup(ft_findvar_value(base, name));
+	if (!vars[var_i])
+		ft_error(base, "malloc()");
+	printf("var value: %s\n", ft_findvar_value(base, name));
 	printf("var[%d] = %s\n", var_i, vars[var_i]);
 	var_i++;
 	free(name);
-	if (var_i >= ft_nb_vars_in_quotes(line) - 1)
+	if (var_i >= ft_nb_vars_in_quotes(line))
 		var_i = 0;
 }
 
@@ -90,7 +93,8 @@ char	*ft_get_developped_vars(t_base *base, char *line)
 	}
 	vars[nb_vars] = NULL;
 	printf("vars got\n");
-	res = ft_make_quoted_line(base, vars, line);
+	res = ft_make_quoted_line(base, vars, line, nb_vars);
+	ft_free_array(vars);
 	free(line);
 	return (res);
 }

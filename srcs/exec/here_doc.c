@@ -6,11 +6,56 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/05 11:25:21 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/06 11:39:52 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static void	handle_var(t_base *base, char *line, int *fd,
+		int i)
+{
+	int		j;
+	char	*var;
+	char	*find_var;
+
+	var = malloc((i + 1) * sizeof(char));
+	if (!var)
+		return ;
+	j = -1;
+	while (++j < i)
+		var[j] = line[j];
+	var[j] = '\0';
+	find_var = ft_findvar_value(base, var);
+	if (!find_var)
+		return ;
+	else
+		write(fd[1], find_var, ft_strlen(find_var));	
+	free(var);
+}
+
+static int	handle_expand_heredoc(t_base *base, char *line,
+		int *fd)
+{
+	int		i;
+	int		j;
+	char	*var;
+
+	while (line++)
+	{
+		if (*line == '$')
+		{
+			line++;
+			i = -1;
+			while (line[i] != ft_isspecial(line[i]))
+				i++;
+			if (i > 0)
+				handle_var(base, line, fd, i);
+		}
+		write(fd[1], line, 1);
+	}
+	return (1);
+}
 
 static int	handle_input(t_base *base, t_redir *redir,
 		char *line, int	*fd)
@@ -22,7 +67,7 @@ static int	handle_input(t_base *base, t_redir *redir,
 		return (1);
 	}
 	if (ft_strchr(line, '$'))
-		return (NULL); // Change for expand function	
+		handle_expand_heredoc(base, line, fd);	
 	else
 		write(fd[1], line, ft_strlen(line));
 	write(fd[1], "\n", 1);

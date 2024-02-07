@@ -12,10 +12,34 @@
 
 #include "../../includes/minishell.h"
 
-static void	update_file_descriptors(t_cmd *cmd, int in, int out)
+int	manage_file_redir(t_base *base, t_cmd *cmd,
+		int type, char *filepath)
 {
-	cmd->fd_in = in;
-	cmd->fd_out = out;
+	if (type == TOKEN_REDIR_IN)
+	{
+		if (cmd->fd_in != 0)
+			close(cmd->fd_in);
+		cmd->fd_in = open_file(filepath, 0);
+		if (cmd->fd_in < 0)
+			return (-1);
+	}
+    if (type == TOKEN_REDIR_OUT)
+	{
+		if (cmd->fd_out != 0)
+			close(cmd->fd_out);
+		cmd->fd_out = open_file(filepath, 2);
+		if (cmd->fd_out < 0)
+			return (-1);
+	}
+    if (type == TOKEN_REDIR_APP)
+	{
+		if (cmd->fd_out != 0)
+			close(cmd->fd_out);
+		cmd->fd_out = open_file(filepath, 1);
+		if (cmd->fd_out < 0)
+			return (-1);
+	}
+    return (1);
 }
 
 static int	manage_basic_redir(t_base *base, t_token *token)
@@ -29,11 +53,17 @@ static int	manage_basic_redir(t_base *base, t_token *token)
 	prev_cmd = get_prev_cmd_no_skip(token);
 	next_cmd = get_next_cmd_no_skip(token);
 	if (prev_cmd && !next_cmd)
-	{} //
+	{
+		if (!manage_file_redir(base, prev_cmd,
+			token->id, redir->filepath))
+			return (-1);
+		}
 	else if (!prev_cmd && next_cmd)
-	{} //
-	if (!manage_infile_redir)
-		return (-1);
+	{
+		if (!manage_file_redir(base, next_cmd,
+			token->id, redir->filepath))
+			return (-1);
+	}
 	return (1);
 }
 
@@ -54,8 +84,9 @@ static int	manage_pipe_redir(t_token *token)
 		return (0); // in the real bash no next command must be work with a separate prompt
 	if (pipe(fd) < 0)
 		return (-1);
-	update_file_descriptors(prev_cmd, prev_cmd->fd_in, fd[1]);
-	update_file_descriptors(next_cmd, fd[0], next_cmd->fd_out);
+	prev_cmd->fd_out = fd[1];
+	next_cmd->fd_in = fd[0];
+	return (1);
 }
 
 static int	manage_heredoc(t_base *base, t_token *token)
@@ -66,14 +97,14 @@ static int	manage_heredoc(t_base *base, t_token *token)
 	
 	error = 0;
 	redir = get_token_class(token);
-	cmd = get_prev_cmd(cmd);
+	cmd = get_prev_cmd_no_skip(cmd);
 	if (cmd == NULL)
 	{
-		cmd = get_next_cmd(cmd);
+		cmd = get_next_cmd_no_skip(cmd);
 		if (cmd != NULL)
 			error = init_heredoc(base, redir, cmd);
 		else
-			return (-1); // printf error (no prev/next cmd)
+			return (-1); // error (no prev/next cmd)
 	}	
 	else
 		error = init_heredoc(base, redir, cmd);
@@ -96,11 +127,14 @@ int	format_redirections(t_base *base)
 		if (is_token_redirec(token))
 		{
 			if (is_token_basic_redir(token))
-				manage_basic_redir(base, token); // add error handling
+				if (!manage_basic_redir(base, token))
+					return (-1);
 			if (token->id == TOKEN_PIPE)
-				manage_pipe_redir(token); // add error handling
+				if (!manage_pipe_redir(token))
+					return (-1);
 			if (token->id == TOKEN_REDIR_HDOC)
-				manage_heredoc(base, token); // add error handling
+				if (!manage_heredoc(base, token))
+					return (-1);
 		}
 		token = token->next;
     }

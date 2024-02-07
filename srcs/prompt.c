@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 14:51:14 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:14:07 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	ft_prompt(t_base *base)
 
 	while (1)
 	{
+		ft_signals();
 		prompt = ft_format_prompt(base);
 		rl = readline(prompt);
 		free(prompt);

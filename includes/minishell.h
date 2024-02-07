@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/06 14:37:37 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:12:11 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ void	ft_base_init(t_base *base, char **env);
 void	ft_get_curdir(t_base *base);
 
 /* SIGNALS UTILS */
+void	ft_signals(void);
 void	ft_ctrl_slash(int signum);
 void	ft_ctrl_c(int signum);
 
@@ -173,10 +174,7 @@ int		update_env(t_base *base, char *name, char *new_value);
 int		format_command(t_base *base);
 int		format_builtins(t_base *base);
 int		format_redirections(t_base *base);
-int		manage_file_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
-int		manage_infile_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
-int		manage_outfile_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
-int		manage_outfile_redir(t_base *base, t_cmd *cmd, t_token *token, char *filepath);
+int	    manage_file_redir(t_base *base, t_cmd *cmd, int type, char *filepath);
 
 /* FILE UTILS */
 int		open_file(char *path, int type);
@@ -208,8 +206,9 @@ char	*ft_extract_var_name(char *line, int *i);
 int		ft_nb_vars_in_quotes(char *line);
 
 /* LEXER UTILS 3 */
-char	*ft_make_quoted_line(t_base *base, char **vars, char *line);
+char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nb_vars);
 char	*ft_join_var_value(char *line, int start, int len, char **vars);
+char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i);
 
 /* TOKENS */
 void	ft_tokenize(t_base *base, char *value, int id);

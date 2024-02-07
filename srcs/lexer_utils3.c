@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:23:00 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/06 15:27:12 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/07 13:00:27 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,41 @@ char	*ft_join_var_value(char *line, int start, int len, char **vars)
 		res = ft_strdup(tmp);
 	free(tmp);
 	var_i++;
-	if (var_i >= ft_nb_vars_in_quotes(line) - 1)
+	if (var_i >= ft_nb_vars_in_quotes(line))
 		var_i = 0;
 	return (res);
 }
 
-char	*ft_make_quoted_line(t_base *base, char **vars, char *line)
+char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i)
+{
+	int		start;
+	int		len;
+	char	*tmp;
+	char	*res;
+
+	res = ft_strdup("");
+	while (nb_vars)
+	{
+		start = *i;
+		len = 0;
+		(*i)--;
+		while (line[++(*i)] && line[*i] != '$')
+			len++;
+		tmp = ft_join_var_value(line, start, len, vars);
+		if (!tmp)
+			return (NULL);
+		res = ft_strjoin_free(res, tmp);
+		if (!res)
+			return (NULL);
+		while (line[++(*i)] && !ft_isspecial(line[*i]) && line[*i] != '$')
+		{
+		}
+		nb_vars--;
+	}
+	return (res);
+}
+
+char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nb_vars)
 {
 	int		i;
 	int		start;
@@ -46,28 +75,22 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line)
 	char	*res;
 
 	i = 0;
-	res = ft_strdup("");
+	res = ft_start_quoted_line(vars, line, nb_vars, &i);
+	if (!res)
+		ft_error(base, "malloc()");
+	start = i;
+	len = 0;
 	while (line[i])
 	{
-		start = i;
-		len = 0;
-		i--;
-		while (line[++i] && line[i] != '$')
-			len++;
-		printf("we finna segfault, len: %d\n", len);
-		tmp = ft_join_var_value(line, start, len, vars);
-		if (!tmp)
-			ft_error(base, "malloc()");
-		printf("tmp: %s, len: %d\n", tmp, len);
-		res = ft_strjoin_free(res, tmp);
-		if (!res)
-			ft_error(base, "malloc()");
-		printf("res: %s\n", res);
-		while (line[++i] && !ft_isspecial(line[i]) && line[i] != '$')
-		{
-			printf("i: %d\n", i);
-		}
+		i++;
+		len++;
 	}
+	tmp = ft_substr(line, start, len);
+	if (!tmp)
+		ft_error(base, "malloc()");
+	res = ft_strjoin_free(res, tmp);
+	if (!res)
+		ft_error(base, "malloc()");
 	printf("time to return good string: %s\n", res);
 	return (res);
 }
