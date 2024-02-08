@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/06 13:08:41 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/08 15:57:33 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,20 @@ CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 LEAKS		=	leaks --atExit -- 
 
+D_MAIN		=	main_utils/
+D_PROMPT	=	prompt/
+D_LEXER		=	lexer/
+D_TOKEN		=	tokens/
+D_VARS		=	variables/
+D_ERRORS	=	errors/
+D_FORMAT	=	formatting/
+D_CHECKS	=	checkers/
+D_BUILTIN	=	builtins/
+D_EXEC		=	exec/
+D_GETTERS	=	getters/
+D_UPDATE	=	updates/
+D_UTILS		=	utils/
+
 # Colors
 
 RED 		=	\033[1;91m
@@ -40,12 +54,36 @@ RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 
 #Sources
 
-FILES		=	main variables_utils1 variables_utils2 error_utils1 prompt base_init \
-				signals_utils1 lexer tokens lexer_utils1 lexer_utils2 token_utils1 \
-				variables_list_utils1 token_list_utils1 cmd_list_utils1 freeing_tokens \
-				args_list_utils1 redir_list_utils1 lexer_utils3
-SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
-OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
+F_MAIN		=	main base_init error_utils1 signals_utils1
+F_PROMPT	=	prompt freeing_tokens read_line
+F_LEXER		=	lexer lexer_utils1 lexer_utils2 lexer_utils3
+F_TOKEN		=	tokens token_utils1 token_list_utils1 args_list_utils1 cmd_list_utils1 redir_list_utils1
+F_VARS		=	variables_utils1 variables_utils2 variables_list_utils1
+F_ERRORS	=	lexer_errors cmd_errors pipe_errors redirect_errors
+F_FORMAT	=	formatting_builtin formatting_redirections
+F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
+F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset
+F_EXEC		=	exec_pipes here_doc
+F_GETTERS	=	get_args get_class get_env get_token_2 get_token
+F_UPDATE	=	status update_env
+F_UTILS		=	file_utils
+
+PATH_FILES	=	$(addprefix $(D_MAIN), $(F_MAIN)) \
+				$(addprefix $(D_PROMPT), $(F_PROMPT)) \
+				$(addprefix $(D_LEXER), $(F_LEXER)) \
+				$(addprefix $(D_TOKEN), $(F_TOKEN)) \
+				$(addprefix $(D_VARS), $(F_VARS)) \
+				$(addprefix $(D_ERRORS), $(F_ERRORS)) \
+				$(addprefix $(D_FORMAT), $(F_FORMAT)) \
+				$(addprefix $(D_CHECKS), $(F_CHECKS)) \
+				$(addprefix $(D_BUILTIN), $(F_BUILTIN)) \
+				$(addprefix $(D_EXEC), $(F_EXEC)) \
+				$(addprefix $(D_GETTERS), $(F_GETTERS)) \
+				$(addprefix $(D_UPDATE), $(F_UPDATE)) \
+				$(addprefix $(D_UTILS), $(F_UPDATE))
+
+SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(PATH_FILES)))
+OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(PATH_FILES)))
 
 #Commands
 
@@ -65,6 +103,19 @@ $(OBJ_DIR)%.o:	$(SRC_DIR)%.c
 
 $(OBJ_DIR):
 					@mkdir -p $(OBJ_DIR)
+					@mkdir -p $(OBJ_DIR)$(D_MAIN)
+					@mkdir -p $(OBJ_DIR)$(D_PROMPT)
+					@mkdir -p $(OBJ_DIR)$(D_LEXER)
+					@mkdir -p $(OBJ_DIR)$(D_TOKEN)
+					@mkdir -p $(OBJ_DIR)$(D_VARS)
+					@mkdir -p $(OBJ_DIR)$(D_ERRORS)
+					@mkdir -p $(OBJ_DIR)$(D_FORMAT)
+					@mkdir -p $(OBJ_DIR)$(D_CHECKS)
+					@mkdir -p $(OBJ_DIR)$(D_BUILTIN)
+					@mkdir -p $(OBJ_DIR)$(D_EXEC)
+					@mkdir -p $(OBJ_DIR)$(D_GETTERS)
+					@mkdir -p $(OBJ_DIR)$(D_UPDATE)
+					@mkdir -p $(OBJ_DIR)$(D_UTILS)
 
 clean:
 					@make clean -C libs/ft_printf

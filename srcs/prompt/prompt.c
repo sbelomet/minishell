@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/07 13:14:07 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:51:31 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_print_vars(t_base base)
 {
 	while (base.first_var)
 	{
-		ft_printf("NAME: %s\nVALUE: %s\n",
+		ft_printf(1, "NAME: %s\nVALUE: %s\n",
 			base.first_var->name, base.first_var->value);
 		base.first_var = base.first_var->next;
 	}
@@ -35,6 +35,15 @@ char	*ft_format_prompt(t_base *base)
 		ft_error(base, "malloc()");
 	free(tmp);
 	return (prompt);
+}
+
+void	ft_free_after_prompt(t_base *base, char *rl, char *line)
+{
+	ft_free_tokens(base->first_token);
+	ft_malloc_clear(&base->alloc);
+	base->first_token = NULL;
+	free(rl);
+	free(line);
 }
 
 void	ft_prompt(t_base *base)
@@ -58,11 +67,8 @@ void	ft_prompt(t_base *base)
 			if (ft_equal_strs("print", line))
 				ft_print_vars(*base);
 			else
-				ft_lexer_start(base, line);
+				exec_line(base, line);
 		}
-		ft_free_tokens(base->first_token);
-		base->first_token = NULL;
-		free(rl);
-		free(line);
+		ft_free_after_prompt(base, rl, line);
 	}
 }

@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals_utils1.c                                   :+:      :+:    :+:   */
+/*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/25 11:53:07 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/07 13:48:34 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/01/30 08:46:15 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/02/08 13:53:35 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
-void	ft_ctrl_slash(int signum)
+void	exec_line(t_base *base, char *line)
 {
-	(void)signum;
-	rl_on_new_line();
-	rl_redisplay();
-}
+	int	error;
 
-void	ft_ctrl_c(int signum)
-{
-	(void)signum;
-	rl_redisplay();
-	rl_on_new_line();
-	write(1, "\n", 1);
-	rl_redisplay();
-}
-
-void	ft_signals(void)
-{
-	signal(SIGINT, ft_ctrl_c);
-	signal(SIGQUIT, ft_ctrl_slash);
+	ft_lexer_start(base, line);
+	if (!errors_lexer(base))
+	{
+		format_builtins(base);
+		error = format_redirections(base);
+		if (error == 0)
+			exec_pipes(base);
+		if (error == 1)
+			base->exit_status = EXIT_FAILURE; // file not open
+	}
+	// remove tokens and cleanup for next line
 }

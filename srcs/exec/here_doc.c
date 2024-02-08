@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/06 11:39:52 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/07 10:25:11 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	{
 		base->exit_status = 1;
 		close(fd[0]);
-		return (-2);
+		return (-1);
 	}
 	cmd->fd_in = fd[0];
 	return (0);

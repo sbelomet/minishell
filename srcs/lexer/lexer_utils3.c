@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:23:00 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/07 13:00:27 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 09:52:17 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i)
 	return (res);
 }
 
-char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nb_vars)
+char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars)
 {
 	int		i;
 	int		start;
@@ -75,7 +75,7 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nb_vars)
 	char	*res;
 
 	i = 0;
-	res = ft_start_quoted_line(vars, line, nb_vars, &i);
+	res = ft_start_quoted_line(vars, line, nvars, &i);
 	if (!res)
 		ft_error(base, "malloc()");
 	start = i;

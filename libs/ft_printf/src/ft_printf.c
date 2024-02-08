@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 11:31:11 by sbelomet          #+#    #+#             */
-/*   Updated: 2023/10/24 13:07:12 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:48:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
 
-int	ft_printf(const char *format, ...)
+int	ft_printf(int fd, const char *format, ...)
 {
 	va_list	args;
 	int		i;
@@ -28,12 +27,12 @@ int	ft_printf(const char *format, ...)
 	{
 		while (format[i] == '%')
 		{
-			count += ft_printformat(args, format[i + 1]);
+			count += ft_printformat(args, format[i + 1], fd);
 			i += 2;
 		}
 		if (i < len)
 		{
-			ft_putchar_fd(format[i], 1);
+			ft_putchar_fd(format[i], fd);
 			i++;
 			count++;
 		}

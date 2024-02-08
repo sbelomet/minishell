@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printhex.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 12:17:23 by sbelomet          #+#    #+#             */
-/*   Updated: 2023/10/24 11:19:14 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:48:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
 
 static int	ft_numlen(unsigned long long a)
 {
@@ -44,7 +43,7 @@ static void	ft_strrev(char *s)
 	}
 }
 
-int	ft_printhex(unsigned long long a, char isupper)
+int	ft_printhex(unsigned long long a, char isupper, int fd)
 {
 	int		i;
 	int		count;
@@ -57,7 +56,7 @@ int	ft_printhex(unsigned long long a, char isupper)
 		return (0);
 	if (!a)
 	{
-		ft_putchar_fd('0', 1);
+		ft_putchar_fd('0', fd);
 		count++;
 	}
 	while (a)
@@ -68,7 +67,7 @@ int	ft_printhex(unsigned long long a, char isupper)
 		i++;
 	}
 	ft_strrev(res);
-	ft_putstr_fd(res, 1);
+	ft_putstr_fd(res, fd);
 	free(res);
 	return (count);
 }

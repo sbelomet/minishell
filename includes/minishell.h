@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/07 13:12:11 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:55:32 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ typedef struct s_base
 	int				exit_status;
 }					t_base;
 
+int		g_error;
+
 /* PROMPT */
 void	ft_prompt(t_base *base);
 
@@ -156,6 +158,8 @@ t_cmd	*get_next_cmd_no_skip(t_token *token);
 
 /* CHECKERS */
 int		is_cmd_bin(t_cmd *cmd);
+int		is_cmd_builtin(t_cmd *cmd);
+int		is_numeric_arg(t_arg *arg);
 int		is_token_cmd(t_token *token);
 int		is_token_bin(t_token *token);
 int		is_token_pipe(t_token *token);
@@ -171,15 +175,14 @@ int		is_builtin_cmd(char *name, t_cmd *cmd);
 int		update_env(t_base *base, char *name, char *new_value);
 
 /* FORMATTING */
-int		format_command(t_base *base);
 int		format_builtins(t_base *base);
 int		format_redirections(t_base *base);
-int	    manage_file_redir(t_base *base, t_cmd *cmd, int type, char *filepath);
 
 /* FILE UTILS */
 int		open_file(char *path, int type);
 
 /* EXEC */
+int		exec_pipes(t_base *base);
 int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 
 /* BUILTINS */
@@ -187,6 +190,9 @@ int		pwd(void); /* PWD */
 int		echo(t_cmd *cmd); /* ECHO */
 int		print_env(t_var *env_list); /* ENV */
 int		exit_builtin(t_cmd *cmd, t_base *base); /* EXIT */
+
+/* READ LINE */
+void	exec_line(t_base *base, char *line);
 
 /* LEXER */
 char	*ft_findvar_value(t_base *base, char *name);
@@ -206,7 +212,7 @@ char	*ft_extract_var_name(char *line, int *i);
 int		ft_nb_vars_in_quotes(char *line);
 
 /* LEXER UTILS 3 */
-char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nb_vars);
+char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars);
 char	*ft_join_var_value(char *line, int start, int len, char **vars);
 char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i);
 
@@ -236,8 +242,8 @@ void	ft_add_arg_node(t_cmd *cmd, t_arg *new_arg);
 t_redir	*ft_new_redir_node(int id, char *name);
 
 /* VARIABLES UTILS 1 */
-char	*ft_get_var_name(char *var);
-char	*ft_get_var_value(char *var);
+char	*ft_get_var_name(t_base *base, char *var);
+char	*ft_get_var_value(t_base *base, char *var);
 void	ft_add_var(t_base *base, char *input);
 void	ft_get_env_vars(t_base *base, char **env);
 

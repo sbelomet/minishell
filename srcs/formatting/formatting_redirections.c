@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-int	manage_file_redir(t_base *base, t_cmd *cmd,
+static int	manage_file_redir(t_base *base, t_cmd *cmd,
 		int type, char *filepath)
 {
 	if (type == TOKEN_REDIR_IN)
@@ -39,7 +39,7 @@ int	manage_file_redir(t_base *base, t_cmd *cmd,
 		if (cmd->fd_out < 0)
 			return (-1);
 	}
-    return (1);
+	return (1);
 }
 
 static int	manage_basic_redir(t_base *base, t_token *token)
@@ -57,7 +57,7 @@ static int	manage_basic_redir(t_base *base, t_token *token)
 		if (!manage_file_redir(base, prev_cmd,
 			token->id, redir->filepath))
 			return (-1);
-		}
+	}
 	else if (!prev_cmd && next_cmd)
 	{
 		if (!manage_file_redir(base, next_cmd,
@@ -89,31 +89,30 @@ static int	manage_pipe_redir(t_token *token)
 	return (1);
 }
 
-static int	manage_heredoc(t_base *base, t_token *token)
+static int	manage_heredoc(t_base *base, t_token *token) // Manage if any command not found
 {
 	t_cmd	*cmd;
 	int		error;
 	t_redir	*redir;
 	
-	error = 0;
 	redir = get_token_class(token);
 	cmd = get_prev_cmd_no_skip(cmd);
 	if (cmd == NULL)
 	{
 		cmd = get_next_cmd_no_skip(cmd);
 		if (cmd != NULL)
-			error = init_heredoc(base, redir, cmd);
+		{
+			if (!init_heredoc(base, redir, cmd))
+				return (-1);
+		}	
 		else
-			return (-1); // error (no prev/next cmd)
-	}	
-	else
-		error = init_heredoc(base, redir, cmd);
-	if (error < 0)
-	{
-		// -1 error fork
-		// -2 error heredoc
-		return (-1);
+			if (!init_heredoc(base, redir, (t_cmd *){TOKEN_CMD, -1, NULL,
+				STDIN_FILENO, STDOUT_FILENO, NULL, NULL}))
+				return (-1);
 	}
+	else
+		if (!init_heredoc(base, redir, cmd))
+			return (-1);
 	return (1);
 }
 

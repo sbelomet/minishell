@@ -3,27 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printptr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 12:07:50 by sbelomet          #+#    #+#             */
-/*   Updated: 2023/10/20 15:23:20 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:48:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
 
-int	ft_printptr(unsigned long long a)
+int	ft_printptr(unsigned long long a, int fd)
 {
 	int	count;
 
-	write(1, "0x", 2);
+	write(fd, "0x", 2);
 	count = 2;
 	if (a == 0)
 	{
-		write(1, "0", 1);
+		write(fd, "0", 1);
 		return (3);
 	}
-	count += ft_printhex(a, 'x');
+	count += ft_printhex(a, 'x', fd);
 	return (count);
 }

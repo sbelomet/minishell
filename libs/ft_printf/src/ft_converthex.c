@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_converthex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 12:37:42 by sbelomet          #+#    #+#             */
-/*   Updated: 2023/10/20 15:27:24 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:48:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft.h"
 
 char	ft_converthex(int a, char isupper)
 {

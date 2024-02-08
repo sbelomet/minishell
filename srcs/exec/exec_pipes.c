@@ -1,23 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_line.c                                        :+:      :+:    :+:   */
+/*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 08:46:15 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 13:05:10 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/02/07 16:02:17 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-void	exec_line(t_base *base, char *line)
+int	exec_pipes(t_base *base)
 {
-	ft_lexer_start(base, line);
-	if (!errors_lexer(base))
+	pid_t	pid;
+	t_cmd	*cmd;
+	int		pipe;
+	int		fd[2];
+
+	pipe = 0;
+	cmd = get_next_cmd(get_first_token(base));
+	while (cmd != NULL)
 	{
-		format_command(base);
+		if (is_cmd_builtin(cmd))
+			return (1); // exec_builtin(); // update exit code
+		// check export
 	}
-    // remove tokens and cleanup for next line
+	pid = fork();
+	if (pid == 0) // Child
+		return (1); // exec_child();
+	else // Parent
+	{
+
+	}
+	return (1);
 }

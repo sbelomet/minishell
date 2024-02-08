@@ -1,37 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   variables_utils2.c                                 :+:      :+:    :+:   */
+/*   signals_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 14:52:28 by sbelomet         ###   ########.fr       */
+/*   Created: 2024/01/25 11:53:07 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/08 11:32:12 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_var	*ft_findvar(t_var *first_var, char *name)
+void	ft_ctrl_slash(int signum)
 {
-	t_var	*res;
-
-	res = first_var;
-	while (res)
-	{
-		if (ft_equal_strs(name, res->name))
-			return (res);
-		res = res->next;
-	}
-	return (NULL);
+	(void)signum;
+	rl_on_new_line();
+	rl_redisplay();
 }
 
-char	*ft_findvar_value(t_base *base, char *name)
+void	ft_ctrl_c(int signum)
 {
-	t_var	*tmp;
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_redisplay();
+	g_error = 1;
+}
 
-	tmp = ft_findvar(base->first_var, ++name);
-	if (tmp)
-		return (tmp->value);
-	return ("");
+void	ft_signals(void)
+{
+	signal(SIGINT, ft_ctrl_c);
+	signal(SIGQUIT, ft_ctrl_slash);
 }
