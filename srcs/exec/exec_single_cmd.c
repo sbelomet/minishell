@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pipes.c                                       :+:      :+:    :+:   */
+/*   exec_single_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 11:48:18 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/02/09 11:48:07 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	exec_child(t_base *base, t_token *token,
-		int *fds, int in_fd)
+void	exec_child(t_base *base, t_token *token)
 {
 	t_cmd	*cmd;
 	int		status;
 
 	signal(SIGQUIT, SIG_DFL);
-	close(fds[0]);
-	dup_redir(token, fds, in_fd);
 	cmd = get_token_class(token);
+	dup2(cmd->fd_in, STDIN_FILENO);
+	dup2(cmd->fd_out, STDOUT_FILENO);
 	if (is_child_builtin(cmd))
 	{
 		if (exec_child_builtin(base, cmd))
@@ -40,18 +39,7 @@ void	exec_child(t_base *base, t_token *token,
 	exit(EXIT_FAILURE);
 }
 
-int	exec_parent(t_base *base, int pid, int *fds, int *std_pipe)
-{
-	close(fds[1]);
-	waitpid(pid, &(base->exit_status), 0);
-	base->exit_status = get_exit_status(base->exit_status);
-	if (*std_pipe != 0)
-		close(*std_pipe);
-	*std_pipe = fds[0];
-}
-
-static int	handle_token(t_base *base, t_token *token,
-		int *fds, int *std_pipe)
+static int	handle_token(t_base *base, t_token *token)
 {
 	pid_t	pid;
 	t_cmd	*cmd;
@@ -68,29 +56,25 @@ static int	handle_token(t_base *base, t_token *token,
 		}
 	}
 	pid = fork();
-	if (pid == 0) // Child
-		exec_child(base, token, fds, std_pipe);
+	if (pid == 0)
+		exec_child(base, token);
 	else 
 	{
+		waitpid(pid, &(base->exit_status), 0);
+		base->exit_status = get_exit_status(base->exit_status);
 		close_streams(cmd);
-		exec_parent(base, pid, fds, std_pipe);
 	}
 	return (1);
 }
 
-int	exec_pipes(t_base *base)
+int	exec_single_cmd(t_base *base)
 {
-	int		fd[2];
 	t_token	*token;
-	int		std_pipe;
 
-	if (pipe(fd) < 0)
-		return (-1);
-	std_pipe = 0;
 	token = get_first_token(base);
 	while (token)
 	{
-		handle_token(base, token, fd, &std_pipe);
+		handle_token(base, token);
 		token = get_next_token_cmd(token);
 	}
 	return (1);

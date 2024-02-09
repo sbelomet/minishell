@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:24:49 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/05 09:52:07 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:34:29 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ int	errors_lexer(t_base *base)
 	token = get_first_token(base);
 	while (token)
 	{
-		if (is_token_cmd(token) && check_err_token_cmd(token))
-			return (1);
 		if (is_token_redirec(token) && check_err_token_redirec(token))
 			return (1);
 		if (is_token_pipe(token) && check_err_token_pipe(token))
@@ -29,12 +27,9 @@ int	errors_lexer(t_base *base)
 		if (is_token_unknown(token))
 		{
 			unknown = get_token_class(token);
-			if (unknown->id == TOKEN_UNKNOWN_CMD)
-				ft_printf("Error: Unknown command [%s]\n", unknown->name);
-			else if (unknown->id == TOKEN_UNKNOWN_REDIR)
-				ft_printf("Error: Unknown redirection [%s]\n", unknown->name);
-			if (update_env(base, "?", ft_itoa(127)))
-				return (1);
+			if (unknown->id == TOKEN_UNKNOWN_REDIR)
+				ft_printf(1, "Error: Unknown redirection [%s]\n", unknown->name);
+			//g_error = 127;
 		}
 		token = token->next;
 	}

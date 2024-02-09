@@ -3,30 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:18:57 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/02 09:30:06 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:11:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int check_err_token_redirec(t_token *token)
+int	check_err_token_redirec(t_token *token)
 {
-    t_redir	*redir;
+	t_redir	*redir;
 
 	redir = get_token_class(token);
 	if (is_token_heredoc(token) && !redir->limiter)
 	{
-		ft_printf("Error: limiter not found for heredoc [%s]\n", redir->name);
+		ft_printf(1, "Error: limiter not found for heredoc [%s]\n",
+			redir->name);
 		return (1);
 	}
 	if (is_token_redirec(token))
 	{
 		if (!token->next || !is_token_file(token->next))
 		{
-			ft_printf("Error: file not found for redirection [%s]\n", redir->name);
+			ft_printf(1, "Error: file not found for redirection [%s]\n",
+				redir->name);
 			return (1);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 13:23:32 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:30:30 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void	ft_tokenize_redir(t_base *base, char *redir)
 	res->type = ft_new_redir_node(res->id, redir);
 	if (!res->type)
 		ft_error(base, "malloc()");
+	if (*redir == '|')
+		base->pipe = 1;
 	test = (t_redir *)res->type;
 	printf("name: %s, id: %d\n", test->name, test->id);
 }

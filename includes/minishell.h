@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 12:55:32 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:50:38 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <dirent.h>
 # include <signal.h>
+# include <sys/stat.h>
 # include <sys/types.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -115,8 +116,10 @@ typedef struct s_base
 	char			*curdir;
 	t_var			*first_var;
 	t_token			*first_token;
-	t_lexvars		lexvars;
+	t_lexvars		lexvars; // A BANNIR!! // LAISSE MA STRUCT TRANQUILLE
+	int				pipe;
 	int				exit_status;
+	int				pipe;
 }					t_base;
 
 int		g_error;
@@ -127,9 +130,10 @@ void	ft_prompt(t_base *base);
 /* ERROR */
 void	ft_free(t_base base);
 int		errors_lexer(t_base *base);
-int		check_err_token_cmd(t_token *token);
+int		check_err_token_pipe(t_token *token);
 void	ft_error(t_base *base, char *message);
 int		check_err_token_redirec(t_token *token);
+int		check_err_token_pipe(t_token *token);
 
 /* FREEING TOKENS */
 void	ft_free_tokens(t_token *first_token);
@@ -153,6 +157,7 @@ t_token	*get_first_token(t_base *base);
 void	*get_token_class(t_token *token);
 t_token	*get_first_builtin(t_base *base);
 t_token	*get_next_builtin(t_token *token);
+t_token	*get_next_token_cmd(t_token *token);
 t_cmd	*get_prev_cmd_no_skip(t_token *token);
 t_cmd	*get_next_cmd_no_skip(t_token *token);
 
@@ -181,15 +186,28 @@ int		format_redirections(t_base *base);
 /* FILE UTILS */
 int		open_file(char *path, int type);
 
+/* EXEC UTILS */
+void	close_streams(t_cmd *cmd);
+char	**get_args_tab(t_arg *args);
+int		get_exit_status(int exit_status);
+void	dup_redir(t_token *token, int *fds, int in_fd);
+char	*ft_triple_strjoin(char const *s1, char const *s2, char const *s3);
+
 /* EXEC */
 int		exec_pipes(t_base *base);
+int		exec_single_cmd(t_base *base);
 int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 
 /* BUILTINS */
-int		pwd(void); /* PWD */
-int		echo(t_cmd *cmd); /* ECHO */
-int		print_env(t_var *env_list); /* ENV */
-int		exit_builtin(t_cmd *cmd, t_base *base); /* EXIT */
+int		pwd(void);
+int		echo(t_cmd *cmd);
+int		print_env(t_var *env_list);
+int		unset(t_base *base, t_cmd *cmd);
+int		is_child_builtin(t_cmd *cmd);
+int		is_parent_builtin(t_cmd *cmd);
+int		exit_builtin(t_cmd *cmd, t_base *base);
+int		exec_child_builtin(t_base *base, t_cmd *cmd);
+int		exec_parent_builtin(t_base *base, t_cmd *cmd);
 
 /* READ LINE */
 void	exec_line(t_base *base, char *line);
@@ -218,6 +236,10 @@ char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i);
 
 /* TOKENS */
 void	ft_tokenize(t_base *base, char *value, int id);
+void	ft_tokenize_cmd(t_base *base, char *cmd);
+void	ft_add_cmd_arg(t_base *base, char *arg);
+void	ft_tokenize_redir(t_base *base, char *redir);
+void	ft_add_redir_file(t_base *base, char *file);
 
 /* TOKENS LIST UTILS 1 */
 t_token	*ft_last_token(t_token *first_token);
@@ -255,5 +277,6 @@ char	*ft_findvar_value(t_base *base, char *name);
 t_var	*ft_last_var(t_var *first_var);
 t_var	*ft_new_var_node(char *name, char *value);
 void	ft_add_var_node(t_base *base, t_var *new_var);
+void	ft_del_var_node(t_base *base, t_var *del_var);
 
 #endif

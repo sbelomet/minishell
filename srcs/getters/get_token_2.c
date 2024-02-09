@@ -50,7 +50,7 @@ t_cmd	*get_prev_cmd_no_skip(t_token *token)
 {
 	while (token)
 	{
-		if (is_token_redirec(token))
+		if (is_token_pipe(token))
 			return (NULL);
 		if (is_token_cmd(token))
 			return (get_token_class(token));
@@ -63,7 +63,7 @@ t_cmd	*get_next_cmd_no_skip(t_token *token)
 {
 	while (token)
 	{
-		if (is_token_redirec(token))
+		if (is_token_pipe(token))
 			return (NULL);
 		if (is_token_cmd(token))
 			return (get_token_class(token));

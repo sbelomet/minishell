@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:16:14 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/01/31 13:37:49 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/09 14:55:36 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,25 @@ void	ft_add_var_node(t_base *base, t_var *new_var)
 	}
 	else
 		base->first_var = new_var;
+}
+
+void	ft_del_var_node(t_base *base, t_var *del_var)
+{
+	t_var	*prev_var;
+	t_var	*next_var;
+
+	if (del_var)
+	{
+		prev_var = del_var->prev;
+		next_var = del_var->next;
+		if (prev_var)
+			prev_var->next = next_var;
+		if (next_var)
+			next_var->prev = prev_var;
+		if (del_var->name)
+			free(del_var->name);
+		if (del_var->value)
+			free(del_var->value);
+		free(del_var);
+	}	
 }

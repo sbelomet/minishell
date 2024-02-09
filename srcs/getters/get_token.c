@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 08:54:35 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/31 11:51:17 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/08 11:41:12 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,19 @@ t_token	*get_first_builtin(t_base *base)
     {
         if (is_token_builtin(token))
             return (get_token_class(token));
+        token = token->next;
+    }
+    return (NULL);
+}
+
+t_token	*get_next_token_cmd(t_token *token)
+{
+	if (!token)
+		return (NULL);
+    while (token)
+    {
+        if (is_token_cmd(token))
+            return (token);
         token = token->next;
     }
     return (NULL);

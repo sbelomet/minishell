@@ -6,11 +6,30 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 12:51:31 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:36:11 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void exec_line(t_base *base, char *line)
+{
+	// implement (&& -- ||) and check number of commands
+	ft_lexer_start(base, line);
+	if (!errors_lexer(base))
+	{
+		format_builtins(base);
+        if (format_redirections(base) == -2) // update base.exit_status
+            base->exit_status = EXIT_FAILURE; // signal heredoc
+		else
+        {
+            if (base->pipe)
+                exec_pipes(base);
+            else if (!base->pipe)
+                exec_single_cmd(base);
+        }
+	}
+}
 
 void	ft_print_vars(t_base base)
 {
@@ -44,6 +63,22 @@ void	ft_free_after_prompt(t_base *base, char *rl, char *line)
 	base->first_token = NULL;
 	free(rl);
 	free(line);
+}
+
+void	exec_line(t_base *base, char *line)
+{
+	int	error;
+
+	ft_lexer_start(base, line);
+	if (!errors_lexer(base))
+	{
+		format_builtins(base);
+		error = format_redirections(base);
+		if (error == 0)
+			exec_pipes(base);
+		if (error == 1)
+			base->exit_status = EXIT_FAILURE; // file not open
+	}
 }
 
 void	ft_prompt(t_base *base)

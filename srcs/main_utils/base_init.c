@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/02 14:49:45 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/09 11:30:54 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,5 @@ void	ft_base_init(t_base *base, char **env)
 	base->first_var = NULL;
 	ft_get_env_vars(base, env);
 	ft_get_curdir(base);
+	base->pipe = 0;
 }

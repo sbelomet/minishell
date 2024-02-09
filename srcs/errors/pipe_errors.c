@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 10:15:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/02 09:30:39 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:05:27 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ int	check_err_token_pipe(t_token *token)
 	{
 		if (!is_token_cmd(token->next) || !token->next)
 		{
-			ft_printf("Error: command after pipe [%s] not found", redir->name);
+			ft_printf(1, "Error: command after pipe [%s] not found",
+				redir->name);
 			return (1);
 		}
 		else if (!is_token_cmd(token->prev) || !token->prev)
 		{
-			ft_printf("Error: command before pipe [%s] not found", redir->name);
+			ft_printf(1, "Error: command before pipe [%s] not found",
+				redir->name);
 			return (1);
 		}
 		return (0);

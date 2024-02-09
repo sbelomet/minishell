@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/08 15:57:33 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/09 15:45:50 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,11 +55,11 @@ RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 #Sources
 
 F_MAIN		=	main base_init error_utils1 signals_utils1
-F_PROMPT	=	prompt freeing_tokens read_line
+F_PROMPT	=	prompt freeing_tokens
 F_LEXER		=	lexer lexer_utils1 lexer_utils2 lexer_utils3
 F_TOKEN		=	tokens token_utils1 token_list_utils1 args_list_utils1 cmd_list_utils1 redir_list_utils1
 F_VARS		=	variables_utils1 variables_utils2 variables_list_utils1
-F_ERRORS	=	lexer_errors cmd_errors pipe_errors redirect_errors
+F_ERRORS	=	lexer_errors pipe_errors redirect_errors
 F_FORMAT	=	formatting_builtin formatting_redirections
 F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset
@@ -68,7 +68,7 @@ F_GETTERS	=	get_args get_class get_env get_token_2 get_token
 F_UPDATE	=	status update_env
 F_UTILS		=	file_utils
 
-PATH_FILES	=	$(addprefix $(D_MAIN), $(F_MAIN)) \
+FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 				$(addprefix $(D_PROMPT), $(F_PROMPT)) \
 				$(addprefix $(D_LEXER), $(F_LEXER)) \
 				$(addprefix $(D_TOKEN), $(F_TOKEN)) \
@@ -82,8 +82,8 @@ PATH_FILES	=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 				$(addprefix $(D_UPDATE), $(F_UPDATE)) \
 				$(addprefix $(D_UTILS), $(F_UPDATE))
 
-SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(PATH_FILES)))
-OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(PATH_FILES)))
+SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
+OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
 #Commands
 

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   formatting_redirections.c                              :+:      :+:    :+:   */
+/*   formatting_redirections.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:11:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/01 14:15:52 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/09 15:36:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	manage_file_redir(t_base *base, t_cmd *cmd,
-		int type, char *filepath)
+static int	manage_file_redir(t_cmd *cmd, int type, char *filepath)
 {
 	if (type == TOKEN_REDIR_IN)
 	{
@@ -23,7 +22,7 @@ static int	manage_file_redir(t_base *base, t_cmd *cmd,
 		if (cmd->fd_in < 0)
 			return (-1);
 	}
-    if (type == TOKEN_REDIR_OUT)
+	if (type == TOKEN_REDIR_OUT)
 	{
 		if (cmd->fd_out != 0)
 			close(cmd->fd_out);
@@ -31,7 +30,7 @@ static int	manage_file_redir(t_base *base, t_cmd *cmd,
 		if (cmd->fd_out < 0)
 			return (-1);
 	}
-    if (type == TOKEN_REDIR_APP)
+	if (type == TOKEN_REDIR_APP)
 	{
 		if (cmd->fd_out != 0)
 			close(cmd->fd_out);
@@ -42,9 +41,8 @@ static int	manage_file_redir(t_base *base, t_cmd *cmd,
 	return (1);
 }
 
-static int	manage_basic_redir(t_base *base, t_token *token)
+static int	manage_basic_redir(t_token *token)
 {
-	int		error;
 	t_redir	*redir;
 	t_cmd	*prev_cmd;
 	t_cmd	*next_cmd;
@@ -54,13 +52,13 @@ static int	manage_basic_redir(t_base *base, t_token *token)
 	next_cmd = get_next_cmd_no_skip(token);
 	if (prev_cmd && !next_cmd)
 	{
-		if (!manage_file_redir(base, prev_cmd,
+		if (!manage_file_redir(prev_cmd,
 			token->id, redir->filepath))
 			return (-1);
 	}
 	else if (!prev_cmd && next_cmd)
 	{
-		if (!manage_file_redir(base, next_cmd,
+		if (!manage_file_redir(next_cmd,
 			token->id, redir->filepath))
 			return (-1);
 	}
@@ -92,9 +90,8 @@ static int	manage_pipe_redir(t_token *token)
 static int	manage_heredoc(t_base *base, t_token *token) // Manage if any command not found
 {
 	t_cmd	*cmd;
-	int		error;
 	t_redir	*redir;
-	
+
 	redir = get_token_class(token);
 	cmd = get_prev_cmd_no_skip(cmd);
 	if (cmd == NULL)
@@ -102,40 +99,39 @@ static int	manage_heredoc(t_base *base, t_token *token) // Manage if any command
 		cmd = get_next_cmd_no_skip(cmd);
 		if (cmd != NULL)
 		{
-			if (!init_heredoc(base, redir, cmd))
-				return (-1);
+			if (init_heredoc(base, redir, cmd) == -2)
+				return (-2);
 		}	
-		else
-			if (!init_heredoc(base, redir, (t_cmd *){TOKEN_CMD, -1, NULL,
-				STDIN_FILENO, STDOUT_FILENO, NULL, NULL}))
-				return (-1);
+		else if (init_heredoc(base, redir,
+            (t_cmd *){TOKEN_CMD, 0, NULL, NULL, -1, -1, NULL, NULL}) == -2)
+			return (-2);
 	}
 	else
-		if (!init_heredoc(base, redir, cmd))
-			return (-1);
+		if (init_heredoc(base, redir, cmd) == -2)
+			return (-2);
 	return (1);
 }
 
 int	format_redirections(t_base *base)
 {
 	t_token	*token;
-    
-    token = get_first_token(base);
-    while (token)
-    {
+
+	token = get_first_token(base);
+	while (token)
+	{
 		if (is_token_redirec(token))
 		{
 			if (is_token_basic_redir(token))
-				if (!manage_basic_redir(base, token))
-					return (-1);
+				if (!manage_basic_redir(token))
+					base->exit_status = EXIT_FAILURE;
 			if (token->id == TOKEN_PIPE)
 				if (!manage_pipe_redir(token))
-					return (-1);
+					return (-1); // Change to remove
 			if (token->id == TOKEN_REDIR_HDOC)
-				if (!manage_heredoc(base, token))
-					return (-1);
+				if (manage_heredoc(base, token) == 2)
+					return (-2);
 		}
 		token = token->next;
-    }
-    return (1);
+	}
+	return (1);
 }

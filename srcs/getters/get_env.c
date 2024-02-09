@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 09:37:58 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:56:44 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_current_path(void)
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
-		perror("getcwd() Error\n");
+		perror("Couldn't retrieve current directory");
 	return (path);
 }
 

@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/07 10:25:11 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/08 10:20:20 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	handle_var(t_base *base, char *line, int *fd,
 	if (!find_var)
 		return ;
 	else
-		write(fd[1], find_var, ft_strlen(find_var));	
+		write(fd[1], find_var, ft_strlen(find_var));
 	free(var);
 }
 
@@ -96,6 +96,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	int		fd[2];
 	int		status;
 
+    if (cmd == NULL) // to do
 	if (cmd->fd_in != 0)
 		close(cmd->fd_in);
 	if (pipe(fd) < 0)
@@ -109,7 +110,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	{
 		base->exit_status = 1;
 		close(fd[0]);
-		return (-1);
+		return (-2);
 	}
 	cmd->fd_in = fd[0];
 	return (0);
