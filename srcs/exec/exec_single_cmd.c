@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 11:48:07 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:10:16 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-void	exec_child(t_base *base, t_token *token)
+static void	exec_single_child(t_base *base, t_token *token)
 {
 	t_cmd	*cmd;
-	int		status;
 
 	signal(SIGQUIT, SIG_DFL);
 	cmd = get_token_class(token);
@@ -33,7 +32,7 @@ void	exec_child(t_base *base, t_token *token)
 			return ; //g_error = 127 command not found;
 		if (access(cmd->path, F_OK | X_OK) == 0)
 			execve(cmd->path, get_args_tab(cmd->first_arg), base->env);
- 		else
+		else
 			return ; // g_error = 127 command not found;
 	}
 	exit(EXIT_FAILURE);
@@ -45,10 +44,12 @@ static int	handle_token(t_base *base, t_token *token)
 	t_cmd	*cmd;
 
 	cmd = get_next_cmd(token);
+	ft_printf(STDOUT_FILENO, "cmd were checking: %s\n", cmd->name);
 	if (!cmd)
 		return (-1);
-	if (is_parent_builtin(cmd->name))
+	if (is_parent_builtin(cmd) == 1)
 	{
+		ft_printf(STDOUT_FILENO, "cmd is builtin\n");
 		if (exec_parent_builtin(base, cmd))
 		{
 			base->exit_status = EXIT_SUCCESS;
@@ -57,8 +58,8 @@ static int	handle_token(t_base *base, t_token *token)
 	}
 	pid = fork();
 	if (pid == 0)
-		exec_child(base, token);
-	else 
+		exec_single_child(base, token);
+	else
 	{
 		waitpid(pid, &(base->exit_status), 0);
 		base->exit_status = get_exit_status(base->exit_status);
@@ -71,6 +72,7 @@ int	exec_single_cmd(t_base *base)
 {
 	t_token	*token;
 
+	ft_printf(STDOUT_FILENO, "we in exec single cmd\n");
 	token = get_first_token(base);
 	while (token)
 	{

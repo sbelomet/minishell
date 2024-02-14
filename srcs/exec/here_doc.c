@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/08 10:20:20 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:10:30 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 static void	handle_var(t_base *base, char *line, int *fd,
 		int i)
@@ -38,8 +38,6 @@ static int	handle_expand_heredoc(t_base *base, char *line,
 		int *fd)
 {
 	int		i;
-	int		j;
-	char	*var;
 
 	while (line++)
 	{
@@ -67,7 +65,7 @@ static int	handle_input(t_base *base, t_redir *redir,
 		return (1);
 	}
 	if (ft_strchr(line, '$'))
-		handle_expand_heredoc(base, line, fd);	
+		handle_expand_heredoc(base, line, fd);
 	else
 		write(fd[1], line, ft_strlen(line));
 	write(fd[1], "\n", 1);
@@ -96,8 +94,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	int		fd[2];
 	int		status;
 
-    if (cmd == NULL) // to do
-	if (cmd->fd_in != 0)
+	if (cmd != NULL && cmd->fd_in != 0)
 		close(cmd->fd_in);
 	if (pipe(fd) < 0)
 		return (-1);
@@ -112,6 +109,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 		close(fd[0]);
 		return (-2);
 	}
-	cmd->fd_in = fd[0];
+	if (cmd->fd_in)
+		cmd->fd_in = fd[0];
 	return (0);
 }

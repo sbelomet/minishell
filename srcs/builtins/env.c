@@ -3,24 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:39 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 16:00:23 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:08:31 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int	print_env(t_var *env_list)
+char	*ft_env_join(char *name, char *value)
 {
+	char	*tmp;
+	char	*res;
+
+	tmp = ft_strjoin(name, "=");
+	if (!tmp)
+		return (NULL);
+	res = ft_strjoin(tmp, value);
+	if (!res)
+		return (NULL);
+	free(tmp);
+	return (res);
+}
+
+int	print_env(t_base *base, t_cmd *cmd)
+{
+	t_var	*env;
 	char	*temp;
 
-	while (env_list)
+	if (cmd->first_arg)
 	{
-		temp = ft_strjoin(env_list->name, env_list->value);
+		ft_putstr_fd("env: too many arguments.\n", 2);
+		return (-1);
+	} // return (-1) if args or print env anyway?
+	env = base->first_var;
+	while (env)
+	{
+		temp = ft_env_join(env->name, env->value);
+		if (!temp)
+			ft_error(base, "malloc()");
 		ft_putstr_fd(temp, STDOUT_FILENO);
-		env_list = env_list->next;
+		ft_putstr_fd("\n", STDOUT_FILENO);
+		env = env->next;
 		free(temp);
 		temp = NULL;
 	}

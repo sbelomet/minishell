@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:09:11 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 13:13:06 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:31:54 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int is_parent_builtin(t_cmd *cmd)
+int	is_parent_builtin(t_cmd *cmd)
 {
-    if (ft_equal_strs(cmd->name, "cd"))
+	if (ft_equal_strs(cmd->name, "cd"))
 		return (1);
 	if (ft_equal_strs(cmd->name, "export"))
 		return (1);
@@ -25,9 +25,9 @@ int is_parent_builtin(t_cmd *cmd)
 	return (-1);
 }
 
-int is_child_builtin(t_cmd *cmd)
+int	is_child_builtin(t_cmd *cmd)
 {
-    if (ft_equal_strs(cmd->name, "echo"))
+	if (ft_equal_strs(cmd->name, "echo"))
 		return (1);
 	if (ft_equal_strs(cmd->name, "pwd"))
 		return (1);
@@ -38,28 +38,30 @@ int is_child_builtin(t_cmd *cmd)
 	return (-1);
 }
 
-int exec_parent_builtin(t_base *base, t_cmd *cmd)
+int	exec_parent_builtin(t_base *base, t_cmd *cmd)
 {
-    if (ft_equal_strs(cmd->name, "cd"))
-		return (1);//
-	if (ft_equal_strs(cmd->name, "export"))
-		return (1);//
+	if (ft_equal_strs(cmd->name, "cd"))
+		return (exec_cd(base, cmd));
+	if (ft_equal_strs(cmd->name, "export")
+		&& cmd->first_arg)
+		return (1);// function call
 	if (ft_equal_strs(cmd->name, "unset"))
-		return (1);//
+		return (1);// function call
 	if (ft_equal_strs(cmd->name, "exit"))
-		return (1);//
+		return (exit_builtin(base, cmd));
 	return (-1);
 }
 
-int exec_child_builtin(t_base *base, t_cmd *cmd)
+int	exec_child_builtin(t_base *base, t_cmd *cmd)
 {
-    if (ft_equal_strs(cmd->name, "echo"))
-		return (1);//
+	if (ft_equal_strs(cmd->name, "echo"))
+		return (echo(cmd));
 	if (ft_equal_strs(cmd->name, "pwd"))
-		return (1);///
-	if (ft_equal_strs(cmd->name, "export"))
-		return (1);//
+		return (pwd(base));
+	if (ft_equal_strs(cmd->name, "export")
+		&& !cmd->first_arg)
+		return (1);// function call
 	if (ft_equal_strs(cmd->name, "env"))
-		return (1);//
+		return (print_env(base, cmd));
 	return (-1);
 }

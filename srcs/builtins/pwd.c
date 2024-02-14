@@ -3,21 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:07:14 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/26 15:36:08 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:25:50 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int pwd(void)
+int	pwd(t_base *base)
 {
-    char    *path;
-
-    path = get_current_path();
-    ft_putstr_fd(path, STDOUT_FILENO);
-    ft_putchar_fd('\n', STDOUT_FILENO);
-    return (0);
+	ft_printf(STDOUT_FILENO, "%s\n", base->curdir);
+	return (0);
 }

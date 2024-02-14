@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_list_utils1.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:16:14 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/09 14:55:36 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:50:15 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_add_var_node(t_base *base, t_var *new_var)
 		base->first_var = new_var;
 }
 
-void	ft_del_var_node(t_base *base, t_var *del_var)
+void	ft_del_var_node(t_var *del_var)
 {
 	t_var	*prev_var;
 	t_var	*next_var;

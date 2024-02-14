@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_token_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:19:27 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/02 09:37:36 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:09:17 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	is_token_unknown(t_token *token)
 {

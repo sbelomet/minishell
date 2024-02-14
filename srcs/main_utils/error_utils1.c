@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:46:45 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/01 13:03:23 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/12 11:22:51 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	ft_free_vars(t_base base)
 void	ft_free(t_base base)
 {
 	ft_free_vars(base);
+	ft_free_array(base.env);
 	if (base.curdir)
 		free(base.curdir);
 }

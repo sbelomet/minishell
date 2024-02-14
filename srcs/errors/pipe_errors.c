@@ -6,11 +6,11 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 10:15:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 10:05:27 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:09:49 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 int	check_err_token_pipe(t_token *token)
 {
@@ -19,19 +19,11 @@ int	check_err_token_pipe(t_token *token)
 	redir = get_token_class(token);
 	if (is_token_pipe(token))
 	{
-		if (!is_token_cmd(token->next) || !token->next)
+		if (token->prev == NULL || is_token_redirec(token->prev))
 		{
-			ft_printf(1, "Error: command after pipe [%s] not found",
-				redir->name);
-			return (1);
+			ft_putstr_fd("syntax error near unexpected token `|'", 2);
+			return (0);
 		}
-		else if (!is_token_cmd(token->prev) || !token->prev)
-		{
-			ft_printf(1, "Error: command before pipe [%s] not found",
-				redir->name);
-			return (1);
-		}
-		return (0);
 	}
 	return (1);
 }

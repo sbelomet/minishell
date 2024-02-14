@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 11:48:18 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:10:08 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-void	exec_child(t_base *base, t_token *token,
+static void	exec_child(t_base *base, t_token *token,
 		int *fds, int in_fd)
 {
 	t_cmd	*cmd;
-	int		status;
 
 	signal(SIGQUIT, SIG_DFL);
 	close(fds[0]);
@@ -28,19 +27,23 @@ void	exec_child(t_base *base, t_token *token,
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
 	}
-	if (is_cmd_bin(cmd)) // REFACTORING
+	if (is_cmd_bin(cmd))
 	{
 		if (!cmd->path)
-			return ; //g_error = 127 command not found;
-		if (access(cmd->path, F_OK | X_OK) == 0)
-			execve(cmd->path, get_args_tab(cmd->first_arg), base->env);
- 		else
-			return ; // g_error = 127 command not found;
+		{
+			base->exit_status = 127;
+			return ;
+		}
+		if (execve(cmd->path, get_args_tab(cmd->first_arg), base->env) == -1)
+		{
+			base->exit_status = 127;
+			return ;
+		}
 	}
 	exit(EXIT_FAILURE);
 }
 
-int	exec_parent(t_base *base, int pid, int *fds, int *std_pipe)
+static int	exec_parent(t_base *base, int pid, int *fds, int *std_pipe)
 {
 	close(fds[1]);
 	waitpid(pid, &(base->exit_status), 0);
@@ -48,6 +51,7 @@ int	exec_parent(t_base *base, int pid, int *fds, int *std_pipe)
 	if (*std_pipe != 0)
 		close(*std_pipe);
 	*std_pipe = fds[0];
+	return (0);
 }
 
 static int	handle_token(t_base *base, t_token *token,
@@ -59,7 +63,7 @@ static int	handle_token(t_base *base, t_token *token,
 	cmd = get_next_cmd(token);
 	if (!cmd)
 		return (-1);
-	if (is_parent_builtin(cmd->name))
+	if (is_parent_builtin(cmd))
 	{
 		if (exec_parent_builtin(base, cmd))
 		{
@@ -68,9 +72,9 @@ static int	handle_token(t_base *base, t_token *token,
 		}
 	}
 	pid = fork();
-	if (pid == 0) // Child
-		exec_child(base, token, fds, std_pipe);
-	else 
+	if (pid == 0)
+		exec_child(base, token, fds, *std_pipe);
+	else
 	{
 		close_streams(cmd);
 		exec_parent(base, pid, fds, std_pipe);

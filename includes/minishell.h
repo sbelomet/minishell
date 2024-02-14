@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/09 15:50:38 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:22:41 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 
 # define WHITE "\033[0;39m"
 # define B_WHITE "\033[1;39m"
-# define TMP_FILE "/tmp/minishell.tmp"
 
 enum e_types
 {
@@ -116,16 +115,16 @@ typedef struct s_base
 	char			*curdir;
 	t_var			*first_var;
 	t_token			*first_token;
-	t_lexvars		lexvars; // A BANNIR!! // LAISSE MA STRUCT TRANQUILLE
+	t_lexvars		lexvars; // A BANNIR!! // LAISSE MA STRUCT TRANQUILLE // BACON PANCAKES!! // UNE REFERENCE A JACQUES LE CANIDÉ ET FINNEAS L'HUMANOIDE ???
 	int				pipe;
 	int				exit_status;
-	int				pipe;
 }					t_base;
 
 int		g_error;
 
 /* PROMPT */
 void	ft_prompt(t_base *base);
+char	*ft_get_curdir(t_base *base);
 
 /* ERROR */
 void	ft_free(t_base base);
@@ -140,7 +139,6 @@ void	ft_free_tokens(t_token *first_token);
 
 /* BASE INIT */
 void	ft_base_init(t_base *base, char **env);
-void	ft_get_curdir(t_base *base);
 
 /* SIGNALS UTILS */
 void	ft_signals(void);
@@ -177,10 +175,10 @@ int		is_token_basic_redir(t_token *token);
 int		is_builtin_cmd(char *name, t_cmd *cmd);
 
 /* UPDATES */
-int		update_env(t_base *base, char *name, char *new_value);
+void	update_last_cmd(t_base *base, t_cmd *cmd);
+void	update_pwd_env(t_base *base, char *new_value);
 
 /* FORMATTING */
-int		format_builtins(t_base *base);
 int		format_redirections(t_base *base);
 
 /* FILE UTILS */
@@ -199,18 +197,17 @@ int		exec_single_cmd(t_base *base);
 int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 
 /* BUILTINS */
-int		pwd(void);
 int		echo(t_cmd *cmd);
-int		print_env(t_var *env_list);
-int		unset(t_base *base, t_cmd *cmd);
+int		pwd(t_base *base);
 int		is_child_builtin(t_cmd *cmd);
 int		is_parent_builtin(t_cmd *cmd);
-int		exit_builtin(t_cmd *cmd, t_base *base);
+int		unset(t_base *base, t_cmd *cmd);
+int		export(t_base *base, t_cmd *cmd);
+int		exec_cd(t_base *base, t_cmd *cmd);
+int		print_env(t_base *base, t_cmd *cmd);
+int		exit_builtin(t_base *base, t_cmd *cmd);
 int		exec_child_builtin(t_base *base, t_cmd *cmd);
 int		exec_parent_builtin(t_base *base, t_cmd *cmd);
-
-/* READ LINE */
-void	exec_line(t_base *base, char *line);
 
 /* LEXER */
 char	*ft_findvar_value(t_base *base, char *name);
@@ -275,8 +272,8 @@ char	*ft_findvar_value(t_base *base, char *name);
 
 /* VARIABLES LIST UTILS 1 */
 t_var	*ft_last_var(t_var *first_var);
+void	ft_del_var_node(t_var *del_var);
 t_var	*ft_new_var_node(char *name, char *value);
 void	ft_add_var_node(t_base *base, t_var *new_var);
-void	ft_del_var_node(t_base *base, t_var *del_var);
 
 #endif

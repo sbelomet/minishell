@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:36:10 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 11:40:58 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:11:47 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	close_streams(t_cmd *cmd)
 {
 	if (cmd->fd_in != 0)
-        close(cmd->fd_in);
-    if (cmd->fd_out != 1)
-        close(cmd->fd_out);
+		close(cmd->fd_in);
+	if (cmd->fd_out != 1)
+		close(cmd->fd_out);
 }
 
 void	dup_redir(t_token *token, int *fds, int in_fd)

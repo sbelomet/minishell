@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:22 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 15:11:40 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:32:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 static int	testing_path(char *path)
 {
@@ -49,7 +49,7 @@ int	cd_home(t_base *base)
 			return (0);
 		}
 		else
-			update_env(base, "PWD", home);
+			update_pwd_env(base, home);
 		return (1);
 	}
 	else if (base->pipe)
@@ -59,6 +59,8 @@ int	cd_home(t_base *base)
 
 int	cd_path(t_base *base, t_arg *arg)
 {
+	char	*path;
+
 	if (testing_path(arg->name))
 	{
 		if (chdir(arg->name) != 0)
@@ -67,7 +69,16 @@ int	cd_path(t_base *base, t_arg *arg)
 			return (0);
 		}
 		else
-			update_env(base, "PWD", arg->name);
+		{
+			path = get_current_path();
+			if (!path)
+			{
+				perror("Couldn't retrieve current directory");
+				return (0);
+			}
+			else
+				update_pwd_env(base, path);
+		}
 		return (1);
 	}
 	else if (base->pipe)
@@ -75,9 +86,9 @@ int	cd_path(t_base *base, t_arg *arg)
 	return (0);
 }
 
-int exec_cd(t_base *base, t_cmd *cmd)
+int	exec_cd(t_base *base, t_cmd *cmd)
 {
-    t_arg *args;
+	t_arg	*args;
 
 	args = get_first_arg(cmd);
 	if (args)

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:53:07 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 11:32:12 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/14 09:51:59 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	ft_ctrl_slash(int signum)
 void	ft_ctrl_c(int signum)
 {
 	(void)signum;
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_redisplay();

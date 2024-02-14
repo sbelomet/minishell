@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-t_token *get_next_builtin(t_token *token)
+t_token	*get_next_builtin(t_token *token)
 {
 	token = token->next;
 	while (token)
@@ -24,7 +24,7 @@ t_token *get_next_builtin(t_token *token)
 	return (NULL);
 }
 
-t_cmd   *get_next_cmd(t_token *token)
+t_cmd	*get_next_cmd(t_token *token)
 {
 	while (token)
 	{
@@ -35,7 +35,7 @@ t_cmd   *get_next_cmd(t_token *token)
 	return (NULL);
 }
 
-t_cmd   *get_prev_cmd(t_token *token)
+t_cmd	*get_prev_cmd(t_token *token)
 {
 	while (token)
 	{

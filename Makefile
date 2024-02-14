@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/09 15:45:50 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/14 11:14:33 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
 LIBRL		=	-L libs/readline
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3
 LEAKS		=	leaks --atExit -- 
 
 D_MAIN		=	main_utils/
@@ -60,13 +60,13 @@ F_LEXER		=	lexer lexer_utils1 lexer_utils2 lexer_utils3
 F_TOKEN		=	tokens token_utils1 token_list_utils1 args_list_utils1 cmd_list_utils1 redir_list_utils1
 F_VARS		=	variables_utils1 variables_utils2 variables_list_utils1
 F_ERRORS	=	lexer_errors pipe_errors redirect_errors
-F_FORMAT	=	formatting_builtin formatting_redirections
+F_FORMAT	=	formatting_redirections
 F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset
-F_EXEC		=	exec_pipes here_doc
+F_EXEC		=	exec_pipes here_doc exec_single_cmd
 F_GETTERS	=	get_args get_class get_env get_token_2 get_token
-F_UPDATE	=	status update_env
-F_UTILS		=	file_utils
+F_UPDATE	=	update_env
+F_UTILS		=	file_utils exec_utils
 
 FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 				$(addprefix $(D_PROMPT), $(F_PROMPT)) \
@@ -80,7 +80,7 @@ FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 				$(addprefix $(D_EXEC), $(F_EXEC)) \
 				$(addprefix $(D_GETTERS), $(F_GETTERS)) \
 				$(addprefix $(D_UPDATE), $(F_UPDATE)) \
-				$(addprefix $(D_UTILS), $(F_UPDATE))
+				$(addprefix $(D_UTILS), $(F_UTILS))
 
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))

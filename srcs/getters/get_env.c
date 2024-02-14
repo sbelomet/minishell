@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 11:06:26 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/09 12:56:44 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 10:34:39 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*get_current_path(void)
 
 	path = getcwd(NULL, 0);
 	if (path == NULL)
-		perror("Couldn't retrieve current directory");
+		return (NULL);
 	return (path);
 }
 
@@ -27,5 +27,7 @@ char	*get_home_path(t_base *base)
 	t_var	*env_var;
 
 	env_var = ft_findvar(base->first_var, "HOME");
+	if (!env_var)
+		return (NULL);
 	return (env_var->value);
 }

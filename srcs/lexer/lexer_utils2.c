@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/07 11:33:20 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:37:32 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*ft_get_developped_vars(t_base *base, char *line)
 	i = 0;
 	nb_vars = ft_nb_vars_in_quotes(line);
 	printf("nb vars in quotes: %d\n", nb_vars);
-	vars = (char **)malloc(sizeof(char *) * nb_vars);
+	vars = (char **)malloc(sizeof(char *) * (nb_vars + 1));
 	if (!vars)
 		ft_error(base, "malloc()");
 	while (line[i])

@@ -3,24 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:54 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/01/29 16:05:38 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:31:52 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
-int	exit_builtin(t_cmd *cmd, t_base *base)
+static void	exit_msg(char *arg, char *msg)
 {
-	int	signal;
+	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("exit: ", 2);
+	if (arg)
+		ft_putstr_fd("arg", 2);
+	ft_putstr_fd(msg, 2);
+}
 
-	ft_putstr_fd("exit\n", STDERR_FILENO);
-	if (!cmd->arg)
-		signal = 0;
+static int	exit_with_arg(t_base *base, t_cmd *cmd)
+{
+	unsigned int	exit_code;
+
+	exit_code = ft_atoi(cmd->first_arg->name);
+	if (!exit_code)
+	{
+		exit_msg(cmd->first_arg->name, ": numeric argument required\n");
+		ft_free(*base); // changer????
+		exit(255);
+	}
 	else
-		signal = ft_atoi(cmd->arg);
-	// free all
-	exit(signal);
+	{
+		if (cmd->first_arg->next)
+		{
+			exit_msg(NULL, "exit: too many arguments\n");
+			return (-1);
+		}
+		else
+		{
+			ft_putstr_fd("exit\n", 1);
+			//ft_free(*base);
+			exit(exit_code);
+		}
+	}
+	return (1);
+}
+
+int	exit_builtin(t_base *base, t_cmd *cmd)
+{
+	if (cmd->first_arg)
+	{
+		if (!exit_with_arg(base, cmd))
+			return (-1);
+	}
+	else
+	{
+		//ft_free(*base);
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+		exit(base->exit_status);
+	}
+	return (-1);
 }
