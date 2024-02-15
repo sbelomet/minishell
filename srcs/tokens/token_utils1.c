@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 10:24:08 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/06 10:49:55 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:13:57 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,25 @@ int	ft_isbuiltin(char *cmd)
 	if (ft_equal_strs("exit", cmd))
 		return (1);
 	return (0);
+}
+
+int	ft_get_redir(char *redir)
+{
+	if (ft_equal_strs(redir, "|"))
+		return (TOKEN_PIPE);
+	if (ft_equal_strs(redir, "<"))
+		return (TOKEN_REDIR_IN);
+	if (ft_equal_strs(redir, ">"))
+		return (TOKEN_REDIR_OUT);
+	if (ft_equal_strs(redir, ">>"))
+		return (TOKEN_REDIR_HDOC);
+	if (ft_equal_strs(redir, "<<"))
+		return (TOKEN_REDIR_APP);
+	if (ft_equal_strs(redir, "&&"))
+		return (TOKEN_AND);
+	if (ft_equal_strs(redir, "||"))
+		return (TOKEN_OR);
+	return (TOKEN_UNKNOWN_REDIR);
 }
 
 int	ft_isbin(t_base *base, char *cmd)
@@ -59,6 +78,22 @@ int	ft_isbin(t_base *base, char *cmd)
 	return (res);
 }
 
+char	*ft_try_namepath(t_base *base, char *cmd, char *res)
+{
+	if (!res)
+	{
+		if (access(cmd, F_OK | X_OK) == 0)
+		{
+			if (res)
+				free(res);
+			res = ft_strdup(cmd);
+			if (!res)
+				ft_error(base, "malloc()");
+		}
+	}
+	return (res);
+}
+
 char	*ft_get_cmdpath(t_base *base, char *cmd)
 {
 	char	**paths;
@@ -84,24 +119,6 @@ char	*ft_get_cmdpath(t_base *base, char *cmd)
 	while (paths[++i])
 		free(paths[i]);
 	free(paths);
+	res = ft_try_namepath(base, cmd, res);
 	return (res);
-}
-
-int	ft_get_redir(char *redir)
-{
-	if (ft_equal_strs(redir, "|"))
-		return (TOKEN_PIPE);
-	if (ft_equal_strs(redir, "<"))
-		return (TOKEN_REDIR_IN);
-	if (ft_equal_strs(redir, ">"))
-		return (TOKEN_REDIR_OUT);
-	if (ft_equal_strs(redir, ">>"))
-		return (TOKEN_REDIR_HDOC);
-	if (ft_equal_strs(redir, "<<"))
-		return (TOKEN_REDIR_APP);
-	if (ft_equal_strs(redir, "&&"))
-		return (TOKEN_AND);
-	if (ft_equal_strs(redir, "||"))
-		return (TOKEN_OR);
-	return (TOKEN_UNKNOWN_REDIR);
 }

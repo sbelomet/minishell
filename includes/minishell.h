@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/14 15:22:41 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:11:40 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct s_var
 {
 	char			*name;
 	char			*value;
+	int				printable;
 	struct s_var	*prev;
 	struct s_var	*next;
 }					t_var;
@@ -175,7 +176,7 @@ int		is_token_basic_redir(t_token *token);
 int		is_builtin_cmd(char *name, t_cmd *cmd);
 
 /* UPDATES */
-void	update_last_cmd(t_base *base, t_cmd *cmd);
+void	update_last_arg(t_base *base, t_token *last_token);
 void	update_pwd_env(t_base *base, char *new_value);
 
 /* FORMATTING */

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/14 14:26:36 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:30:50 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	exec_line(t_base *base, char *line)
 			else
 				exec_single_cmd(base);
 		}
+		update_last_arg(base, ft_last_token(base->first_token));
 	}
 }
 

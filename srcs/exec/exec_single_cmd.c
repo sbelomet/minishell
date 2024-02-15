@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:10:16 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:28:52 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ static int	handle_token(t_base *base, t_token *token)
 	t_cmd	*cmd;
 
 	cmd = get_next_cmd(token);
-	ft_printf(STDOUT_FILENO, "cmd were checking: %s\n", cmd->name);
 	if (!cmd)
 		return (-1);
 	if (is_parent_builtin(cmd) == 1)
 	{
-		ft_printf(STDOUT_FILENO, "cmd is builtin\n");
 		if (exec_parent_builtin(base, cmd))
 		{
 			base->exit_status = EXIT_SUCCESS;

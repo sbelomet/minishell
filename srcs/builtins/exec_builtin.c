@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:09:11 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 13:31:54 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:15:06 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	is_parent_builtin(t_cmd *cmd)
 {
 	if (ft_equal_strs(cmd->name, "cd"))
 		return (1);
-	if (ft_equal_strs(cmd->name, "export"))
+	if (ft_equal_strs(cmd->name, "export")
+		&& cmd->first_arg)
 		return (1);
 	if (ft_equal_strs(cmd->name, "unset"))
 		return (1);
@@ -31,7 +32,8 @@ int	is_child_builtin(t_cmd *cmd)
 		return (1);
 	if (ft_equal_strs(cmd->name, "pwd"))
 		return (1);
-	if (ft_equal_strs(cmd->name, "export"))
+	if (ft_equal_strs(cmd->name, "export")
+		&& !cmd->first_arg)
 		return (1);
 	if (ft_equal_strs(cmd->name, "env"))
 		return (1);
@@ -44,7 +46,7 @@ int	exec_parent_builtin(t_base *base, t_cmd *cmd)
 		return (exec_cd(base, cmd));
 	if (ft_equal_strs(cmd->name, "export")
 		&& cmd->first_arg)
-		return (1);// function call
+		return (export(base, cmd));
 	if (ft_equal_strs(cmd->name, "unset"))
 		return (1);// function call
 	if (ft_equal_strs(cmd->name, "exit"))
@@ -60,7 +62,7 @@ int	exec_child_builtin(t_base *base, t_cmd *cmd)
 		return (pwd(base));
 	if (ft_equal_strs(cmd->name, "export")
 		&& !cmd->first_arg)
-		return (1);// function call
+		return (export(base, cmd));
 	if (ft_equal_strs(cmd->name, "env"))
 		return (print_env(base, cmd));
 	return (-1);

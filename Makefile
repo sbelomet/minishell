@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/14 11:14:33 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/15 13:15:22 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,11 @@
 #Variables
 
 NAME		=	minishell
-HEADERS		=	-I includes
+HEADERS		=	-I includes -I $(HOME)/.brew/opt/readline/include
 SRC_DIR		=	srcs/
 OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
-LIBRL		=	-L libs/readline
+LIBRL		=	-L $(HOME)/.brew/opt/readline/lib
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3
 LEAKS		=	leaks --atExit -- 
@@ -65,7 +65,7 @@ F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset
 F_EXEC		=	exec_pipes here_doc exec_single_cmd
 F_GETTERS	=	get_args get_class get_env get_token_2 get_token
-F_UPDATE	=	update_env
+F_UPDATE	=	update_env update_last_arg
 F_UTILS		=	file_utils exec_utils
 
 FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
