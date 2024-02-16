@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:32:09 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 10:47:05 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:15:48 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,28 @@ static void	update_linked_env(t_base *base, char *value)
 	{
 		free(old_dir->value);
 		old_dir->value = ft_strdup(base->curdir);
+	}
+}
+
+void	update_last_cmd(t_base *base, t_cmd *cmd)
+{
+	int		i;
+	t_var	*last_cmd;
+
+	last_cmd = ft_findvar(base->first_var, "_");
+	if (last_cmd != NULL)
+	{
+		free(last_cmd->value);
+		last_cmd->value = ft_strdup(cmd->path);
+	}
+	i = -1;
+	while (base->env[++i])
+	{
+		if (ft_strnstr(base->env[i], "_=", 2))
+		{
+			free(base->env[i]);
+			base->env[i] = ft_strjoin("_=", cmd->path);
+		}
 	}
 }
 

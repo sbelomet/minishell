@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:18:57 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:09:56 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:01:43 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ int	check_err_token_redirec(t_token *token)
 	}
 	if (is_token_redirec(token))
 	{
-		if (!redir->filepath) // if no file, what is the filepath? ex. cat < | rev > out ('|' is now in the filepath?)
+        printf("CHECK ERROR\n");
+		if (!redir->filepath && redir->id != TOKEN_REDIR_HDOC)
 		{
+            printf("id: %d\n", redir->id);
+            printf("CHECK ERROR NO PATH\n");
 			// message printf 
 			return (0);
 		}

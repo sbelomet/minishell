@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/15 15:11:40 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:05:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 
 enum e_types
 {
-	TOKEN_UNKNOWN_CMD,
 	TOKEN_UNKNOWN_REDIR,
 	TOKEN_CMD,
 	TOKEN_BUILTIN,
@@ -130,10 +129,8 @@ char	*ft_get_curdir(t_base *base);
 /* ERROR */
 void	ft_free(t_base base);
 int		errors_lexer(t_base *base);
-int		check_err_token_pipe(t_token *token);
 void	ft_error(t_base *base, char *message);
 int		check_err_token_redirec(t_token *token);
-int		check_err_token_pipe(t_token *token);
 
 /* FREEING TOKENS */
 void	ft_free_tokens(t_token *first_token);
@@ -187,8 +184,8 @@ int		open_file(char *path, int type);
 
 /* EXEC UTILS */
 void	close_streams(t_cmd *cmd);
-char	**get_args_tab(t_arg *args);
 int		get_exit_status(int exit_status);
+char	**get_args_tab(t_arg *args, char *path);
 void	dup_redir(t_token *token, int *fds, int in_fd);
 char	*ft_triple_strjoin(char const *s1, char const *s2, char const *s3);
 

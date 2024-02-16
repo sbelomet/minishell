@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_list_utils1.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:16:14 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/12 13:50:15 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/16 13:01:50 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_var	*ft_new_var_node(char *name, char *value)
 		return (NULL);
 	res->name = name;
 	res->value = value;
+	res->printable = 1;
 	res->prev = NULL;
 	res->next = NULL;
 	return (res);

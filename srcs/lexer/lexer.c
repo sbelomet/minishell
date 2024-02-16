@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 10:35:30 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:25:04 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_find_noredir_word(t_base *base, char *line, int *i, char *in_quotes)
 
 	lexvars = &base->lexvars;
 	token = ft_extract_word(base, line, i, in_quotes);
-	printf("token: %s\n", token);
+	//printf("token: %s\n", token);
 	if (!token)
 		ft_error(base, "malloc()");
 	if (!lexvars->after_cmd && !lexvars->after_redir)
@@ -114,9 +114,9 @@ void	ft_lexer_start(t_base *base, char *line)
 		in_quotes = NULL;
 		if (ft_isquote(line[i]))
 		{
-			printf("getting inquotes\n");
+			//printf("getting inquotes\n");
 			in_quotes = ft_extract_quotes(base, line, &i, line[i]);
-			printf("inquotes: %s, i: %d\n", in_quotes, i);
+			//printf("inquotes: %s, i: %d\n", in_quotes, i);
 			ft_find_noredir_word(base, line, &i, in_quotes);
 		}
 		else if (!ft_isspecial(line[i]))

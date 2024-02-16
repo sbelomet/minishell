@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <marvin@42lausanne.ch>            +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 16:48:26 by sbelomet          #+#    #+#             */
-/*   Updated: 2023/10/11 13:21:35 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:34:23 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	ft_atoi(const char *str)
 	i = 0;
 	neg = 1;
 	res = 0;
+	if (!str)
+		return (0);
 	while ((str[i] > 8 && str[i] < 14) || str[i] == ' ')
 		i++;
 	if (str[i] == '-')

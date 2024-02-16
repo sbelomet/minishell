@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:36:10 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:11:47 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:36:57 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,15 @@ char	*ft_triple_strjoin(char const *s1, char const *s2,
 	return (res);
 }
 
-char	**get_args_tab(t_arg *args)
+char	**get_args_tab(t_arg *args, char *path)
 {
+	int		i;
 	char	**tab;
 	char	*temp;
 	char	*str_args;
 
-	if (!args)
-		return (NULL);
-	str_args = ft_strdup(args->name);
-	args = args->next;
+	str_args = ft_strdup(path);
+	i = 1;
 	while (args)
 	{
 		temp = str_args;
@@ -93,8 +92,10 @@ char	**get_args_tab(t_arg *args)
 		free(temp);
 		temp = NULL;
 		args = args->next;
+		i++;
 	}
 	tab = ft_split(str_args, ' ');
+	tab[i] = NULL;
 	free(str_args);
 	if (!tab)
 		return (NULL);

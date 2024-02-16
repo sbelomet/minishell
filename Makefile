@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
+#    By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/15 13:15:22 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/15 16:13:25 by lgosselk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ F_PROMPT	=	prompt freeing_tokens
 F_LEXER		=	lexer lexer_utils1 lexer_utils2 lexer_utils3
 F_TOKEN		=	tokens token_utils1 token_list_utils1 args_list_utils1 cmd_list_utils1 redir_list_utils1
 F_VARS		=	variables_utils1 variables_utils2 variables_list_utils1
-F_ERRORS	=	lexer_errors pipe_errors redirect_errors
+F_ERRORS	=	lexer_errors redirect_errors
 F_FORMAT	=	formatting_redirections
 F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset

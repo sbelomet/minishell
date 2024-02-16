@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/15 10:30:50 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/16 12:09:40 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	exec_line(t_base *base, char *line)
 {
 	// implement (&& -- ||) and check number of commands
 	ft_lexer_start(base, line);
+    printf("klhafk;a\n");
 	if (!errors_lexer(base))
 	{
 		if (format_redirections(base) == -2)
@@ -94,7 +95,11 @@ void	ft_prompt(t_base *base)
 		rl = readline(prompt);
 		free(prompt);
 		if (!rl)
+		{
+			rl_insert_text("exit\n");
+			rl_reset_line_state();
 			break ;
+		}
 		line = ft_strtrim(rl, " \n\t");
 		if (ft_strlen(line) > 0)
 		{

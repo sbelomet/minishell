@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_single_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 10:28:52 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:13:58 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@ static void	exec_single_child(t_base *base, t_token *token)
 	cmd = get_token_class(token);
 	dup2(cmd->fd_in, STDIN_FILENO);
 	dup2(cmd->fd_out, STDOUT_FILENO);
-	if (is_child_builtin(cmd))
+	if (is_child_builtin(cmd) == 1)
 	{
+		//printf("BUILTINT\n");
 		if (exec_child_builtin(base, cmd))
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
@@ -31,7 +32,10 @@ static void	exec_single_child(t_base *base, t_token *token)
 		if (!cmd->path)
 			return ; //g_error = 127 command not found;
 		if (access(cmd->path, F_OK | X_OK) == 0)
-			execve(cmd->path, get_args_tab(cmd->first_arg), base->env);
+		{
+			printf("EXEC02kshgls\n");
+			execve(cmd->path, get_args_tab(cmd->first_arg, cmd->path), base->env);
+		}
 		else
 			return ; // g_error = 127 command not found;
 	}
@@ -46,6 +50,7 @@ static int	handle_token(t_base *base, t_token *token)
 	cmd = get_next_cmd(token);
 	if (!cmd)
 		return (-1);
+	printf("EXEC01\n");
 	if (is_parent_builtin(cmd) == 1)
 	{
 		if (exec_parent_builtin(base, cmd))
@@ -70,7 +75,7 @@ int	exec_single_cmd(t_base *base)
 {
 	t_token	*token;
 
-	ft_printf(STDOUT_FILENO, "we in exec single cmd\n");
+	printf("EXEC0\n");
 	token = get_first_token(base);
 	while (token)
 	{

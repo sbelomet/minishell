@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:10:30 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:25:13 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	}
 	if (cmd->fd_in)
 		cmd->fd_in = fd[0];
+	base->exit_status = status;
 	return (0);
 }

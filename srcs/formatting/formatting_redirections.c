@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatting_redirections.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:11:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:10:39 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 16:06:28 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	manage_file_redir(t_cmd *cmd, int type, char *filepath)
 	}
 	if (type == TOKEN_REDIR_OUT)
 	{
-		if (cmd->fd_out != 0)
+		if (cmd->fd_out != 1)
 			close(cmd->fd_out);
 		cmd->fd_out = open_file(filepath, 2);
 		if (cmd->fd_out < 0)
@@ -32,7 +32,7 @@ static int	manage_file_redir(t_cmd *cmd, int type, char *filepath)
 	}
 	if (type == TOKEN_REDIR_APP)
 	{
-		if (cmd->fd_out != 0)
+		if (cmd->fd_out != 1)
 			close(cmd->fd_out);
 		cmd->fd_out = open_file(filepath, 1);
 		if (cmd->fd_out < 0)
@@ -71,9 +71,10 @@ static int	manage_pipe_redir(t_token *token)
 	t_cmd	*prev_cmd;
 	t_cmd	*next_cmd;
 
+    printf("pipe token: %d\n", token->prev->id);
 	if (!token->prev)
 	{
-		ft_putstr_fd("syntax near unexpected token '|'", STDERR_FILENO);
+		ft_putstr_fd("syntax near unexpected token '|'\n", STDERR_FILENO);
 		return (-1);
 	}
 	if (!token->next)
@@ -82,8 +83,10 @@ static int	manage_pipe_redir(t_token *token)
 	next_cmd = get_next_cmd(token);
 	if (pipe(fd) < 0)
 		return (-1);
+	dup2(prev_cmd->fd_in, fd[1]);
 	prev_cmd->fd_out = fd[1];
 	next_cmd->fd_in = fd[0];
+	wait(NULL);
 	return (1);
 }
 
@@ -118,19 +121,29 @@ int	format_redirections(t_base *base)
 	token = get_first_token(base);
 	while (token)
 	{
-		if (is_token_redirec(token))
+		printf("id token: %d\n", token->id);
+		if (is_token_redirec(token) || token->id == TOKEN_PIPE)
 		{
 			if (is_token_basic_redir(token))
-				if (!manage_basic_redir(token))
+			{
+				printf("basic redir\n");
+				if (manage_basic_redir(token) == -1)
 					base->exit_status = EXIT_FAILURE;
-			if (token->id == TOKEN_PIPE)
+			}
+			else if (is_token_pipe(token))
+			{
+				printf("pipe\n");
 				if (!manage_pipe_redir(token))
 					return (-1); // Change to remove
-			if (token->id == TOKEN_REDIR_HDOC)
+			}
+			else if (token->id == TOKEN_REDIR_HDOC)
+			{
 				if (manage_heredoc(base, token) == 2)
 					return (-2);
+			}
 		}
 		token = token->next;
 	}
+	printf("DEBBUG END FORMATTING\n");
 	return (1);
 }

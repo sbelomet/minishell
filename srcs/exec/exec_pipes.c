@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:10:08 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 15:09:09 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	exec_child(t_base *base, t_token *token,
 			base->exit_status = 127;
 			return ;
 		}
-		if (execve(cmd->path, get_args_tab(cmd->first_arg), base->env) == -1)
+		if (execve(cmd->path, get_args_tab(cmd->first_arg, cmd->path), base->env) == -1)
 		{
 			base->exit_status = 127;
 			return ;

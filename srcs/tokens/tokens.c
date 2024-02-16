@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/15 13:05:52 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/16 10:51:06 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 	if (!res->type)
 		ft_error(base, "malloc()");
 	test = (t_cmd *)res->type;
-	printf("name: %s, id: %d, path: %s\n", test->name, test->id, test->path);
+	//printf("name: %s, id: %d, path: %s\n", test->name, test->id, test->path);
 }
 
 void	ft_add_cmd_arg(t_base *base, char *arg)
@@ -48,7 +48,7 @@ void	ft_add_cmd_arg(t_base *base, char *arg)
 	if (!arg_node)
 		ft_error(base, "malloc()");
 	ft_add_arg_node(cmd, arg_node);
-	printf("name: %s, id: %d\n", cmd->first_arg->name, cmd->first_arg->id);
+	//printf("name: %s, id: %d\n", cmd->first_arg->name, cmd->first_arg->id);
 }
 
 void	ft_tokenize_redir(t_base *base, char *redir)
@@ -66,7 +66,7 @@ void	ft_tokenize_redir(t_base *base, char *redir)
 	if (*redir == '|')
 		base->pipe = 1;
 	test = (t_redir *)res->type;
-	printf("name: %s, id: %d\n", test->name, test->id);
+	//printf("name: %s, id: %d\n", test->name, test->id);
 }
 
 void	ft_add_redir_file(t_base *base, char *file)
@@ -84,7 +84,7 @@ void	ft_add_redir_file(t_base *base, char *file)
 
 void	ft_tokenize(t_base *base, char *val, int id)
 {
-	printf("id: %d\n", id);
+	//printf("id: %d\n", id);
 	if (id == TOKEN_CMD)
 	{
 		ft_tokenize_cmd(base, val);

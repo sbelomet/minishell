@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:23:00 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 09:52:17 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 10:25:02 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_join_var_value(char *line, int start, int len, char **vars)
 	char		*res;
 	static int	var_i = 0;
 
-	printf("var i : %d\n", var_i);
+	//printf("var i : %d\n", var_i);
 	tmp = ft_substr(line, start, len);
 	if (!tmp)
 		return (NULL);
@@ -91,6 +91,6 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars)
 	res = ft_strjoin_free(res, tmp);
 	if (!res)
 		ft_error(base, "malloc()");
-	printf("time to return good string: %s\n", res);
+	//printf("time to return good string: %s\n", res);
 	return (res);
 }

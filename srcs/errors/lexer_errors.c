@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:24:49 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:09:42 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:22:01 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	errors_lexer(t_base *base)
 	while (token)
 	{
 		if (is_token_redirec(token) && !check_err_token_redirec(token))
-			return (1);
-		if (is_token_pipe(token) && !check_err_token_pipe(token))
 			return (1);
 		//if (is_token_unknown(token))
 		//{

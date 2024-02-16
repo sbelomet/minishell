@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:19:27 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:09:17 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:43:19 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int	is_token_unknown(t_token *token)
 {
 	if (!token)
 		return (0);
-	if (token->id == TOKEN_UNKNOWN_CMD
-		|| token->id == TOKEN_UNKNOWN_REDIR)
+	if (token->id == TOKEN_UNKNOWN_REDIR)
 		return (1);
 	return (0);
 }
