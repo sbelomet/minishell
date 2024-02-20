@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+         #
+#    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/15 16:13:25 by lgosselk         ###   ########.fr        #
+#    Updated: 2024/02/20 10:56:22 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,12 +55,13 @@ RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 #Sources
 
 F_MAIN		=	main base_init error_utils1 signals_utils1
-F_PROMPT	=	prompt freeing_tokens
+F_PROMPT	=	prompt freeing_tokens prompt_cmd
 F_LEXER		=	lexer lexer_utils1 lexer_utils2 lexer_utils3
-F_TOKEN		=	tokens token_utils1 token_list_utils1 args_list_utils1 cmd_list_utils1 redir_list_utils1
+F_TOKEN		=	tokens token_utils1 token_utils2 token_list_utils1 \
+				args_list_utils1 cmd_list_utils1 redir_list_utils1
 F_VARS		=	variables_utils1 variables_utils2 variables_list_utils1
 F_ERRORS	=	lexer_errors redirect_errors
-F_FORMAT	=	formatting_redirections
+F_FORMAT	=	formatting_redirections formatting_redirections_2
 F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset
 F_EXEC		=	exec_pipes here_doc exec_single_cmd

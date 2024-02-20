@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/16 12:09:40 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:59:01 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@ static void	exec_line(t_base *base, char *line)
 {
 	// implement (&& -- ||) and check number of commands
 	ft_lexer_start(base, line);
-    printf("klhafk;a\n");
 	if (!errors_lexer(base))
 	{
 		if (format_redirections(base) == -2)
-			base->exit_status = EXIT_FAILURE; // signal heredoc
+			base->exit_status = EXIT_FAILURE;	
 		else
 		{
 			if (base->pipe == 1)
+			{
+				printf("EXEC MULTIPLE PIPES\n");
 				exec_pipes(base);
+			}	
 			else
 				exec_single_cmd(base);
 		}
@@ -78,6 +80,7 @@ void	ft_free_after_prompt(t_base *base, char *rl, char *line)
 	ft_free_tokens(base->first_token);
 	ft_malloc_clear(&base->alloc);
 	base->first_token = NULL;
+	base->pipe = 0;
 	free(rl);
 	free(line);
 }

@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:23:00 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/15 10:25:02 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:57:37 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_get_my_damn_quotes(t_base *base, char *line)
+{
+	char	*res;
+	char	*tmp;
+
+	res = NULL;
+	if (*line == '"')
+	{
+		tmp = ft_strtrim(line, "\"");
+		if (!tmp)
+			ft_error(base, "malloc()");
+		res = ft_get_developped_vars(base, tmp);
+		if (!res)
+			ft_error(base, "malloc()");
+	}
+	else if (*line == '\'')
+	{
+		res = ft_strtrim(line, "'");
+		if (!res)
+			ft_error(base, "malloc()");
+	}
+	return (res);
+}
 
 char	*ft_join_var_value(char *line, int start, int len, char **vars)
 {

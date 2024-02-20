@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:18:57 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 16:01:43 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:59:18 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,25 +23,25 @@ static int	limiter_check(char *limiter)
 	return (0);
 }
 
+static int	print_unknown(t_redir *redir)
+{
+	ft_printf(2, "syntax error near unexpected token `%s'", redir->filepath);
+	return (0);
+}
+
 int	check_err_token_redirec(t_token *token)
 {
 	t_redir	*redir;
 
 	redir = get_token_class(token);
-	if (is_token_heredoc(token)
-		&& (!redir->limiter || limiter_check(redir->limiter)))
-	{
-		ft_printf(2, "syntax error near unexpected token `%s'", redir->limiter);
-		return (0);
-	}
 	if (is_token_redirec(token))
 	{
-        printf("CHECK ERROR\n");
-		if (!redir->filepath && redir->id != TOKEN_REDIR_HDOC)
+        if (redir->id == TOKEN_UNKNOWN_REDIR)
+            return (print_unknown(redir));
+		if (is_token_heredoc(token)
+			&& (!redir->limiter || limiter_check(redir->limiter)))
 		{
-            printf("id: %d\n", redir->id);
-            printf("CHECK ERROR NO PATH\n");
-			// message printf 
+			ft_printf(2, "syntax error near unexpected token `%s'", redir->limiter);
 			return (0);
 		}
 		if (!redir->filepath && !token->next)

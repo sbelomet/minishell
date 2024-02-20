@@ -6,28 +6,28 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 10:24:08 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/16 11:07:07 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:55:39 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_isbuiltin(char *cmd)
+int	ft_is_path_or_curr(char *cmd, int res, char *path)
 {
-	if (ft_equal_strs("echo", cmd))
+	int	i;
+
+	if (res)
 		return (1);
-	if (ft_equal_strs("cd", cmd))
+	if (ft_strchr(cmd, '/'))
 		return (1);
-	if (ft_equal_strs("pwd", cmd))
+	if (path[0] == ':' || path[ft_strlen(path) - 1] == ':')
 		return (1);
-	if (ft_equal_strs("export", cmd))
-		return (1);
-	if (ft_equal_strs("unset", cmd))
-		return (1);
-	if (ft_equal_strs("env", cmd))
-		return (1);
-	if (ft_equal_strs("exit", cmd))
-		return (1);
+	i = 0;
+	while (path[++i])
+	{
+		if (path[i] == ':' && path[i - 1] == ':')
+			return (1);
+	}
 	return (0);
 }
 
@@ -56,26 +56,27 @@ int	ft_isbin(t_base *base, char *cmd)
 	while (paths[++i])
 		free(paths[i]);
 	free(paths);
+	res = ft_is_path_or_curr(cmd, res, ft_findvar_value(base, "$PATH"));
 	return (res);
 }
 
-char	*ft_try_namepath(t_base *base, char *cmd, char *res)
+char	*ft_try_namepath(t_base *base, char *cmd, char *res, int cmd_id)
 {
-	if (!res)
+	if (res)
+		return (res);
+	if (cmd_id == TOKEN_BIN && access(cmd, F_OK | X_OK) == 0)
 	{
-		if (access(cmd, F_OK | X_OK) == 0)
-		{
-			if (res)
-				free(res);
-			res = ft_strdup(cmd);
-			if (!res)
-				ft_error(base, "malloc()");
-		}
+		if (res)
+			free(res);
+		res = ft_strdup(cmd);
+		if (!res)
+			ft_error(base, "malloc()");
+		return (res);
 	}
-	return (res);
+	return (NULL);
 }
 
-char	*ft_get_cmdpath(t_base *base, char *cmd)
+char	*ft_get_cmdpath(t_base *base, char *cmd, int cmd_id)
 {
 	char	**paths;
 	char	*path;
@@ -100,25 +101,6 @@ char	*ft_get_cmdpath(t_base *base, char *cmd)
 	while (paths[++i])
 		free(paths[i]);
 	free(paths);
-	res = ft_try_namepath(base, cmd, res);
+	res = ft_try_namepath(base, cmd, res, cmd_id);
 	return (res);
-}
-
-int	ft_get_redir(char *redir)
-{
-	if (ft_equal_strs(redir, "|"))
-		return (TOKEN_PIPE);
-	if (ft_equal_strs(redir, "<"))
-		return (TOKEN_REDIR_IN);
-	if (ft_equal_strs(redir, ">"))
-		return (TOKEN_REDIR_OUT);
-	if (ft_equal_strs(redir, ">>"))
-		return (TOKEN_REDIR_APP);
-	if (ft_equal_strs(redir, "<<"))
-		return (TOKEN_REDIR_HDOC);
-	if (ft_equal_strs(redir, "&&"))
-		return (TOKEN_AND);
-	if (ft_equal_strs(redir, "||"))
-		return (TOKEN_OR);
-	return (TOKEN_UNKNOWN_REDIR);
 }

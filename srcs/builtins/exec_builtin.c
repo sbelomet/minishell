@@ -3,17 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:09:11 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 16:13:46 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:33:16 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_parent_builtin(t_cmd *cmd)
+int	is_parent_builtin(t_token *token)
 {
+	t_cmd	*cmd;
+
+	cmd = get_token_class(token);
 	if (ft_equal_strs(cmd->name, "cd"))
 		return (1);
 	if (ft_equal_strs(cmd->name, "export")
@@ -48,7 +51,7 @@ int	exec_parent_builtin(t_base *base, t_cmd *cmd)
 		&& cmd->first_arg)
 		return (export(base, cmd));
 	if (ft_equal_strs(cmd->name, "unset"))
-		return (1);// function call
+		return (unset(base, cmd));
 	if (ft_equal_strs(cmd->name, "exit"))
 		return (exit_builtin(base, cmd));
 	return (-1);

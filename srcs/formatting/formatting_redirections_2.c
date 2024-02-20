@@ -1,22 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_class.c                                        :+:      :+:    :+:   */
+/*   formatting_redirections_2.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/30 10:29:18 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/16 11:06:30 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/02/19 14:44:30 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/02/19 14:46:30 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	*get_token_class(t_token *token)
+int	pipe_redir(t_token *token)
 {
-	if (is_token_cmd(token))
-		return ((t_cmd *)token->type);
-	if (is_token_redirec(token))
-		return ((t_redir *)token->type);
-	return (NULL);
+	int		fd[2];
+	t_cmd	*prev_cmd;
+	t_cmd	*next_cmd;
+
+	prev_cmd = get_prev_cmd(token);
+	next_cmd = get_next_cmd(token);
+	if (prev_cmd && next_cmd)
+	{
+		if (pipe(fd) < 0)
+			return (-1);
+		prev_cmd->fd_out = fd[1];
+		next_cmd->fd_in = fd[0];
+	}
+	return (1);
 }

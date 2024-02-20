@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:46:13 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/15 11:43:24 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:54:30 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_get_last_cmd_arg(t_base *base, t_token *last_token)
 	char	*res;
 	t_arg	*arg;
 
+	if (!last_token)
+		return (ft_strdup(""));
 	cmd = last_token->type;
 	if (!cmd->first_arg)
 	{
@@ -60,5 +62,6 @@ void	update_last_arg(t_base *base, t_token *last_token)
 			base->env[i] = ft_strjoin("_=", res);
 		}
 	}
-	free(res);
+	if (res)
+		free(res);
 }

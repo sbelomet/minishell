@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/16 11:05:00 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:49:15 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,6 @@ typedef struct s_redir
 	char			*filepath;
 }					t_redir;
 
-typedef struct s_unknown
-{
-	int				id;
-	char			*name;
-}					t_unknown;
-
 typedef struct s_var
 {
 	char			*name;
@@ -124,6 +118,7 @@ int		g_error;
 
 /* PROMPT */
 void	ft_prompt(t_base *base);
+int		prompt_cmd(t_base *base);
 char	*ft_get_curdir(t_base *base);
 
 /* ERROR */
@@ -167,7 +162,6 @@ int		is_token_pipe(t_token *token);
 int		is_token_file(t_token *token);
 int		is_token_redirec(t_token *token);
 int		is_token_heredoc(t_token *token);
-int		is_token_unknown(t_token *token);
 int		is_token_builtin(t_token *token);
 int		is_token_basic_redir(t_token *token);
 int		is_builtin_cmd(char *name, t_cmd *cmd);
@@ -177,6 +171,7 @@ void	update_last_arg(t_base *base, t_token *last_token);
 void	update_pwd_env(t_base *base, char *new_value);
 
 /* FORMATTING */
+int		pipe_redir(t_token *token);
 int		format_redirections(t_base *base);
 
 /* FILE UTILS */
@@ -186,7 +181,7 @@ int		open_file(char *path, int type);
 void	close_streams(t_cmd *cmd);
 int		get_exit_status(int exit_status);
 char	**get_args_tab(t_arg *args, char *path);
-void	dup_redir(t_token *token, int *fds, int in_fd);
+void	dup_redir(t_cmd *curr_cmd, t_cmd *next_cmd, int *fds, int in_fd);
 char	*ft_triple_strjoin(char const *s1, char const *s2, char const *s3);
 
 /* EXEC */
@@ -198,9 +193,9 @@ int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 int		echo(t_cmd *cmd);
 int		pwd(t_base *base);
 int		is_child_builtin(t_cmd *cmd);
-int		is_parent_builtin(t_cmd *cmd);
 int		unset(t_base *base, t_cmd *cmd);
 int		export(t_base *base, t_cmd *cmd);
+int		is_parent_builtin(t_token *token);
 int		exec_cd(t_base *base, t_cmd *cmd);
 int		print_env(t_base *base, t_cmd *cmd);
 int		exit_builtin(t_base *base, t_cmd *cmd);
@@ -216,6 +211,7 @@ int		ft_iswhitespace(char c);
 int		ft_isquote(char c);
 int		ft_isredirection(char c);
 int		ft_isspecial(char c);
+int		ft_isspecial_nq(char c);
 
 /* LEXER UTILS 2 */
 char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote);
@@ -228,6 +224,7 @@ int		ft_nb_vars_in_quotes(char *line);
 char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars);
 char	*ft_join_var_value(char *line, int start, int len, char **vars);
 char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i);
+char	*ft_get_my_damn_quotes(t_base *base, char *line);
 
 /* TOKENS */
 void	ft_tokenize(t_base *base, char *value, int id);
@@ -244,7 +241,7 @@ void	ft_add_token_node(t_base *base, t_token *new_token);
 /* TOKENS UTILS 1 */
 int		ft_isbuiltin(char *cmd);
 int		ft_isbin(t_base *base, char *cmd);
-char	*ft_get_cmdpath(t_base *base, char *cmd);
+char	*ft_get_cmdpath(t_base *base, char *cmd, int cmd_id);
 int		ft_get_redir(char *redir);
 
 /* CMD LIST UTILS 1 */

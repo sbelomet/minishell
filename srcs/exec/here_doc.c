@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 10:25:13 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:23:47 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ static int	handle_expand_heredoc(t_base *base, char *line,
 {
 	int		i;
 
-	while (line++)
+	while (*line)
 	{
 		if (*line == '$')
 		{
-			line++;
-			i = -1;
-			while (line[i] != ft_isspecial(line[i]))
+			i = 0;
+			while (line[i] && !ft_isspecial(line[i]))
 				i++;
 			if (i > 0)
 				handle_var(base, line, fd, i);
 		}
 		write(fd[1], line, 1);
+		line++;
 	}
 	return (1);
 }
@@ -109,7 +109,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 		close(fd[0]);
 		return (-2);
 	}
-	if (cmd->fd_in)
+	if (cmd != NULL)
 		cmd->fd_in = fd[0];
 	base->exit_status = status;
 	return (0);

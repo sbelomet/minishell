@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:36:10 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 15:36:57 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/19 15:48:58 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,15 @@ void	close_streams(t_cmd *cmd)
 		close(cmd->fd_out);
 }
 
-void	dup_redir(t_token *token, int *fds, int in_fd)
+void	dup_redir(t_cmd *curr_cmd, t_cmd *next_cmd,
+	int *fds, int in_fd)
 {
-	t_cmd	*cmd;
-	t_cmd	*next_cmd;
-
-	cmd = get_token_class(token);
-	next_cmd = get_next_cmd(token->next);
-	if (cmd->fd_in != 0)
-		dup2(cmd->fd_in, STDIN_FILENO);
+	if (curr_cmd->fd_in != 0)
+		dup2(curr_cmd->fd_in, STDIN_FILENO);
 	else
 		dup2(in_fd, STDIN_FILENO);
-	if (cmd->fd_out != 1)
-		dup2(cmd->fd_out, STDOUT_FILENO);
+	if (curr_cmd->fd_out != 1)
+		dup2(curr_cmd->fd_out, STDOUT_FILENO);
 	else if (next_cmd != NULL)
 		dup2(fds[1], STDOUT_FILENO);
 }

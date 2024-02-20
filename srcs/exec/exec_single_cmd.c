@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 16:13:58 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/19 10:30:24 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void	exec_single_child(t_base *base, t_token *token)
 	dup2(cmd->fd_out, STDOUT_FILENO);
 	if (is_child_builtin(cmd) == 1)
 	{
-		//printf("BUILTINT\n");
 		if (exec_child_builtin(base, cmd))
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
@@ -48,16 +47,14 @@ static int	handle_token(t_base *base, t_token *token)
 	t_cmd	*cmd;
 
 	cmd = get_next_cmd(token);
-	if (!cmd)
-		return (-1);
-	printf("EXEC01\n");
-	if (is_parent_builtin(cmd) == 1)
+	if (is_parent_builtin(token) == 1)
 	{
 		if (exec_parent_builtin(base, cmd))
 		{
 			base->exit_status = EXIT_SUCCESS;
 			return (1);
 		}
+		return(-1);
 	}
 	pid = fork();
 	if (pid == 0)
@@ -74,13 +71,16 @@ static int	handle_token(t_base *base, t_token *token)
 int	exec_single_cmd(t_base *base)
 {
 	t_token	*token;
+	t_token	*tmp_token;
 
-	printf("EXEC0\n");
+	printf("EXEC0 SINGLE\n");
 	token = get_first_token(base);
-	while (token)
+	tmp_token = token;
+	while (token && is_token_cmd(token))
 	{
 		handle_token(base, token);
 		token = get_next_token_cmd(token);
 	}
+	token = tmp_token;
 	return (1);
 }
