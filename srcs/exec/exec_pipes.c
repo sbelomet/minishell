@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/19 10:27:28 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:23:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,29 @@
 static void	exec_child(t_base *base, t_token *token,
 		int *fds, int in_fd)
 {
+	int		status;
 	t_cmd	*curr_cmd;
-    t_cmd   *next_cmd;
+	t_cmd	*next_cmd;
 
 	signal(SIGQUIT, SIG_DFL);
 	close(fds[0]);
-    printf("DEBBUG00 CHILD\n");
-    curr_cmd = get_token_class(token);
-    next_cmd = get_next_cmd(token->next);
+	curr_cmd = get_token_class(token);
+	next_cmd = get_next_cmd(token->next);
 	dup_redir(curr_cmd, next_cmd, fds, in_fd);
-	printf("DEBBUG01 CHILD\n");
 	if (is_child_builtin(curr_cmd) == 1)
 	{
-		printf("DEBBUG00 CHILD BUILTIN\n");
 		if (exec_child_builtin(base, get_token_class(token)))
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
 	}
-	printf("DEBBUG02 CHILD\n");
-	if (is_token_bin(token))
+	status = check_permission(curr_cmd->path);
+	if (status == 126 || status == 127)
 	{
-		if (access(curr_cmd->path, F_OK | X_OK) == 0)
-		{
-			printf("DEBBUG04 CHILD\n");
-			execve(curr_cmd->path,
-                get_args_tab(curr_cmd->first_arg, curr_cmd->path), base->env);
-		}
-		else
-		{
-			printf("DEBBUG05 CHILD\n");
-			return ; // 127;
-		}
+		base->exit_status = status;
+		exit(status);
 	}
-	printf("DEBBUG CHILD END\n");
+	execve(curr_cmd->path, get_args_tab(curr_cmd->first_arg, curr_cmd->path),
+		base->env);
 	exit(EXIT_FAILURE);
 }
 
@@ -74,7 +64,7 @@ static int	handle_token(t_base *base, t_token *token,
 			base->exit_status = EXIT_SUCCESS;
 			return (1);
 		}
-        return (-1);
+		return (-1);
 	}
 	pid = fork();
 	if (pid == 0)
@@ -95,12 +85,12 @@ int	exec_pipes(t_base *base)
 	t_token	*tmp_token;
 
 	std_pipe = 0;
-	token = get_first_token(base);
+	token = get_first_token_cmd_no_skip(base);
 	tmp_token = token;
 	while (token && is_token_cmd(token))
 	{
-        if (pipe(fd) < 0)
-		    return (-1);
+		if (pipe(fd) < 0)
+			return (-1);
 		handle_token(base, token, fd, &std_pipe);
 		token = get_next_token_cmd(token);
 	}

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:23:00 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 13:57:37 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:25:55 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i)
 		res = ft_strjoin_free(res, tmp);
 		if (!res)
 			return (NULL);
-		while (line[++(*i)] && !ft_isspecial(line[*i]) && line[*i] != '$')
-		{
-		}
+		while (line[++(*i)] && !ft_isspecial(line[*i])
+			&& line[*i] != '$' && line[*i] != ':')
+			continue ;
 		nb_vars--;
 	}
 	return (res);
@@ -116,5 +116,32 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars)
 	if (!res)
 		ft_error(base, "malloc()");
 	//printf("time to return good string: %s\n", res);
+	return (res);
+}
+
+char	*ft_extract_to_quote(t_base *base, char *line, int *index)
+{
+	int		start;
+	int		len;
+	char	*res;
+	char	*tmp;
+
+	start = *index;
+	len = 0;
+	while (line[*index] && !ft_isspecial(line[*index]))
+	{
+		(*index)++;
+		len++;
+	}
+	res = ft_substr(line, start, len);
+	if (!res)
+		ft_error(base, "malloc()");
+	if (ft_strchr(res, '$'))
+	{
+		tmp = ft_strdup(res);
+		free(res);
+		res = ft_get_developped_vars(base, tmp);
+		return (res);
+	}
 	return (res);
 }

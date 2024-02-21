@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:54 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 13:31:52 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:28:45 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	exit_with_arg(t_base *base, t_cmd *cmd)
 	if (!exit_code)
 	{
 		exit_msg(cmd->first_arg->name, ": numeric argument required\n");
-		ft_free(*base); // changer????
+		ft_free(*base);
 		exit(255);
 	}
 	else
@@ -42,7 +42,7 @@ static int	exit_with_arg(t_base *base, t_cmd *cmd)
 		else
 		{
 			ft_putstr_fd("exit\n", 1);
-			//ft_free(*base);
+			ft_free(*base);
 			exit(exit_code);
 		}
 	}
@@ -58,7 +58,7 @@ int	exit_builtin(t_base *base, t_cmd *cmd)
 	}
 	else
 	{
-		//ft_free(*base);
+		ft_free(*base);
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 		exit(base->exit_status);
 	}

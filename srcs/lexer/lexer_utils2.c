@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/15 10:25:01 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:58:13 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ char	*ft_extract_var_name(char *line, int *i)
 	start = *i;
 	(*i)++;
 	len = 1;
-	while (line[*i] && !ft_isspecial(line[*i]) && line[*i] != '$')
+	while (line[*i] && !ft_isspecial(line[*i])
+		&& line[*i] != '$' && line[*i] != ':')
 	{
 		(*i)++;
 		len++;

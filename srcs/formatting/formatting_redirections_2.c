@@ -3,14 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   formatting_redirections_2.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:44:30 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/19 14:46:30 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:21:34 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	manage_in(t_cmd *cmd, char *filepath)
+{
+	if (cmd->fd_in != 0)
+		close(cmd->fd_in);
+	cmd->fd_in = open(filepath, O_RDONLY, 0644);
+	if (cmd->fd_in < 0)
+		return (-1);
+	return (1);
+}
+
+int	manage_out(t_cmd *cmd, char *filepath)
+{
+	if (cmd->fd_out != 1)
+		close(cmd->fd_out);
+	cmd->fd_out = open(filepath, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cmd->fd_out < 0)
+		return (-1);
+	return (1);
+}
+
+int	manage_append(t_cmd *cmd, char *filepath)
+{
+	if (cmd->fd_out != 1)
+		close(cmd->fd_out);
+	cmd->fd_out = open(filepath, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (cmd->fd_out < 0)
+		return (-1);
+	return (1);
+}
 
 int	pipe_redir(t_token *token)
 {

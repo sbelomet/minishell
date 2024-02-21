@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:11:46 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 15:47:53 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:16:56 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ char	*ft_get_var_value(t_base *base, char *var)
 	res = ft_substr(var, start, i - start);
 	if (!res)
 		return (NULL);
-	//printf("res: %s\n", res);
 	if (ft_isquote(*res))
 		return (ft_get_my_damn_quotes(base, res));
 	if (*res == '$')

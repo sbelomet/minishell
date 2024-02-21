@@ -6,11 +6,11 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 08:54:35 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 10:36:06 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:19:17 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 t_token	*get_first_token(t_base *base)
 {

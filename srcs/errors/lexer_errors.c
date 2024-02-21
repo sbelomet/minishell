@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_errors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 09:24:49 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/19 14:31:46 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 10:04:42 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int	errors_lexer(t_base *base)
 			if (cmd->id == TOKEN_BIN && !cmd->path)
 			{
 				ft_printf(1, "command not found: %s\n", cmd->name);
-				base->exit_status = 127; // base error status/g_error or both?
-				g_error = 127;
+				base->exit_status = 127;
 				return (1);
 			}
 		}

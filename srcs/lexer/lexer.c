@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 14:01:31 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:10:56 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,24 @@
 
 char	*ft_extract_word(t_base *base, char *line, int *index, char *in_quotes)
 {
-	int		start;
-	int		len;
 	char	*res;
 	char	*tmp;
+	char	*q_part;
 
 	if (in_quotes)
 		return (in_quotes);
-	start = *index;
-	len = 0;
-	while (line[*index] && !ft_isspecial_nq(line[*index]))
+	res = ft_strdup("");
+	while (line[*index] && !ft_isspecial(line[*index]))
 	{
-		(*index)++;
-		len++;
+		tmp = ft_extract_to_quote(base, line, index);
+		if (ft_isquote(line[*index]))
+		{
+			q_part = ft_extract_quotes(base, line, index, line[*index]);
+			tmp = ft_strjoin_free(tmp, q_part);
+		}
+		res = ft_strjoin_free(res, tmp);
 	}
-	tmp = ft_substr(line, start, len);
-	if (!tmp)
-		return (NULL);
-	if (*tmp == '$')
-	{
-		res = ft_findvar_value(base, tmp);
-		free(tmp);
-		tmp = ft_strdup(res);
-		return (tmp);
-	}
-	return (tmp);
+	return (res);
 }
 
 char	*ft_extract_redir(char *line, int *index)

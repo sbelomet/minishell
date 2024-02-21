@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 13:49:15 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:26:48 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ typedef struct s_arg
 typedef struct s_cmd
 {
 	int				id;
-	int				pid;
 	char			*path;
 	int				fd_in;
 	int				fd_out;
@@ -109,7 +108,7 @@ typedef struct s_base
 	char			*curdir;
 	t_var			*first_var;
 	t_token			*first_token;
-	t_lexvars		lexvars; // A BANNIR!! // LAISSE MA STRUCT TRANQUILLE // BACON PANCAKES!! // UNE REFERENCE A JACQUES LE CANIDÉ ET FINNEAS L'HUMANOIDE ???
+	t_lexvars		lexvars;
 	int				pipe;
 	int				exit_status;
 }					t_base;
@@ -148,9 +147,11 @@ t_token	*get_first_token(t_base *base);
 void	*get_token_class(t_token *token);
 t_token	*get_first_builtin(t_base *base);
 t_token	*get_next_builtin(t_token *token);
+t_token	*get_first_token_cmd(t_base *base);
 t_token	*get_next_token_cmd(t_token *token);
 t_cmd	*get_prev_cmd_no_skip(t_token *token);
 t_cmd	*get_next_cmd_no_skip(t_token *token);
+t_token	*get_first_token_cmd_no_skip(t_base *base);
 
 /* CHECKERS */
 int		is_cmd_bin(t_cmd *cmd);
@@ -169,13 +170,15 @@ int		is_builtin_cmd(char *name, t_cmd *cmd);
 /* UPDATES */
 void	update_last_arg(t_base *base, t_token *last_token);
 void	update_pwd_env(t_base *base, char *new_value);
+void	update_for_next_line(t_base *base);
+void	update_exit_status(t_base *base);
 
 /* FORMATTING */
 int		pipe_redir(t_token *token);
 int		format_redirections(t_base *base);
-
-/* FILE UTILS */
-int		open_file(char *path, int type);
+int		manage_in(t_cmd *cmd, char *filepath);
+int		manage_out(t_cmd *cmd, char *filepath);
+int		manage_append(t_cmd *cmd, char *filepath);
 
 /* EXEC UTILS */
 void	close_streams(t_cmd *cmd);
@@ -186,6 +189,7 @@ char	*ft_triple_strjoin(char const *s1, char const *s2, char const *s3);
 
 /* EXEC */
 int		exec_pipes(t_base *base);
+int		check_permission(char *path);
 int		exec_single_cmd(t_base *base);
 int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 
@@ -225,6 +229,7 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars);
 char	*ft_join_var_value(char *line, int start, int len, char **vars);
 char	*ft_start_quoted_line(char **vars, char *line, int nb_vars, int *i);
 char	*ft_get_my_damn_quotes(t_base *base, char *line);
+char	*ft_extract_to_quote(t_base *base, char *line, int *index);
 
 /* TOKENS */
 void	ft_tokenize(t_base *base, char *value, int id);

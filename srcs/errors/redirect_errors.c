@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_errors.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:18:57 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/19 14:59:18 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:24:33 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ int	check_err_token_redirec(t_token *token)
 	redir = get_token_class(token);
 	if (is_token_redirec(token))
 	{
-        if (redir->id == TOKEN_UNKNOWN_REDIR)
-            return (print_unknown(redir));
+		if (redir->id == TOKEN_UNKNOWN_REDIR)
+			return (print_unknown(redir));
 		if (is_token_heredoc(token)
 			&& (!redir->limiter || limiter_check(redir->limiter)))
 		{
-			ft_printf(2, "syntax error near unexpected token `%s'", redir->limiter);
+			ft_printf(2, "syntax error near unexpected token `%s'",
+				redir->limiter);
 			return (0);
 		}
 		if (!redir->filepath && !token->next)

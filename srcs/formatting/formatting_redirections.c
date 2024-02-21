@@ -3,40 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   formatting_redirections.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:11:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/19 14:53:39 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:20:58 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	manage_file_redir(t_cmd *cmd, int type, char *filepath)
+static int	manage_files(t_cmd *cmd, int type, char *filepath)
 {
 	if (type == TOKEN_REDIR_IN)
 	{
-		if (cmd->fd_in != 0)
-			close(cmd->fd_in);
-		cmd->fd_in = open_file(filepath, 0);
-		if (cmd->fd_in < 0)
+		if (manage_in(cmd, filepath) == -1)
+		{
+			perror(filepath);
 			return (-1);
+		}
 	}
-	if (type == TOKEN_REDIR_OUT)
+	else if (type == TOKEN_REDIR_OUT)
 	{
-		if (cmd->fd_out != 1)
-			close(cmd->fd_out);
-		cmd->fd_out = open_file(filepath, 2);
-		if (cmd->fd_out < 0)
+		if (manage_out(cmd, filepath) == -1)
+		{
+			perror(filepath);
 			return (-1);
+		}
 	}
-	if (type == TOKEN_REDIR_APP)
+	else if (type == TOKEN_REDIR_APP)
 	{
-		if (cmd->fd_out != 1)
-			close(cmd->fd_out);
-		cmd->fd_out = open_file(filepath, 1);
-		if (cmd->fd_out < 0)
+		if (manage_in(cmd, filepath) == -1)
+		{
+			perror(filepath);
 			return (-1);
+		}
 	}
 	return (1);
 }
@@ -52,15 +52,15 @@ static int	manage_basic_redir(t_token *token)
 	next_cmd = get_next_cmd_no_skip(token);
 	if (prev_cmd && !next_cmd)
 	{
-		if (!manage_file_redir(prev_cmd,
-				token->id, redir->filepath))
-			return (-1);
+		if (manage_files(prev_cmd,
+				token->id, redir->filepath) == -1)
+			return (-3);
 	}
 	else if (!prev_cmd && next_cmd)
 	{
-		if (!manage_file_redir(next_cmd,
-				token->id, redir->filepath))
-			return (-1);
+		if (manage_files(next_cmd,
+				token->id, redir->filepath) == -1)
+			return (-3);
 	}
 	return (1);
 }
@@ -117,8 +117,8 @@ int	format_redirections(t_base *base)
 	{
 		if (is_token_basic_redir(token))
 		{
-			if (manage_basic_redir(token) == -1)
-				base->exit_status = EXIT_FAILURE;
+			if (manage_basic_redir(token) < 0)
+				return (-3);
 		}
 		else if (is_token_pipe(token))
 		{
@@ -127,7 +127,7 @@ int	format_redirections(t_base *base)
 		}
 		else if (token->id == TOKEN_REDIR_HDOC)
 		{
-			if (manage_heredoc(base, token) == 2)
+			if (manage_heredoc(base, token) == -2)
 				return (-2);
 		}
 		token = token->next;

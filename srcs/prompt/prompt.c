@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 10:59:01 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:48:39 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 
 static void	exec_line(t_base *base, char *line)
 {
+	int	error;
 	// implement (&& -- ||) and check number of commands
 	ft_lexer_start(base, line);
 	if (!errors_lexer(base))
 	{
-		if (format_redirections(base) == -2)
-			base->exit_status = EXIT_FAILURE;	
+		error = format_redirections(base);
+		if (error == -2 || error == -3)
+		{
+			base->exit_status = EXIT_FAILURE;
+			update_for_next_line(base);
+			return ;
+		}
 		else
 		{
 			if (base->pipe == 1)
@@ -30,7 +36,7 @@ static void	exec_line(t_base *base, char *line)
 			else
 				exec_single_cmd(base);
 		}
-		update_last_arg(base, ft_last_token(base->first_token));
+		update_for_next_line(base);
 	}
 }
 
@@ -78,7 +84,6 @@ char	*ft_format_prompt(t_base *base)
 void	ft_free_after_prompt(t_base *base, char *rl, char *line)
 {
 	ft_free_tokens(base->first_token);
-	ft_malloc_clear(&base->alloc);
 	base->first_token = NULL;
 	base->pipe = 0;
 	free(rl);

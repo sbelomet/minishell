@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_class.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:29:18 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/16 11:06:30 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:20:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void	*get_token_class(t_token *token)
 {

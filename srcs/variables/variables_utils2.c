@@ -6,11 +6,37 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 11:22:02 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:09:59 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*ft_extract_var_name_strict(char *raw_name)
+{
+	int		start;
+	int		len;
+	int		i;
+	char	*res;
+
+	start = 1;
+	i = 1;
+	len = 0;
+	while (raw_name[i] && !ft_isspecial(raw_name[i])
+		&& raw_name[i] != '$' && raw_name[i] != ':')
+	{
+		printf("letter n %d: %c is ok\n", i, raw_name[i]);
+		i++;
+		len++;
+	}
+	printf("len = %d\n", len);
+	if (len == 1)
+		return ("");
+	res = ft_substr(raw_name, start, len);
+	if (!res)
+		return (NULL);
+	return (res);
+}
 
 t_var	*ft_findvar(t_var *first_var, char *name)
 {
@@ -29,17 +55,7 @@ t_var	*ft_findvar(t_var *first_var, char *name)
 char	*ft_findvar_value(t_base *base, char *name)
 {
 	t_var	*tmp;
-	char	*ctmp;
 
-	if (ft_equal_strs(name, "$?"))
-	{
-		ctmp = ft_itoa(g_error);
-		if (!malloc_add(&base->alloc, malloc_new(ctmp)))
-			ft_error(base, "malloc()");
-		if (!ctmp)
-			ft_error(base, "malloc()");
-		return (ctmp);
-	}
 	tmp = ft_findvar(base->first_var, ++name);
 	if (tmp)
 		return (tmp->value);

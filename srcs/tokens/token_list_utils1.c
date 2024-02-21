@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:50:09 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/14 11:23:37 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 12:14:42 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_token	*ft_last_token(t_token *first_token)
 	t_token	*tmp;
 
 	tmp = first_token;
-
 	if (tmp)
 	{
 		while (tmp->next)

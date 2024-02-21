@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/20 10:56:22 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/21 15:36:27 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
 LIBRL		=	-L $(HOME)/.brew/opt/readline/lib
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS		=	-Wall -Wextra -Werror
 LEAKS		=	leaks --atExit -- 
 
 D_MAIN		=	main_utils/
@@ -58,16 +58,16 @@ F_MAIN		=	main base_init error_utils1 signals_utils1
 F_PROMPT	=	prompt freeing_tokens prompt_cmd
 F_LEXER		=	lexer lexer_utils1 lexer_utils2 lexer_utils3
 F_TOKEN		=	tokens token_utils1 token_utils2 token_list_utils1 \
-				args_list_utils1 cmd_list_utils1 redir_list_utils1
+				args_list_utils1 cmd_list_util s1 redir_list_utils1
 F_VARS		=	variables_utils1 variables_utils2 variables_list_utils1
 F_ERRORS	=	lexer_errors redirect_errors
 F_FORMAT	=	formatting_redirections formatting_redirections_2
 F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset
 F_EXEC		=	exec_pipes here_doc exec_single_cmd
-F_GETTERS	=	get_args get_class get_env get_token_2 get_token
-F_UPDATE	=	update_env update_last_arg
-F_UTILS		=	file_utils exec_utils
+F_GETTERS	=	get_args get_class get_env get_token_2 get_token get_token_3
+F_UPDATE	=	update_env update_last_arg updates
+F_UTILS		=	exec_utils
 
 FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 				$(addprefix $(D_PROMPT), $(F_PROMPT)) \

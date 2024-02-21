@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 10:42:20 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 10:02:56 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 	char	*path;
 	t_cmd	*test;
 
+	path = NULL;
 	res = ft_new_token_node(TOKEN_WORD);
 	if (!res)
 		ft_error(base, "malloc()");
@@ -27,11 +28,15 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 	else if (ft_isbuiltin(cmd))
 		res->id = TOKEN_BUILTIN;
 	else if (ft_isbin(base, cmd))
+	{	
 		res->id = TOKEN_BIN;
-	path = ft_get_cmdpath(base, cmd, res->id);
+		path = ft_get_cmdpath(base, cmd, res->id);
+	}
 	res->type = ft_new_cmd_node(res->id, path, cmd);
 	if (!res->type)
 		ft_error(base, "malloc()");
+	if (res->id == TOKEN_WORD)
+		res->id = TOKEN_BIN;
 	test = (t_cmd *)res->type;
 	//printf("name: %s, id: %d, path: %s\n", test->name, test->id, test->path);
 }
