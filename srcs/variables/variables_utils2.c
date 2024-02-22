@@ -6,11 +6,21 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 12:09:59 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:14:47 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	type_printable(char *name)
+{
+	if (ft_equal_strs(name, "_"))
+		return (ONLY_ENV);
+	else if (ft_equal_strs(name, "?"))
+		return (NONE);
+	else
+		return (BOTH);
+}
 
 char	*ft_extract_var_name_strict(char *raw_name)
 {

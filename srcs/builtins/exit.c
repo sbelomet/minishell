@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:54 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 13:28:45 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:15:52 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	exit_builtin(t_base *base, t_cmd *cmd)
 {
 	if (cmd->first_arg)
 	{
-		if (!exit_with_arg(base, cmd))
-			return (-1);
+		if (exit_with_arg(base, cmd) == -1)
+			return (1);
 	}
 	else
 	{
@@ -62,5 +62,5 @@ int	exit_builtin(t_base *base, t_cmd *cmd)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 		exit(base->exit_status);
 	}
-	return (-1);
+	return (0);
 }

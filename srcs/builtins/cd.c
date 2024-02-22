@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:22 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/14 13:32:00 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:43:56 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int	cd_home(t_base *base)
 
 	home = get_home_path(base);
 	if (!home)
-		return (0);
+		return (-1);
 	if (testing_path(home))
 	{
 		if (chdir(home) != 0)
 		{
 			perror("cd");
-			return (0);
+			return (-1);
 		}
 		else
 			update_pwd_env(base, home);
@@ -54,7 +54,7 @@ int	cd_home(t_base *base)
 	}
 	else if (base->pipe)
 		return (1);
-	return (0);
+	return (-1);
 }
 
 int	cd_path(t_base *base, t_arg *arg)
@@ -66,7 +66,7 @@ int	cd_path(t_base *base, t_arg *arg)
 		if (chdir(arg->name) != 0)
 		{
 			perror("cd");
-			return (0);
+			return (-1);
 		}
 		else
 		{
@@ -74,7 +74,7 @@ int	cd_path(t_base *base, t_arg *arg)
 			if (!path)
 			{
 				perror("Couldn't retrieve current directory");
-				return (0);
+				return (-1);
 			}
 			else
 				update_pwd_env(base, path);
@@ -83,7 +83,7 @@ int	cd_path(t_base *base, t_arg *arg)
 	}
 	else if (base->pipe)
 		return (1);
-	return (0);
+	return (-1);
 }
 
 int	exec_cd(t_base *base, t_cmd *cmd)
@@ -93,13 +93,13 @@ int	exec_cd(t_base *base, t_cmd *cmd)
 	args = get_first_arg(cmd);
 	if (args)
 	{
-		if (!cd_path(base, args))
-			return (0);
+		if (cd_path(base, args) == -1)
+			return (1);
 	}	
 	else
 	{
-		if (!cd_home(base))
-			return (0);
+		if (cd_home(base) == -1)
+			return (1);
 	}
-	return (1);
+	return (0);
 }

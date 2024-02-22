@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:18:57 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 12:24:33 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:12:08 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	limiter_check(char *limiter)
 
 static int	print_unknown(t_redir *redir)
 {
-	ft_printf(2, "syntax error near unexpected token `%s'", redir->filepath);
+	ft_printf(2, "syntax error near unexpected token `%s'\n", redir->filepath);
 	return (0);
 }
 
@@ -41,13 +41,13 @@ int	check_err_token_redirec(t_token *token)
 		if (is_token_heredoc(token)
 			&& (!redir->limiter || limiter_check(redir->limiter)))
 		{
-			ft_printf(2, "syntax error near unexpected token `%s'",
+			ft_printf(2, "syntax error near unexpected token `%s'\n",
 				redir->limiter);
 			return (0);
 		}
 		if (!redir->filepath && !token->next)
 		{
-			ft_putstr_fd("syntax error near unexpected token `newline'", 2);
+			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 			return (0);
 		}
 	}

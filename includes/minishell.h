@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 12:26:48 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:41:38 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,14 @@
 
 # define WHITE "\033[0;39m"
 # define B_WHITE "\033[1;39m"
+
+enum env_types
+{
+	NONE,
+	BOTH,
+	ONLY_ENV,
+	ONLY_EXPORT
+};
 
 enum e_types
 {
@@ -131,11 +139,14 @@ void	ft_free_tokens(t_token *first_token);
 
 /* BASE INIT */
 void	ft_base_init(t_base *base, char **env);
+void	ft_incr_shell_level(t_base *base);
 
 /* SIGNALS UTILS */
 void	ft_signals(void);
 void	ft_ctrl_slash(int signum);
-void	ft_ctrl_c(int signum);
+void	ft_ctrl_c1(int signum);
+void	ft_ctrl_c2(int signum);
+void	ft_ctrl_c3(int signum);
 
 /* GETTERS */
 char	*get_current_path(void);
@@ -198,13 +209,15 @@ int		echo(t_cmd *cmd);
 int		pwd(t_base *base);
 int		is_child_builtin(t_cmd *cmd);
 int		unset(t_base *base, t_cmd *cmd);
-int		export(t_base *base, t_cmd *cmd);
 int		is_parent_builtin(t_token *token);
 int		exec_cd(t_base *base, t_cmd *cmd);
 int		print_env(t_base *base, t_cmd *cmd);
+int		check_if_exist(t_var *env, char *name);
 int		exit_builtin(t_base *base, t_cmd *cmd);
+int		builtin_export(t_base *base, t_cmd *cmd);
 int		exec_child_builtin(t_base *base, t_cmd *cmd);
 int		exec_parent_builtin(t_base *base, t_cmd *cmd);
+void	add_export(t_base *base, t_arg *args, char **array);
 
 /* LEXER */
 char	*ft_findvar_value(t_base *base, char *name);
@@ -267,6 +280,7 @@ void	ft_add_var(t_base *base, char *input);
 void	ft_get_env_vars(t_base *base, char **env);
 
 /* VARIABLES UTILS 2 */
+int		type_printable(char *name);
 t_var	*ft_findvar(t_var *first_var, char *name);
 char	*ft_findvar_value(t_base *base, char *name);
 

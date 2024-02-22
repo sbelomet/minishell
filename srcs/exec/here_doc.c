@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/19 14:23:47 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/22 11:55:54 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	handle_here_doc(t_base *base,
 {
 	char	*line;
 
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, ft_ctrl_c3);
 	while (1)
 	{
 		line = readline("> ");
@@ -94,6 +94,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	int		fd[2];
 	int		status;
 
+	signal(SIGINT, ft_ctrl_c2);
 	if (cmd != NULL && cmd->fd_in != 0)
 		close(cmd->fd_in);
 	if (pipe(fd) < 0)

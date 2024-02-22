@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 12:23:00 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 10:43:15 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@ static void	exec_child(t_base *base, t_token *token,
 	t_cmd	*curr_cmd;
 	t_cmd	*next_cmd;
 
-	signal(SIGQUIT, SIG_DFL);
 	close(fds[0]);
 	curr_cmd = get_token_class(token);
 	next_cmd = get_next_cmd(token->next);
 	dup_redir(curr_cmd, next_cmd, fds, in_fd);
 	if (is_child_builtin(curr_cmd) == 1)
 	{
-		if (exec_child_builtin(base, get_token_class(token)))
+		if (exec_child_builtin(base, get_token_class(token)) == 0)
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
 	}
@@ -57,9 +56,11 @@ static int	handle_token(t_base *base, t_token *token,
 {
 	pid_t	pid;
 
+	signal(SIGINT, ft_ctrl_c2);
+	signal(SIGQUIT, ft_ctrl_slash);
 	if (is_parent_builtin(token) == 1)
 	{
-		if (exec_parent_builtin(base, get_token_class(token)))
+		if (exec_parent_builtin(base, get_token_class(token)) == 0)
 		{
 			base->exit_status = EXIT_SUCCESS;
 			return (1);

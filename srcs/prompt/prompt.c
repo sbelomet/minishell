@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 13:48:39 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 14:36:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,13 @@ static void	exec_line(t_base *base, char *line)
 				exec_pipes(base);
 			}	
 			else
+			{
+				//printf("EXEC SINGLE PIPE\n");
 				exec_single_cmd(base);
-		}
-		update_for_next_line(base);
+			}
+		}	
 	}
+	update_for_next_line(base);
 }
 
 char	*ft_get_curdir(t_base *base)
@@ -103,11 +106,7 @@ void	ft_prompt(t_base *base)
 		rl = readline(prompt);
 		free(prompt);
 		if (!rl)
-		{
-			rl_insert_text("exit\n");
-			rl_reset_line_state();
 			break ;
-		}
 		line = ft_strtrim(rl, " \n\t");
 		if (ft_strlen(line) > 0)
 		{
@@ -116,4 +115,5 @@ void	ft_prompt(t_base *base)
 		}
 		ft_free_after_prompt(base, rl, line);
 	}
+	ft_putstr_fd("exit\n", 2);
 }

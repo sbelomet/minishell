@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   freeing_tokens.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/02/19 15:14:18 by lgosselk         ###   ########.fr       */
+/*   Created: 2024/01/31 14:40:12 by sbelomet          #+#    #+#             */
+/*   Updated: 2024/02/22 15:13:57 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 

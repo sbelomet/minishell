@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatting_redirections_2.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:44:30 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 12:21:34 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:16:41 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

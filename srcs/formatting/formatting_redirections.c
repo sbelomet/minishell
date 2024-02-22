@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:11:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 12:20:58 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:09:15 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ static int	manage_pipe(t_base *base, t_token *token)
 	{
 		prompt_cmd(base);
 		if (errors_lexer(base))
+		{
+			printf("ERROR\n");
 			return (-2);
+		}
 	}
 	if (pipe_redir(token) == -1)
 		return (-1);

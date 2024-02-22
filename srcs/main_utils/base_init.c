@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 14:10:23 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 09:58:23 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,53 +36,6 @@ static char	**get_malloced_env(t_base *base, char **env)
 		array[i] = ft_strdup(env[i]);
 	}
 	return (array);
-}
-
-char	*ft_strjoin_shlvl(t_base *base, int shlvl, char *free_me)
-{
-	char	*res;
-	char	*shlvl_char;
-
-	free(free_me);
-	shlvl_char = ft_itoa(shlvl);
-	if (!shlvl_char)
-		ft_error(base, "malloc()");
-	if (++shlvl > 999)
-		shlvl = 0;
-	res = ft_strjoin("SHLVL=", shlvl_char);
-	if (!res)
-		ft_error(base, "malloc()");
-	free(shlvl_char);
-	return (res);
-}
-
-void	ft_incr_shell_level(t_base *base)
-{
-	int		i;
-	int		j;
-	char	*shlvl;
-	int		shlvl_int;
-
-	i = -1;
-	while (base->env[++i])
-	{
-		if (ft_strnstr(base->env[i], "SHLVL=", 6))
-		{
-			j = 6;
-			while (base->env[i][j])
-				j++;
-			if (j != 6)
-			{
-				shlvl = ft_substr(base->env[i], 6, j);
-				if (!shlvl)
-					ft_error(base, "malloc()");
-				shlvl_int = ft_atoi(shlvl);
-				free(base->env[i]);
-				base->env[i] = ft_strjoin_shlvl(base, shlvl_int, shlvl);
-			}
-			break ;
-		}
-	}
 }
 
 static void	push_exit_status_env(t_base *base)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:09:11 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/20 15:33:16 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 11:48:38 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exec_parent_builtin(t_base *base, t_cmd *cmd)
 		return (exec_cd(base, cmd));
 	if (ft_equal_strs(cmd->name, "export")
 		&& cmd->first_arg)
-		return (export(base, cmd));
+		return (builtin_export(base, cmd));
 	if (ft_equal_strs(cmd->name, "unset"))
 		return (unset(base, cmd));
 	if (ft_equal_strs(cmd->name, "exit"))
@@ -65,7 +65,7 @@ int	exec_child_builtin(t_base *base, t_cmd *cmd)
 		return (pwd(base));
 	if (ft_equal_strs(cmd->name, "export")
 		&& !cmd->first_arg)
-		return (export(base, cmd));
+		return (builtin_export(base, cmd));
 	if (ft_equal_strs(cmd->name, "env"))
 		return (print_env(base, cmd));
 	return (-1);

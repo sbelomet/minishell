@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 12:23:41 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 10:43:13 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ static void	exec_single_child(t_base *base, t_token *token)
 	t_cmd	*cmd;
 	int		status;
 
-	signal(SIGQUIT, SIG_DFL);
 	cmd = get_token_class(token);
 	dup2(cmd->fd_in, STDIN_FILENO);
 	dup2(cmd->fd_out, STDOUT_FILENO);
 	if (is_child_builtin(cmd) == 1)
 	{
-		if (exec_child_builtin(base, cmd))
+		if (exec_child_builtin(base, cmd) == 0)
 			exit(EXIT_SUCCESS);
 		exit(EXIT_FAILURE);
 	}
@@ -58,10 +57,12 @@ static int	handle_token(t_base *base, t_token *token)
 	pid_t	pid;
 	t_cmd	*cmd;
 
+	signal(SIGINT, ft_ctrl_c2);
+	signal(SIGQUIT, ft_ctrl_slash);
 	cmd = get_next_cmd(token);
 	if (is_parent_builtin(token) == 1)
 	{
-		if (exec_parent_builtin(base, cmd))
+		if (exec_parent_builtin(base, cmd) == 0)
 		{
 			base->exit_status = EXIT_SUCCESS;
 			return (1);

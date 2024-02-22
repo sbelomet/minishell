@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:39 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/15 12:04:08 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/21 10:36:59 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_env_join(t_base *base, char *name, char *value)
+static char	*ft_env_join(t_base *base, char *name, char *value)
 {
 	char	*tmp;
 	char	*res;
@@ -27,17 +27,10 @@ char	*ft_env_join(t_base *base, char *name, char *value)
 	return (res);
 }
 
-int	print_env(t_base *base, t_cmd *cmd)
+static void	_print(t_base *base, t_var *env)
 {
-	t_var	*env;
 	char	*temp;
 
-	if (cmd->first_arg)
-	{
-		ft_putstr_fd("env: too many arguments.\n", 2);
-		return (-1);
-	}
-	env = base->first_var;
 	while (env)
 	{
 		if (ft_equal_strs(env->name, "_"))
@@ -46,12 +39,25 @@ int	print_env(t_base *base, t_cmd *cmd)
 			env = env->next;
 			continue ;
 		}
-		temp = ft_env_join(base, env->name, env->value);
-		ft_putstr_fd(temp, STDOUT_FILENO);
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		if (env->printable == ONLY_ENV || env->printable == BOTH)
+		{
+			temp = ft_env_join(base, env->name, env->value);
+			ft_putstr_fd(temp, STDOUT_FILENO);
+			ft_putstr_fd("\n", STDOUT_FILENO);
+			free(temp);
+			temp = NULL;
+		}
 		env = env->next;
-		free(temp);
-		temp = NULL;
 	}
+}
+
+int	print_env(t_base *base, t_cmd *cmd)
+{
+	if (cmd->first_arg)
+	{
+		ft_putstr_fd("env: too many arguments.\n", 2);
+		return (-1);
+	}
+	_print(base, base->first_var);
 	return (0);
 }
