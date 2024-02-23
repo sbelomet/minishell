@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 09:58:04 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 10:03:50 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 09:55:09 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ char	*ft_strjoin_shlvl(t_base *base, int shlvl, char *free_me)
 		shlvl = 0;
 	shlvl_char = ft_itoa(shlvl);
 	if (!shlvl_char)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	res = ft_strjoin("SHLVL=", shlvl_char);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	free(shlvl_char);
 	return (res);
 }
@@ -49,7 +49,7 @@ void	ft_incr_shell_level(t_base *base)
 			{
 				shlvl = ft_substr(base->env[i], 6, j);
 				if (!shlvl)
-					ft_error(base, "malloc()");
+					ft_error(base);
 				shlvl_int = ft_atoi(shlvl);
 				free(base->env[i]);
 				base->env[i] = ft_strjoin_shlvl(base, shlvl_int, shlvl);

@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:46:45 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 13:49:10 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:54:48 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_error(t_base *base, char *message)
+void	ft_error(t_base *base)
 {
-	perror(message);
+	ft_putstr_fd("malloc error\n", STDERR_FILENO);
 	ft_free(*base);
-	exit(-1);
+	exit(1);
 }
 
 void	ft_free_vars(t_base base)

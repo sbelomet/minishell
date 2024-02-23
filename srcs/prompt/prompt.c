@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 14:36:00 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 12:18:33 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*ft_get_curdir(t_base *base)
 		{
 			res = ft_substr(base->curdir, 0, i);
 			if (!res)
-				ft_error(base, "malloc()");
+				ft_error(base);
 			ft_revstr(base->curdir);
 			ft_revstr(res);
 			return (res);
@@ -74,13 +74,13 @@ char	*ft_format_prompt(t_base *base)
 
 	dir = ft_get_curdir(base);
 	tmp = ft_strjoin(dir, " $> ");
-	if (!tmp)
-		ft_error(base, "malloc()");
-	prompt = ft_strjoin("[MINISHELL] ", tmp);
-	if (!prompt)
-		ft_error(base, "malloc()");
-	free(tmp);
 	free(dir);
+	if (!tmp)
+		ft_error(base);
+	prompt = ft_strjoin("[MINISHELL] ", tmp);
+	free(tmp);
+	if (!prompt)
+		ft_error(base);
 	return (prompt);
 }
 
@@ -102,8 +102,11 @@ void	ft_prompt(t_base *base)
 	while (1)
 	{
 		ft_signals();
+		g_signum = -1;
 		prompt = ft_format_prompt(base);
 		rl = readline(prompt);
+		if (g_signum == SIGINT)
+			update_exit_status(base, "1");
 		free(prompt);
 		if (!rl)
 			break ;
@@ -115,5 +118,5 @@ void	ft_prompt(t_base *base)
 		}
 		ft_free_after_prompt(base, rl, line);
 	}
-	ft_putstr_fd("exit\n", 2);
+	ft_putstr_fd("\bexit\n", 2);
 }

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:32:09 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 12:15:40 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:09:33 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	update_linked_env(t_base *base, char *value)
 	}
 }
 
-void	update_exit_status(t_base *base)
+void	update_exit_status(t_base *base, char *exit_nbr)
 {
 	t_var	*exit_status;
 
@@ -59,7 +59,10 @@ void	update_exit_status(t_base *base)
 	if (exit_status != NULL)
 	{
 		free(exit_status->value);
-		exit_status->value = ft_itoa(base->exit_status);
+		if (!exit_nbr)
+			exit_status->value = ft_itoa(base->exit_status);
+		else
+			exit_status->value = ft_strdup(exit_nbr);
 	}
 }
 

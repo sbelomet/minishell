@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_last_arg.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:46:13 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 12:54:30 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:55:21 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ char	*ft_get_last_cmd_arg(t_base *base, t_token *last_token)
 		else
 			res = ft_strdup(cmd->name);
 		if (!res)
-			ft_error(base, "malloc()");
+			ft_error(base);
 		return (res);
 	}
 	arg = ft_last_arg(cmd->first_arg);
 	res = ft_strdup(arg->name);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	return (res);
 }
 

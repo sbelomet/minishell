@@ -6,22 +6,20 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 12:10:56 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:43:46 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_extract_word(t_base *base, char *line, int *index, char *in_quotes)
+char	*ft_extract_word(t_base *base, char *line, int *index)
 {
 	char	*res;
 	char	*tmp;
 	char	*q_part;
 
-	if (in_quotes)
-		return (in_quotes);
 	res = ft_strdup("");
-	while (line[*index] && !ft_isspecial(line[*index]))
+	while (line[*index] && !ft_isspecial_nq(line[*index]))
 	{
 		tmp = ft_extract_to_quote(base, line, index);
 		if (ft_isquote(line[*index]))
@@ -53,15 +51,15 @@ char	*ft_extract_redir(char *line, int *index)
 	return (res);
 }
 
-void	ft_find_noredir_word(t_base *base, char *line, int *i, char *in_quotes)
+void	ft_find_noredir_word(t_base *base, char *line, int *i)
 {
 	char		*token;
 	t_lexvars	*lexvars;
 
 	lexvars = &base->lexvars;
-	token = ft_extract_word(base, line, i, in_quotes);
+	token = ft_extract_word(base, line, i);
 	if (!token)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	if (!lexvars->after_cmd && !lexvars->after_redir)
 	{
 		if (ft_strchr(token, '='))
@@ -87,7 +85,7 @@ void	ft_find_redir_word(t_base *base, char *line, int *i)
 
 	token = ft_extract_redir(line, i);
 	if (!token)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	if (*token == '<' || *token == '>')
 		base->lexvars.after_redir = 1;
 	base->lexvars.after_cmd = 0;
@@ -97,20 +95,13 @@ void	ft_find_redir_word(t_base *base, char *line, int *i)
 void	ft_lexer_start(t_base *base, char *line)
 {
 	int		i;
-	char	*in_quotes;
 
 	i = 0;
 	base->lexvars = (t_lexvars){0, 0};
 	while (line[i])
 	{
-		in_quotes = NULL;
-		if (ft_isquote(line[i]))
-		{
-			in_quotes = ft_extract_quotes(base, line, &i, line[i]);
-			ft_find_noredir_word(base, line, &i, in_quotes);
-		}
-		else if (!ft_isspecial(line[i]))
-			ft_find_noredir_word(base, line, &i, NULL);
+		if (!ft_isspecial_nq(line[i]))
+			ft_find_noredir_word(base, line, &i);
 		else if (ft_isredirection(line[i]))
 			ft_find_redir_word(base, line, &i);
 		while (line[i] && ft_iswhitespace(line[i]))

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/08 11:43:38 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:52:38 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	g_error = 0;
 	ft_banner();
 	ft_base_init(&base, env);
 	ft_prompt(&base);

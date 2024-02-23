@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:16:14 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 15:20:33 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:18:51 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_var	*ft_last_var(t_var *first_var)
 	return (tmp);
 }
 
-t_var	*ft_new_var_node(char *name, char *value)
+t_var	*ft_new_var_node(char *name, char *value,
+	int type, int standalone)
 {
 	t_var	*res;
 
@@ -33,7 +34,8 @@ t_var	*ft_new_var_node(char *name, char *value)
 		return (NULL);
 	res->name = name;
 	res->value = value;
-	res->printable = type_printable(name);
+	res->standalone = standalone;
+	res->printable = type_printable(name, type);
 	res->prev = NULL;
 	res->next = NULL;
 	return (res);

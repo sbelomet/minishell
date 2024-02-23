@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 10:24:08 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/20 10:55:39 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:55:03 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*ft_try_namepath(t_base *base, char *cmd, char *res, int cmd_id)
 			free(res);
 		res = ft_strdup(cmd);
 		if (!res)
-			ft_error(base, "malloc()");
+			ft_error(base);
 		return (res);
 	}
 	return (NULL);

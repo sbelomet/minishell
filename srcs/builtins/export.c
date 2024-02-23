@@ -6,32 +6,36 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:07:05 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 14:01:37 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:53:31 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*ft_export_join(t_base *base, char *name, char *value)
+static char	*ft_export_join(t_base *base, char *name,
+	char *value, int standalone)
 {
 	char	*tmp;
 	char	*res;
 
+	res = NULL;
 	tmp = ft_strjoin("declare -x ", name);
 	if (!tmp)
-		ft_error(base, "malloc()");
+		ft_error(base);
+	if (standalone)
+		return (tmp);
 	res = ft_strjoin(tmp, "=\"");
-	if (!res)
-		ft_error(base, "malloc()");
 	free(tmp);
+	if (!res)
+		ft_error(base);
 	tmp = ft_strjoin(res, value);
-	if (!tmp)
-		ft_error(base, "malloc()");
 	free(res);
+	if (!tmp)
+		ft_error(base);
 	res = ft_strjoin(tmp, "\"");
-	if (!res)
-		ft_error(base, "malloc()");
 	free(tmp);
+	if (!res)
+		ft_error(base);
 	return (res);
 }
 
@@ -45,7 +49,7 @@ static void	ft_print_export(t_base *base)
 	{
 		if (var->printable == ONLY_EXPORT || var->printable == BOTH)
 		{
-			tmp = ft_export_join(base, var->name, var->value);
+			tmp = ft_export_join(base, var->name, var->value, var->standalone);
 			ft_putstr_fd(tmp, STDOUT_FILENO);
 			ft_putstr_fd("\n", STDOUT_FILENO);
 			free(tmp);
@@ -60,6 +64,7 @@ static int	check_arg_export(char *arg)
 	int	i;
 
 	i = 1;
+	// _1=1 can be possible
 	if (arg[0] == '=' || (!(arg[0] >= 'a' && arg[0] <= 'z') &&
 		!(arg[0] >= 'A' && arg[0] <= 'Z') && arg[0] != '_'))
 		return (1);
@@ -77,9 +82,7 @@ static int	check_arg_export(char *arg)
 
 static int	handle_export_args(t_base *base, t_cmd *cmd)
 {
-	//int		i;
 	t_arg	*args;
-	char	**array;
 
 	args = cmd->first_arg;
 	if (!base)
@@ -88,10 +91,13 @@ static int	handle_export_args(t_base *base, t_cmd *cmd)
 	{
 		if (check_arg_export(args->name) == 0)
 		{
-			array = ft_split(args->name, '=');
-			add_export(base, args, array);
-			// free array;
+			if (ft_strchr(args->name, '=') != NULL)
+				add_export(base, ft_split(args->name, '='), 1);
+			else
+				add_export(base, ft_split(args->name, '='), 0);
 		}
+		else
+		{} // print error	
 		args = args->next;
 	}
 	return (0);

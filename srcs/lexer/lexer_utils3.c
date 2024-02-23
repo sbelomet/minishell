@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 12:23:00 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 12:25:55 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 09:56:09 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ char	*ft_get_my_damn_quotes(t_base *base, char *line)
 	{
 		tmp = ft_strtrim(line, "\"");
 		if (!tmp)
-			ft_error(base, "malloc()");
+			ft_error(base);
 		res = ft_get_developped_vars(base, tmp);
 		if (!res)
-			ft_error(base, "malloc()");
+			ft_error(base);
 	}
 	else if (*line == '\'')
 	{
 		res = ft_strtrim(line, "'");
 		if (!res)
-			ft_error(base, "malloc()");
+			ft_error(base);
 	}
 	return (res);
 }
@@ -101,7 +101,7 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars)
 	i = 0;
 	res = ft_start_quoted_line(vars, line, nvars, &i);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	start = i;
 	len = 0;
 	while (line[i])
@@ -111,10 +111,10 @@ char	*ft_make_quoted_line(t_base *base, char **vars, char *line, int nvars)
 	}
 	tmp = ft_substr(line, start, len);
 	if (!tmp)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	res = ft_strjoin_free(res, tmp);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	//printf("time to return good string: %s\n", res);
 	return (res);
 }
@@ -135,7 +135,7 @@ char	*ft_extract_to_quote(t_base *base, char *line, int *index)
 	}
 	res = ft_substr(line, start, len);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	if (ft_strchr(res, '$'))
 	{
 		tmp = ft_strdup(res);

@@ -6,7 +6,7 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/22 13:13:06 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/23 13:09:42 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,11 @@
 #Variables
 
 NAME		=	minishell
-HEADERS		=	-I includes -I $(HOME)/.brew/opt/readline/include
+HEADERS		=	-I includes -I $(HOME)/.brew/Cellar/readline/8.2.7//include
 SRC_DIR		=	srcs/
 OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
-LIBRL		=	-L $(HOME)/.brew/opt/readline/lib
+LIBRL		=	-L $(HOME)/.brew/Cellar/readline/8.2.7/lib
 CC			=	gcc
 CFLAGS		=	-Wall -Wextra -Werror
 LEAKS		=	leaks --atExit -- 
@@ -93,7 +93,7 @@ all:			$(OBJ_DIR) $(NAME)
 $(NAME):		$(OBJ)
 					@echo "$(RAINBOW)$(RAINBOW)$(RAINBOW)$(DEF_COLOR)"
 					@make -C libs/ft_printf
-					$(CC) $(CFLAGS) $(OBJ) $(LIBFTPRINTF) $(LIBRL) $(HEADERS) -lreadline -o $(NAME)
+					$(CC) $(CFLAGS) $(OBJ) $(LIBFTPRINTF) $(LIBRL) -lreadline -o $(NAME)
 					@echo ""
 					@echo "$(GREEN)$(NAME) est compilé !$(DEF_COLOR)🥶🥶🥶"
 					@echo "$(RAINBOW)$(RAINBOW)$(RAINBOW)$(DEF_COLOR)"

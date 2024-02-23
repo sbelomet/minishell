@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 11:41:38 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:14:35 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define WHITE "\033[0;39m"
 # define B_WHITE "\033[1;39m"
 
-enum env_types
+enum e_env_types
 {
 	NONE,
 	BOTH,
@@ -79,6 +79,7 @@ typedef struct s_var
 {
 	char			*name;
 	char			*value;
+	int				standalone;
 	int				printable;
 	struct s_var	*prev;
 	struct s_var	*next;
@@ -121,7 +122,7 @@ typedef struct s_base
 	int				exit_status;
 }					t_base;
 
-int		g_error;
+int		g_signum;
 
 /* PROMPT */
 void	ft_prompt(t_base *base);
@@ -131,7 +132,7 @@ char	*ft_get_curdir(t_base *base);
 /* ERROR */
 void	ft_free(t_base base);
 int		errors_lexer(t_base *base);
-void	ft_error(t_base *base, char *message);
+void	ft_error(t_base *base);
 int		check_err_token_redirec(t_token *token);
 
 /* FREEING TOKENS */
@@ -182,7 +183,7 @@ int		is_builtin_cmd(char *name, t_cmd *cmd);
 void	update_last_arg(t_base *base, t_token *last_token);
 void	update_pwd_env(t_base *base, char *new_value);
 void	update_for_next_line(t_base *base);
-void	update_exit_status(t_base *base);
+void	update_exit_status(t_base *base, char *exit_nbr);
 
 /* FORMATTING */
 int		pipe_redir(t_token *token);
@@ -217,7 +218,7 @@ int		exit_builtin(t_base *base, t_cmd *cmd);
 int		builtin_export(t_base *base, t_cmd *cmd);
 int		exec_child_builtin(t_base *base, t_cmd *cmd);
 int		exec_parent_builtin(t_base *base, t_cmd *cmd);
-void	add_export(t_base *base, t_arg *args, char **array);
+void	add_export(t_base *base, char **array, int equal);
 
 /* LEXER */
 char	*ft_findvar_value(t_base *base, char *name);
@@ -280,14 +281,14 @@ void	ft_add_var(t_base *base, char *input);
 void	ft_get_env_vars(t_base *base, char **env);
 
 /* VARIABLES UTILS 2 */
-int		type_printable(char *name);
+int		type_printable(char *name, int type);
 t_var	*ft_findvar(t_var *first_var, char *name);
 char	*ft_findvar_value(t_base *base, char *name);
 
 /* VARIABLES LIST UTILS 1 */
 t_var	*ft_last_var(t_var *first_var);
 void	ft_del_var_node(t_var *del_var);
-t_var	*ft_new_var_node(char *name, char *value);
 void	ft_add_var_node(t_base *base, t_var *new_var);
+t_var	*ft_new_var_node(char *name, char *value, int type, int standalone);
 
 #endif

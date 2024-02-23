@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:39 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 10:36:59 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:57:49 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@ static char	*ft_env_join(t_base *base, char *name, char *value)
 	char	*tmp;
 	char	*res;
 
+	res = NULL;
 	tmp = ft_strjoin(name, "=");
 	if (!tmp)
-		ft_error(base, "malloc()");
+		ft_error(base);
+	if (!value)
+		return (tmp);
 	res = ft_strjoin(tmp, value);
-	if (!res)
-		ft_error(base, "malloc()");
 	free(tmp);
+	if (!res)
+		ft_error(base);
 	return (res);
 }
 

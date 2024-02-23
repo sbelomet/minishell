@@ -6,20 +6,27 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 15:14:47 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:15:40 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	type_printable(char *name)
+int	type_printable(char *name, int type)
 {
 	if (ft_equal_strs(name, "_"))
 		return (ONLY_ENV);
 	else if (ft_equal_strs(name, "?"))
 		return (NONE);
-	else
+	if (type == 666)
+		return (NONE);
+	if (type == 1)
 		return (BOTH);
+	if (type == 2)
+		return (ONLY_ENV);
+	if (type == 3)
+		return (ONLY_EXPORT);
+	return (BOTH);
 }
 
 char	*ft_extract_var_name_strict(char *raw_name)
@@ -68,6 +75,8 @@ char	*ft_findvar_value(t_base *base, char *name)
 
 	tmp = ft_findvar(base->first_var, ++name);
 	if (tmp)
+	{
 		return (tmp->value);
+	}
 	return ("");
 }

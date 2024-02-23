@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 10:16:54 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 11:41:47 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:19:59 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 {
 	t_token	*res;
 	char	*path;
-	t_cmd	*test;
 
 	path = NULL;
 	res = ft_new_token_node(TOKEN_WORD);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	ft_add_token_node(base, res);
 	if (ft_equal_strs(cmd, ""))
 		res->id = TOKEN_WORD;
@@ -34,11 +33,9 @@ void	ft_tokenize_cmd(t_base *base, char *cmd)
 	}
 	res->type = ft_new_cmd_node(res->id, path, cmd);
 	if (!res->type)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	if (res->id == TOKEN_WORD)
 		res->id = TOKEN_BIN;
-	test = (t_cmd *)res->type;
-	//printf("name: %s, id: %d, path: %s\n", test->name, test->id, test->path);
 }
 
 void	ft_add_cmd_arg(t_base *base, char *arg)
@@ -51,27 +48,23 @@ void	ft_add_cmd_arg(t_base *base, char *arg)
 	cmd = (t_cmd *)cmd_token->type;
 	arg_node = ft_new_arg_node(TOKEN_ARG, arg);
 	if (!arg_node)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	ft_add_arg_node(cmd, arg_node);
-	//printf("name: %s, id: %d\n", cmd->first_arg->name, cmd->first_arg->id);
 }
 
 void	ft_tokenize_redir(t_base *base, char *redir)
 {
 	t_token	*res;
-	t_redir	*test;
 
 	res = ft_new_token_node(ft_get_redir(redir));
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	ft_add_token_node(base, res);
 	res->type = ft_new_redir_node(res->id, redir);
 	if (!res->type)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	if (*redir == '|')
 		base->pipe = 1;
-	test = (t_redir *)res->type;
-	//printf("name: %s, id: %d\n", test->name, test->id);
 }
 
 void	ft_add_redir_file(t_base *base, char *file)
@@ -89,7 +82,6 @@ void	ft_add_redir_file(t_base *base, char *file)
 
 void	ft_tokenize(t_base *base, char *val, int id)
 {
-	//printf("id: %d\n", id);
 	if (id == TOKEN_CMD)
 	{
 		ft_tokenize_cmd(base, val);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 09:58:23 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:01:49 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ static void	push_exit_status_env(t_base *base)
 	name = ft_strdup("?");
 	value = ft_strdup("0");
 	if (!name || !value)
-		ft_error(base, "malloc()");
-	status_env = ft_new_var_node(name, value);
+		ft_error(base);
+	status_env = ft_new_var_node(name, value, 0, 0);
 	if (!status_env)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	ft_add_var_node(base, status_env);
 }
 
@@ -58,7 +58,7 @@ void	ft_base_init(t_base *base, char **env)
 {
 	base->env = get_malloced_env(base, env);
 	if (!base->env)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	ft_incr_shell_level(base);
 	base->alloc = NULL;
 	base->first_var = NULL;

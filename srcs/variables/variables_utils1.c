@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:11:46 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 12:16:56 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 10:17:14 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ void	ft_get_env_vars(t_base *base, char **env)
 	{
 		name = ft_get_var_name(base, env[i]);
 		if (!name)
-			ft_error(base, "malloc()");
+			ft_error(base);
 		value = ft_get_var_value(base, env[i]);
 		if (!value)
-			ft_error(base, "malloc()");
-		var = ft_new_var_node(name, value);
+			ft_error(base);
+		var = ft_new_var_node(name, value, 0, 0);
 		if (!var)
-			ft_error(base, "malloc()");
+			ft_error(base);
 		ft_add_var_node(base, var);
 		i++;
 	}
@@ -103,10 +103,10 @@ void	ft_add_var(t_base *base, char *input)
 
 	name = ft_get_var_name(base, input);
 	if (!name)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	value = ft_get_var_value(base, input);
 	if (!value)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	tmp = ft_findvar(base->first_var, name);
 	if (tmp)
 	{
@@ -115,8 +115,8 @@ void	ft_add_var(t_base *base, char *input)
 		tmp->value = value;
 		return ;
 	}
-	var = ft_new_var_node(name, value);
+	var = ft_new_var_node(name, value, 666, 0);
 	if (!var)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	ft_add_var_node(base, var);
 }

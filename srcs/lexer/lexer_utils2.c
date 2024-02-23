@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/21 11:58:13 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 09:55:50 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ void	ft_develop_var(t_base *base, char **vars, char *line, int *i)
 
 	name = ft_extract_var_name(line, i);
 	if (!name)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	//printf("var name: %s\n", name);
 	vars[var_i] = ft_strdup(ft_findvar_value(base, name));
 	if (!vars[var_i])
-		ft_error(base, "malloc()");
+		ft_error(base);
 	//printf("var value: %s\n", ft_findvar_value(base, name));
 	//printf("var[%d] = %s\n", var_i, vars[var_i]);
 	var_i++;
@@ -84,7 +84,7 @@ char	*ft_get_developped_vars(t_base *base, char *line)
 	//printf("nb vars in quotes: %d\n", nb_vars);
 	vars = (char **)malloc(sizeof(char *) * (nb_vars + 1));
 	if (!vars)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	while (line[i])
 	{
 		if (line[i] == '$')
@@ -116,7 +116,7 @@ char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote)
 	}
 	res = ft_substr(line, start, len);
 	if (!res)
-		ft_error(base, "malloc()");
+		ft_error(base);
 	//printf("without quotes: %s\n", res);
 	if (quote == '"')
 	{
