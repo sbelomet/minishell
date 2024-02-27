@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_level.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 09:58:04 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 09:55:09 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:14:49 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strjoin_shlvl(t_base *base, int shlvl, char *free_me)
 	shlvl_char = ft_itoa(shlvl);
 	if (!shlvl_char)
 		ft_error(base);
-	res = ft_strjoin("SHLVL=", shlvl_char);
+	res = ft_strjoin_alloc("SHLVL=", shlvl_char, &base->alloc);
 	if (!res)
 		ft_error(base);
 	free(shlvl_char);

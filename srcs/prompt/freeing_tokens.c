@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/31 14:40:12 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 15:13:57 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:10:55 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,18 @@ void	ft_free_args(t_arg *first_arg)
 
 void	ft_free_command(t_cmd *cmd)
 {
-	//printf("before freeing command\n");
 	if (cmd)
 	{
 		if (cmd->path)
 		{
-			//printf("after freeing path\n");
 			free(cmd->path);
 		}
 		if (cmd->name)
 		{
-			//printf("after freeing name\n");
 			free(cmd->name);
 		}
 		if (cmd->first_arg)
 		{
-			//printf("after freeing firstarg\n");
 			ft_free_args(cmd->first_arg);
 		}
 		free(cmd);
@@ -52,22 +48,18 @@ void	ft_free_command(t_cmd *cmd)
 
 void	ft_free_redirection(t_redir *redir)
 {
-	//printf("before freeing redir\n");
 	if (redir)
 	{
 		if (redir->name)
 		{
-			//printf("after freeing name\n");
 			free(redir->name);
 		}
 		if (redir->limiter)
 		{
-			//printf("after freeing limiter\n");
 			free(redir->limiter);
 		}
 		if (redir->filepath)
 		{
-			//printf("after freeing file\n");
 			free(redir->filepath);
 		}
 		free(redir);
@@ -87,7 +79,6 @@ void	ft_free_tokens(t_token *first_token)
 		{
 			tmp2 = tmp1->next;
 			id = tmp1->id;
-			//printf("before checking\n");
 			if (id == TOKEN_BUILTIN || id == TOKEN_BIN)
 				ft_free_command(tmp1->type);
 			else if (id == TOKEN_UNKNOWN_REDIR || id == TOKEN_REDIR_IN

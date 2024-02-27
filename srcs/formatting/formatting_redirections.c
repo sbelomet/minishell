@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   formatting_redirections.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:11:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/22 15:09:15 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/23 11:04:17 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	manage_files(t_cmd *cmd, int type, char *filepath)
 	}
 	else if (type == TOKEN_REDIR_APP)
 	{
-		if (manage_in(cmd, filepath) == -1)
+		if (manage_append(cmd, filepath) == -1)
 		{
 			perror(filepath);
 			return (-1);

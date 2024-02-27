@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_list_utils1.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:16:14 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 10:18:51 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:38:08 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ t_var	*ft_new_var_node(char *name, char *value,
 	if (!res)
 		return (NULL);
 	res->name = name;
-	res->value = value;
+	if (!value)
+		res->value = ft_strdup("");
+	else
+		res->value = value;
 	res->standalone = standalone;
 	res->printable = type_printable(name, type);
 	res->prev = NULL;
@@ -53,25 +56,4 @@ void	ft_add_var_node(t_base *base, t_var *new_var)
 	}
 	else
 		base->first_var = new_var;
-}
-
-void	ft_del_var_node(t_var *del_var)
-{
-	t_var	*prev_var;
-	t_var	*next_var;
-
-	if (del_var)
-	{
-		prev_var = del_var->prev;
-		next_var = del_var->next;
-		if (prev_var)
-			prev_var->next = next_var;
-		if (next_var)
-			next_var->prev = prev_var;
-		if (del_var->name)
-			free(del_var->name);
-		if (del_var->value)
-			free(del_var->value);
-		free(del_var);
-	}	
 }

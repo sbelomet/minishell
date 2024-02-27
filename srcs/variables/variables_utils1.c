@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:11:46 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 10:17:14 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 10:03:57 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,22 @@ void	ft_get_env_vars(t_base *base, char **env)
 		value = ft_get_var_value(base, env[i]);
 		if (!value)
 			ft_error(base);
-		var = ft_new_var_node(name, value, 0, 0);
+		var = ft_new_var_node(name, value, NONE, 0);
 		if (!var)
 			ft_error(base);
 		ft_add_var_node(base, var);
 		i++;
 	}
+}
+
+static	char	*get_value_var(t_base *base,char *input)
+{
+	char	*value;
+
+	value = ft_get_var_value(base, input);
+	if (!value)
+		ft_error(base);
+	return (value);
 }
 
 void	ft_add_var(t_base *base, char *input)
@@ -104,18 +114,20 @@ void	ft_add_var(t_base *base, char *input)
 	name = ft_get_var_name(base, input);
 	if (!name)
 		ft_error(base);
-	value = ft_get_var_value(base, input);
-	if (!value)
-		ft_error(base);
+	value = get_value_var(base, input);
 	tmp = ft_findvar(base->first_var, name);
 	if (tmp)
 	{
 		free(name);
-		free(tmp->value);
+		if (tmp->value)
+			free(tmp->value);
 		tmp->value = value;
+		if (tmp->standalone)
+			tmp->standalone = 0;
+		tmp->printable = 1;
 		return ;
 	}
-	var = ft_new_var_node(name, value, 666, 0);
+	var = ft_new_var_node(name, value, LIMBO, 0);
 	if (!var)
 		ft_error(base);
 	ft_add_var_node(base, var);

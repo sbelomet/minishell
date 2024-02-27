@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 10:46:13 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 15:55:21 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:18:23 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,7 @@ void	update_last_arg(t_base *base, t_token *last_token)
 	while (base->env[++i])
 	{
 		if (ft_strnstr(base->env[i], "_=", 2))
-		{
-			free(base->env[i]);
-			base->env[i] = ft_strjoin("_=", res);
-		}
+			base->env[i] = ft_strjoin_alloc("_=", res, &base->alloc);
 	}
 	if (res)
 		free(res);

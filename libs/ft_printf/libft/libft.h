@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 15:17:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 14:56:16 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/26 11:20:29 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,9 @@ void	*ft_malloc(int size, t_alloc	**lst);
 int		malloc_add(t_alloc **lst, t_alloc *new_node);
 
 int		ft_equal_strs(const char *s1, const char *s2);
+
+/* alloc functions */
+char	*ft_strjoin_alloc(char const *s1, char const *s2, t_alloc **alloc);
+char	*ft_strdup_allocated(const char *s1, t_alloc **alloc);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:35:53 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/22 10:43:15 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:49:26 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,3 +98,216 @@ int	exec_pipes(t_base *base)
 	token = tmp_token;
 	return (1);
 }
+
+/*int	is_parent_builtin_2(t_cmd	*cmd)
+{
+	if (ft_equal_strs(cmd->name, "cd"))
+		return (1);
+	if (ft_equal_strs(cmd->name, "export")
+		&& cmd->first_arg)
+		return (1);
+	if (ft_equal_strs(cmd->name, "unset"))
+		return (1);
+	if (ft_equal_strs(cmd->name, "exit"))
+		return (1);
+	return (-1);
+}
+
+int	is_child_builtin_2(t_cmd *cmd)
+{
+	if (ft_equal_strs(cmd->name, "echo"))
+		return (1);
+	if (ft_equal_strs(cmd->name, "pwd"))
+		return (1);
+	if (ft_equal_strs(cmd->name, "export")
+		&& !cmd->first_arg)
+		return (1);
+	if (ft_equal_strs(cmd->name, "env"))
+		return (1);
+	return (-1);
+}
+
+int	exec_parent_builtin_2(t_base *base, t_cmd *cmd)
+{
+	if (ft_equal_strs(cmd->name, "cd"))
+		return (exec_cd(base, cmd));
+	if (ft_equal_strs(cmd->name, "export")
+		&& cmd->first_arg)
+		return (builtin_export(base, cmd));
+	if (ft_equal_strs(cmd->name, "unset"))
+		return (unset(base, cmd));
+	if (ft_equal_strs(cmd->name, "exit"))
+		return (exit_builtin(base, cmd));
+	return (-1);
+}
+
+int	exec_child_builtin_2(t_base *base, t_cmd *cmd)
+{
+	if (ft_equal_strs(cmd->name, "echo"))
+		return (echo(cmd));
+	if (ft_equal_strs(cmd->name, "pwd"))
+		return (pwd(base));
+	if (ft_equal_strs(cmd->name, "export")
+		&& !cmd->first_arg)
+		return (builtin_export(base, cmd));
+	if (ft_equal_strs(cmd->name, "env"))
+		return (print_env(base, cmd));
+	return (-1);
+}
+
+void	closing_fd_if_redirections(t_base *base)
+{
+	t_cmd	*cmd;
+	t_token	*token;
+
+	token = base->first_token;
+	while (token)
+	{
+		if (is_token_cmd(token))
+		{
+			cmd = get_token_class(token);
+			if (cmd->fd_in > 1)
+			close(STDIN_FILENO);
+		}
+		token = token->next;
+	}
+}
+
+void	closing_all_fd(t_base *base)
+{
+	t_token	*token;
+	t_cmd	*cmd;
+
+	token = get_first_token_cmd(base);
+	while (token)
+	{
+		cmd = get_token_class(token);
+		if (cmd->fd_in != 0)
+			close(cmd->fd_in);
+		if (cmd->fd_out != 1)
+			close(cmd->fd_out);
+		token = token->next;
+	}
+}
+
+void	switching_input_output(t_cmd **cmd)
+{
+	if ((*cmd)->fd_in == 0)
+	{
+		if (dup2((*cmd)->fd_in, STDIN_FILENO) < 0)
+			return ; // 1
+		close((*cmd)->fd_in);
+	}
+	if ((*cmd)->fd_out > 1)
+	{
+		if (dup2((*cmd)->fd_out, STDOUT_FILENO) < 0)
+			return; // 1
+		close((*cmd)->fd_out);
+	}
+}
+
+void	launching_command(t_base *base, t_cmd **cmd)
+{
+	if (execve((*cmd)->path, get_args_tab((*cmd)->first_arg, (*cmd)->path), base->env) == -1)
+		return ; //127 
+}
+
+void	child_process(t_base *base, t_cmd **cmd)
+{
+	switching_input_output(cmd);
+	closing_all_fd(base);
+	if (is_child_builtin_2(*cmd))
+		exec_child_builtin_2(base, *cmd);
+	else
+		launching_command(base, cmd);
+}
+
+static void	creating_pipes(t_base *base)
+{
+    t_cmd	*cmd;
+	int		fd[2];
+	t_token	*token;
+	t_cmd	*next_cmd;
+
+	token = get_first_token_cmd();
+	printf("DEBBUG10\n");
+	while (token && is_token_cmd(token))
+	{
+		printf("DEBBUG11\n");
+		if (pipe(fd) == -1)
+			return ;
+		cmd = get_token_class(token);
+		printf("DEBBUG12\n");
+		cmd->fd_out = fd[1];
+		printf("DEBBUG13\n");
+		token = get_next_token_cmd(token);
+		printf("DEBBUG14\n");
+		next_cmd = get_token_class(token);
+		printf("DEBBUG15\n");
+		next_cmd->fd_in = fd[0];
+	}
+	printf("DEBBUG16\n");
+	closing_fd_if_redirections(base);
+	printf("DEBBUG17\n");
+}
+
+void	creating_child(t_cmd **cmd, t_base *base)
+{
+	int	pid;
+
+	if (is_parent_builtin_2(*cmd))
+		exec_parent_builtin_2(base, *cmd);
+	else
+	{
+		signal(SIGINT, ft_ctrl_c2);
+		signal(SIGQUIT, ft_ctrl_slash);
+		pid = fork();
+		(*cmd)->child = pid;
+		if (pid == -1)
+		{
+			closing_all_fd(base);
+			return ; //error_manager
+		}
+		else if (pid == 0)
+			child_process(base, cmd);
+	}
+}
+
+int	exec_pipes(t_base *base)
+{
+	t_cmd	*cmd;
+	t_token	*token;
+	int		process_status;
+
+	process_status = 0;
+	printf("DEBBUG00\n");
+	token = get_first_token_cmd_no_skip(base);
+	printf("DEBBUG01\n");
+	creating_pipes(base);
+	printf("DEBBUG02\n");
+	while (token && is_token_cmd(token))
+	{
+		printf("DEBBUG03\n");
+		cmd = get_token_class(token);
+		creating_child(&cmd, base);
+		printf("DEBBUG04\n");
+		token = get_next_token_cmd(token);
+	}
+	printf("DEBBUG04\n");
+	closing_all_fd(base);
+	printf("DEBBUG05\n");
+	token = get_first_token_cmd(base);
+	printf("DEBBUG06\n");
+	while (token)
+	{
+		printf("DEBBUG07\n");
+		cmd = get_token_class(token);
+		waitpid(cmd->child, &process_status, 0);
+		if (cmd && !is_parent_builtin_2(cmd)
+			&& !WIFSIGNALED(process_status))
+			g_signum = WEXITSTATUS(process_status);
+		printf("DEBBUG08\n");
+		token = get_next_token_cmd(token);
+	}
+	return (0);
+}*/

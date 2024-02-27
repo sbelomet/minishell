@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:46:45 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 15:54:48 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:19:05 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_free_vars(t_base base)
 void	ft_free(t_base base)
 {
 	ft_free_vars(base);
-	ft_free_array(base.env);
+	//ft_free_array(base.env);
 	ft_malloc_clear(&base.alloc);
 	if (base.curdir)
 		free(base.curdir);

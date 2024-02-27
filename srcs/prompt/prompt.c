@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 12:18:33 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:10:00 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,59 +38,35 @@ static void	exec_line(t_base *base, char *line)
 				//printf("EXEC SINGLE PIPE\n");
 				exec_single_cmd(base);
 			}
-		}	
+		}
 	}
 	update_for_next_line(base);
 }
 
-char	*ft_get_curdir(t_base *base)
+void	ft_print_exit(t_base *base, char *prompt)
 {
-	char	*res;
-	int		i;
-
-	ft_revstr(base->curdir);
-	i = 0;
-	while (base->curdir[i])
-	{
-		if (base->curdir[i] == '/')
-		{
-			res = ft_substr(base->curdir, 0, i);
-			if (!res)
-				ft_error(base);
-			ft_revstr(base->curdir);
-			ft_revstr(res);
-			return (res);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-char	*ft_format_prompt(t_base *base)
-{
-	char	*prompt;
+	int		prompt_len;
+	char	*len_in_char;
+	char	*full_mess;
 	char	*tmp;
-	char	*dir;
 
-	dir = ft_get_curdir(base);
-	tmp = ft_strjoin(dir, " $> ");
-	free(dir);
+	prompt_len = ft_strlen(prompt);
+	len_in_char = ft_itoa(prompt_len);
+	if (!len_in_char)
+		ft_error(base);
+	tmp = ft_strjoin("\033[", len_in_char);
+	free(len_in_char);
 	if (!tmp)
 		ft_error(base);
-	prompt = ft_strjoin("[MINISHELL] ", tmp);
+	full_mess = ft_strjoin(tmp, "C");
 	free(tmp);
-	if (!prompt)
+	if (!full_mess)
 		ft_error(base);
-	return (prompt);
-}
-
-void	ft_free_after_prompt(t_base *base, char *rl, char *line)
-{
-	ft_free_tokens(base->first_token);
-	base->first_token = NULL;
-	base->pipe = 0;
-	free(rl);
-	free(line);
+	printf("\033[1A");
+	printf("%s", full_mess);
+	free(full_mess);
+	printf("exit\n");
+	free(prompt);
 }
 
 void	ft_prompt(t_base *base)
@@ -101,22 +77,23 @@ void	ft_prompt(t_base *base)
 
 	while (1)
 	{
-		ft_signals();
+		ft_interactive_signals();
 		g_signum = -1;
 		prompt = ft_format_prompt(base);
 		rl = readline(prompt);
 		if (g_signum == SIGINT)
 			update_exit_status(base, "1");
-		free(prompt);
 		if (!rl)
+		{
+			ft_print_exit(base, prompt);
 			break ;
+		}
 		line = ft_strtrim(rl, " \n\t");
 		if (ft_strlen(line) > 0)
 		{
 			add_history(rl);
 			exec_line(base, line);
 		}
-		ft_free_after_prompt(base, rl, line);
+		ft_free_after_prompt(base, rl, line, prompt);
 	}
-	ft_putstr_fd("\bexit\n", 2);
 }

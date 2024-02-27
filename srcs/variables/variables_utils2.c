@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 11:15:40 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:12:51 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ int	type_printable(char *name, int type)
 {
 	if (ft_equal_strs(name, "_"))
 		return (ONLY_ENV);
-	else if (ft_equal_strs(name, "?"))
+	if (ft_equal_strs(name, "?"))
 		return (NONE);
-	if (type == 666)
-		return (NONE);
-	if (type == 1)
+	if (type == LIMBO)
+		return (LIMBO);
+	if (type == BOTH)
 		return (BOTH);
-	if (type == 2)
+	if (type == ONLY_ENV)
 		return (ONLY_ENV);
-	if (type == 3)
+	if (type == ONLY_EXPORT)
 		return (ONLY_EXPORT);
+	if (type == TO_BOTH)
+		return (TO_BOTH);
 	return (BOTH);
 }
 

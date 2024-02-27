@@ -6,41 +6,41 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:53:07 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 13:55:41 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:49:46 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_ctrl_slash(int signum)
+void	ft_interactive_signals(void)
 {
-	(void)signum;
-	write(1, "Quit: 3\n", 8);
-}
+	struct termios	term;
 
-void	ft_ctrl_c1(int signum)
-{
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	write(1, "\n", 1);
-	rl_redisplay();
-	g_signum = signum;
-}
-
-void	ft_ctrl_c2(int signum)
-{
-	(void)signum;
-	write(1, "\n", 1);
-}
-
-void	ft_ctrl_c3(int signum)
-{
-	(void)signum;
-	exit(1);
-}
-
-void	ft_signals(void)
-{
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	signal(SIGINT, ft_ctrl_c1);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ft_heredoc_signal(void)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	signal(SIGINT, ft_ctrl_c3);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ft_merdique_signal(void)
+{
+	struct termios	term;
+
+	tcgetattr(STDIN_FILENO, &term);
+	term.c_lflag &= ~(ECHOCTL);
+	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	signal(SIGINT, ft_ctrl_c2);
 	signal(SIGQUIT, SIG_IGN);
 }

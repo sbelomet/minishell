@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/22 16:01:49 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:25:31 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static char	**get_malloced_env(t_base *base, char **env)
 			ft_free_array(array);
 			return (NULL);
 		}
-		array[i] = ft_strdup(env[i]);
+		array[i] = ft_strdup_allocated(env[i], &base->alloc);
 	}
 	return (array);
 }
@@ -48,7 +48,7 @@ static void	push_exit_status_env(t_base *base)
 	value = ft_strdup("0");
 	if (!name || !value)
 		ft_error(base);
-	status_env = ft_new_var_node(name, value, 0, 0);
+	status_env = ft_new_var_node(name, value, NONE, 0);
 	if (!status_env)
 		ft_error(base);
 	ft_add_var_node(base, status_env);

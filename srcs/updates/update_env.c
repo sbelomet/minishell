@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:32:09 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/23 11:09:33 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:48:22 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,9 @@ static void	update_tab_env(t_base *base, char *value)
 	while (base->env[++i])
 	{
 		if (ft_strnstr(base->env[i], "PWD", 3))
-		{
-			free(base->env[i]);
-			base->env[i] = ft_strjoin("PWD=", value);
-		}
+			base->env[i] = ft_strjoin_alloc("PWD=", value, &base->alloc);
 		else if (ft_strnstr(base->env[i], "OLDPWD", 6))
-		{
-			free(base->env[i]);
-			base->env[i] = ft_strjoin("OLDPWD=", value);
-		}
+			base->env[i] = ft_strjoin_alloc("OLDPWD=", value, &base->alloc);
 	}
 }
 
@@ -72,4 +66,5 @@ void	update_pwd_env(t_base *base, char *new_value)
 	update_linked_env(base, new_value);
 	free(base->curdir);
 	base->curdir = ft_strdup(new_value);
+    free(new_value);
 }

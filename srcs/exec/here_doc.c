@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/22 11:55:54 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:57:31 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	handle_here_doc(t_base *base,
 	while (1)
 	{
 		line = readline("> ");
+		printf("signum: %d\n", g_signum);
 		if (handle_input(base, redir, line, fd))
 			break ;
 		free(line);

@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   updates.c                                          :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 15:38:19 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/26 13:10:25 by lgosselk         ###   ########.fr       */
+/*   Created: 2023/10/24 10:47:58 by lgosselk          #+#    #+#             */
+/*   Updated: 2024/02/23 12:11:30 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-void	update_for_next_line(t_base *base)
+char	*ft_strrchr(const char *s, int c)
 {
-	update_last_arg(base, ft_last_token(base->first_token));
-	update_exit_status(base, NULL);
+	int	i;
+
+	i = ft_strlen(s);
+	while (i >= 0)
+	{
+		if (*(s + i) == (char)c)
+			return ((char *)(s + i));
+		i--;
+	}
+	return (NULL);
 }

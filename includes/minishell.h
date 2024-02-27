@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/23 11:14:35 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:56:36 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/types.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <termios.h>
 
 # include "../libs/ft_printf/libft/libft.h"
 # include "../libs/ft_printf/include/ft_printf.h"
@@ -35,7 +36,9 @@ enum e_env_types
 	NONE,
 	BOTH,
 	ONLY_ENV,
-	ONLY_EXPORT
+	ONLY_EXPORT,
+	TO_BOTH,
+	LIMBO = 666
 };
 
 enum e_types
@@ -97,6 +100,7 @@ typedef struct s_arg
 typedef struct s_cmd
 {
 	int				id;
+	pid_t			child;
 	char			*path;
 	int				fd_in;
 	int				fd_out;
@@ -128,6 +132,8 @@ int		g_signum;
 void	ft_prompt(t_base *base);
 int		prompt_cmd(t_base *base);
 char	*ft_get_curdir(t_base *base);
+char	*ft_format_prompt(t_base *base);
+void	ft_free_after_prompt(t_base *base, char *rl, char *line, char *prompt);
 
 /* ERROR */
 void	ft_free(t_base base);
@@ -143,7 +149,9 @@ void	ft_base_init(t_base *base, char **env);
 void	ft_incr_shell_level(t_base *base);
 
 /* SIGNALS UTILS */
-void	ft_signals(void);
+void	ft_interactive_signals(void);
+void	ft_heredoc_signal(void);
+void	ft_merdique_signal(void);
 void	ft_ctrl_slash(int signum);
 void	ft_ctrl_c1(int signum);
 void	ft_ctrl_c2(int signum);
@@ -213,9 +221,11 @@ int		unset(t_base *base, t_cmd *cmd);
 int		is_parent_builtin(t_token *token);
 int		exec_cd(t_base *base, t_cmd *cmd);
 int		print_env(t_base *base, t_cmd *cmd);
+void	update_tab_env_export(t_base *base);
 int		check_if_exist(t_var *env, char *name);
 int		exit_builtin(t_base *base, t_cmd *cmd);
 int		builtin_export(t_base *base, t_cmd *cmd);
+void	print_export_error(t_base *base, t_arg *arg);
 int		exec_child_builtin(t_base *base, t_cmd *cmd);
 int		exec_parent_builtin(t_base *base, t_cmd *cmd);
 void	add_export(t_base *base, char **array, int equal);
@@ -287,7 +297,6 @@ char	*ft_findvar_value(t_base *base, char *name);
 
 /* VARIABLES LIST UTILS 1 */
 t_var	*ft_last_var(t_var *first_var);
-void	ft_del_var_node(t_var *del_var);
 void	ft_add_var_node(t_base *base, t_var *new_var);
 t_var	*ft_new_var_node(char *name, char *value, int type, int standalone);
 
