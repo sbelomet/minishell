@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/26 10:20:31 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:40:18 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,10 @@ int	check_permission(char *path)
 	return (127);
 }
 
-static void	exec_single_child(t_base *base, t_token *token)
+static void	exec_single_child(t_base *base, t_cmd *cmd)
 {
-	t_cmd	*cmd;
 	int		status;
 
-	cmd = get_token_class(token);
 	dup2(cmd->fd_in, STDIN_FILENO);
 	dup2(cmd->fd_out, STDOUT_FILENO);
 	if (is_child_builtin(cmd) == 1)
@@ -47,20 +45,22 @@ static void	exec_single_child(t_base *base, t_token *token)
 			base->exit_status = status;
 			exit(status);
 		}
-		execve(cmd->path, get_args_tab(cmd->first_arg, cmd->path), base->env);
+		if (execve(cmd->path, get_args_tab(cmd->first_arg, cmd->path), base->env) == -1)
+		{
+			base->exit_status = 127;
+			exit(127);
+		}
 	}
 	exit(EXIT_FAILURE);
 }
 
-static int	handle_token(t_base *base, t_token *token)
+static int	handle_token(t_base *base, t_cmd *cmd)
 {
 	pid_t	pid;
-	t_cmd	*cmd;
 
 	signal(SIGINT, ft_ctrl_c2);
 	signal(SIGQUIT, ft_ctrl_slash);
-	cmd = get_next_cmd(token);
-	if (is_parent_builtin(token) == 1)
+	if (is_parent_builtin(cmd) == 1)
 	{
 		if (exec_parent_builtin(base, cmd) == 0)
 		{
@@ -71,7 +71,7 @@ static int	handle_token(t_base *base, t_token *token)
 	}
 	pid = fork();
 	if (pid == 0)
-		exec_single_child(base, token);
+		exec_single_child(base, cmd);
 	else
 	{
 		waitpid(pid, &(base->exit_status), 0);
@@ -83,16 +83,14 @@ static int	handle_token(t_base *base, t_token *token)
 
 int	exec_single_cmd(t_base *base)
 {
-	t_token	*token;
-	t_token	*tmp_token;
+	t_cmds	*cmds;
 
-	token = get_first_token_cmd(base);
-	tmp_token = token;
-	while (token && is_token_cmd(token))
+	base->cmds = push_commands(base);
+	cmds = base->cmds;
+	while (cmds)
 	{
-		handle_token(base, token);
-		token = get_next_token_cmd(token);
+		handle_token(base, cmds->cmd);
+		cmds = cmds->next;
 	}
-	token = tmp_token;
 	return (1);
 }

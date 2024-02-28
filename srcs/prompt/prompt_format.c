@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:44:17 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 14:11:59 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/28 12:27:22 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_get_curdir(t_base *base)
 	char	*res;
 	int		i;
 
+	if (ft_equal_strs(base->curdir, "/"))
+		return (ft_strdup("/"));
 	ft_revstr(base->curdir);
 	i = 0;
 	while (base->curdir[i])

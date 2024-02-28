@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 15:56:36 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:37:02 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ typedef struct s_cmd
 	t_arg			*first_arg;
 }					t_cmd;
 
+typedef struct s_cmds
+{
+	t_cmd			*cmd;
+	struct s_cmds	*next;
+}					t_cmds;
+
 typedef struct s_lexvars
 {
 	int				after_cmd;
@@ -124,6 +130,7 @@ typedef struct s_base
 	t_lexvars		lexvars;
 	int				pipe;
 	int				exit_status;
+	t_cmds			*cmds;
 }					t_base;
 
 int		g_signum;
@@ -204,8 +211,13 @@ int		manage_append(t_cmd *cmd, char *filepath);
 void	close_streams(t_cmd *cmd);
 int		get_exit_status(int exit_status);
 char	**get_args_tab(t_arg *args, char *path);
-void	dup_redir(t_cmd *curr_cmd, t_cmd *next_cmd, int *fds, int in_fd);
 char	*ft_triple_strjoin(char const *s1, char const *s2, char const *s3);
+
+/* EXEC UTILS 2 */
+void	free_nodes(t_base *base);
+t_cmds	*push_commands(t_base *base);
+t_cmds	*get_last_cmd(t_cmds *cmds);
+void	add_command(t_base *base, t_cmds **cmds, t_cmd *cmd);
 
 /* EXEC */
 int		exec_pipes(t_base *base);
@@ -217,8 +229,8 @@ int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 int		echo(t_cmd *cmd);
 int		pwd(t_base *base);
 int		is_child_builtin(t_cmd *cmd);
+int		is_parent_builtin(t_cmd *cmd);
 int		unset(t_base *base, t_cmd *cmd);
-int		is_parent_builtin(t_token *token);
 int		exec_cd(t_base *base, t_cmd *cmd);
 int		print_env(t_base *base, t_cmd *cmd);
 void	update_tab_env_export(t_base *base);

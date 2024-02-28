@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/26 15:25:31 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:02:41 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ static void	push_exit_status_env(t_base *base)
 
 void	ft_base_init(t_base *base, char **env)
 {
+	base->alloc = NULL;
 	base->env = get_malloced_env(base, env);
 	if (!base->env)
 		ft_error(base);
 	ft_incr_shell_level(base);
-	base->alloc = NULL;
 	base->first_var = NULL;
 	base->first_token = NULL;
 	base->curdir = getcwd(NULL, 0);

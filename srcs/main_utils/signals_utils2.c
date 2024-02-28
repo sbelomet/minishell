@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:21:49 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 15:38:06 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/28 12:18:55 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,5 @@ void	ft_ctrl_c2(int signum)
 void	ft_ctrl_c3(int signum)
 {
 	(void)signum;
-	exit(1);
+	write(1, "\n", 1);
 }

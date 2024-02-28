@@ -6,17 +6,14 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:09:11 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 11:48:38 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:01:31 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_parent_builtin(t_token *token)
+int	is_parent_builtin(t_cmd *cmd)
 {
-	t_cmd	*cmd;
-
-	cmd = get_token_class(token);
 	if (ft_equal_strs(cmd->name, "cd"))
 		return (1);
 	if (ft_equal_strs(cmd->name, "export")

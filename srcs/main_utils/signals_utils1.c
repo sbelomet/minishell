@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 11:53:07 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 14:49:46 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/28 11:46:48 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_heredoc_signal(void)
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	signal(SIGINT, ft_ctrl_c3);
+	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_IGN);
 }
 
@@ -41,6 +41,6 @@ void	ft_merdique_signal(void)
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	signal(SIGINT, ft_ctrl_c2);
+	signal(SIGINT, ft_ctrl_c3);
 	signal(SIGQUIT, SIG_IGN);
 }

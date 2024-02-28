@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 10:05:58 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/27 15:57:31 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:02:15 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,10 @@ static void	handle_here_doc(t_base *base,
 {
 	char	*line;
 
-	signal(SIGINT, ft_ctrl_c3);
+	ft_heredoc_signal();
 	while (1)
 	{
 		line = readline("> ");
-		printf("signum: %d\n", g_signum);
 		if (handle_input(base, redir, line, fd))
 			break ;
 		free(line);
@@ -95,7 +94,7 @@ int	init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd)
 	int		fd[2];
 	int		status;
 
-	signal(SIGINT, ft_ctrl_c2);
+	ft_merdique_signal();
 	if (cmd != NULL && cmd->fd_in != 0)
 		close(cmd->fd_in);
 	if (pipe(fd) < 0)

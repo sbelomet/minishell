@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 14:09:26 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:47:34 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote)
 	char	*res;
 
 	len = 0;
-	(*i)++;
+	if (*i < ft_strlen(line) - 1)
+		(*i)++;
 	start = *i;
 	while (line[*i] && line[*i] != quote)
 	{

@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:36:10 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/26 10:10:19 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/28 15:31:33 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,6 @@ void	close_streams(t_cmd *cmd)
 		close(cmd->fd_in);
 	if (cmd->fd_out != 1)
 		close(cmd->fd_out);
-}
-
-void	dup_redir(t_cmd *curr_cmd, t_cmd *next_cmd,
-	int *fds, int in_fd)
-{
-	if (curr_cmd->fd_in != 0)
-		dup2(curr_cmd->fd_in, STDIN_FILENO);
-	else
-		dup2(in_fd, STDIN_FILENO);
-	if (curr_cmd->fd_out != 1)
-		dup2(curr_cmd->fd_out, STDOUT_FILENO);
-	else if (next_cmd != NULL)
-		dup2(fds[1], STDOUT_FILENO);
 }
 
 int	get_exit_status(int exit_status)

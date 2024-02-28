@@ -6,13 +6,13 @@
 #    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/27 14:22:37 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/28 15:58:05 by sbelomet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # -fsanitize=address -g3
 
-#Variables
+# Variables
 
 NAME		=	minishell
 HEADERS		=	-I includes -I $(HOME)/.brew/Cellar/readline/8.2.7/include
@@ -21,7 +21,7 @@ OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
 LIBRL		=	-L $(HOME)/.brew/Cellar/readline/8.2.7/lib
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3
 LEAKS		=	leaks --atExit -- 
 
 D_MAIN		=	main_utils/
@@ -52,7 +52,7 @@ CYAN		=	\033[1;96m
 WHITE		=	\033[0;97m
 RAINBOW		=	$(RED)-$(YELLOW)-$(GREEN)-$(CYAN)-$(BLUE)-$(PURPLE)-
 
-#Sources
+# Sources
 
 F_MAIN		=	main base_init error_utils1 signals_utils1 signals_utils2 shell_level
 F_PROMPT	=	prompt freeing_tokens prompt_cmd prompt_format
@@ -67,7 +67,7 @@ F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset export_2 export_3
 F_EXEC		=	exec_pipes here_doc exec_single_cmd
 F_GETTERS	=	get_args get_class get_env get_token_2 get_token get_token_3
 F_UPDATE	=	update_env update_last_arg updates
-F_UTILS		=	exec_utils
+F_UTILS		=	exec_utils exec_utils_2
 
 FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 				$(addprefix $(D_PROMPT), $(F_PROMPT)) \
@@ -86,7 +86,7 @@ FILES		=	$(addprefix $(D_MAIN), $(F_MAIN)) \
 SRC			=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJ			=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
-#Commands
+# Commands
 
 all:			$(OBJ_DIR) $(NAME)
 
