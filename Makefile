@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+         #
+#    By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/28 15:58:05 by sbelomet         ###   ########.fr        #
+#    Updated: 2024/02/29 15:01:02 by lgosselk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,7 @@ F_ERRORS	=	lexer_errors redirect_errors
 F_FORMAT	=	formatting_redirections formatting_redirections_2
 F_CHECKS	=	check_args check_builtin check_command check_token check_token_2
 F_BUILTIN	=	cd echo env exec_builtin exit export pwd unset export_2 export_3
-F_EXEC		=	exec_pipes here_doc exec_single_cmd
+F_EXEC		=	exec_pipes here_doc exec_single_cmd exec_pipes_2
 F_GETTERS	=	get_args get_class get_env get_token_2 get_token get_token_3
 F_UPDATE	=	update_env update_last_arg updates
 F_UTILS		=	exec_utils exec_utils_2

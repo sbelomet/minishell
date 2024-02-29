@@ -6,26 +6,11 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 09:25:24 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/28 16:05:56 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:22:45 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-t_alloc	*ft_last_alloc(t_alloc *first_alloc)
-{
-	t_alloc	*tmp;
-
-	tmp = first_alloc;
-	if (tmp)
-	{
-		while (tmp->next)
-		{
-			tmp = tmp->next;
-		}
-	}
-	return (tmp);
-}
 
 void	ft_malloc_clear(t_alloc **lst)
 {
@@ -43,7 +28,6 @@ void	ft_malloc_clear(t_alloc **lst)
 			free(to_del);
 			to_del = temp;
 		}
-
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   base_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 10:46:10 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/28 16:02:41 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:51:52 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ static void	push_exit_status_env(t_base *base)
 	t_var	*status_env;
 
 	name = ft_strdup("?");
+	if (!name)
+		ft_error(base);
 	value = ft_strdup("0");
-	if (!name || !value)
+	if (!value)
 		ft_error(base);
 	status_env = ft_new_var_node(name, value, NONE, 0);
 	if (!status_env)
@@ -64,6 +66,8 @@ void	ft_base_init(t_base *base, char **env)
 	base->first_var = NULL;
 	base->first_token = NULL;
 	base->curdir = getcwd(NULL, 0);
+	if (base->curdir == NULL)
+		error_manager(base, 1, "Couldn't retrieve current directory", 1);
 	ft_get_env_vars(base, base->env);
 	push_exit_status_env(base);
 	base->pipe = 0;

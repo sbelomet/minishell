@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:32:07 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/28 15:36:46 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:25:30 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	add_command(t_base *base, t_cmds **cmds, t_cmd *cmd)
 t_cmds	*push_commands(t_base *base)
 {
 	t_cmds	*cmds;
-	t_token		*token;
+	t_token	*token;
 
 	cmds = NULL;
 	token = get_first_token(base);

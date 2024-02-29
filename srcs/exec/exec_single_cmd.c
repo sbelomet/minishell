@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 11:33:42 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/28 15:40:18 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:10:03 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	check_permission(char *path)
 
 static void	exec_single_child(t_base *base, t_cmd *cmd)
 {
-	int		status;
-
 	dup2(cmd->fd_in, STDIN_FILENO);
 	dup2(cmd->fd_out, STDOUT_FILENO);
 	if (is_child_builtin(cmd) == 1)
@@ -39,13 +37,14 @@ static void	exec_single_child(t_base *base, t_cmd *cmd)
 	}
 	else if (is_cmd_bin(cmd))
 	{
-		status = check_permission(cmd->path);
-		if (status == 126 || status == 127)
+		base->exit_status = check_permission(cmd->path);
+		if (base->exit_status == 126 || base->exit_status == 127)
 		{
-			base->exit_status = status;
-			exit(status);
+			ft_printf(1, "command not found: %s\n", cmd->name);
+			exit(base->exit_status);
 		}
-		if (execve(cmd->path, get_args_tab(cmd->first_arg, cmd->path), base->env) == -1)
+		if (execve(cmd->path, get_args_tab(cmd->first_arg, cmd->path),
+				base->env) == -1)
 		{
 			base->exit_status = 127;
 			exit(127);

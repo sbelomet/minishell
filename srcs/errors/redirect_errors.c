@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 13:18:57 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/22 16:00:32 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:35:50 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	check_err_token_redirec(t_token *token)
 				redir->limiter);
 			return (0);
 		}
-		if (!redir->filepath && !token->next)
+		if (!redir->filepath && !token->next && !is_token_heredoc(token))
 		{
 			ft_putstr_fd("syntax error near unexpected token `newline'\n", 2);
 			return (0);

@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 09:58:43 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/28 15:47:45 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/29 10:42:41 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ char	*ft_extract_word(t_base *base, char *line, int *index)
 	while (line[*index] && !ft_isspecial_nq(line[*index]))
 	{
 		tmp = ft_extract_to_quote(base, line, index);
+		if (ft_equal_strs(tmp, "~"))
+		{
+			free(tmp);
+			tmp = ft_strdup(ft_findvar_value(base, "$HOME"));
+			if (!tmp)
+				ft_error(base);
+		}
 		if (ft_isquote(line[*index]))
 		{
 			q_part = ft_extract_quotes(base, line, index, line[*index]);

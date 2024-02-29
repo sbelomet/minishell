@@ -6,11 +6,24 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:46:45 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/28 14:50:32 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:52:32 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	error_manager(t_base *base, int status_code, char *message, int exit_code)
+{
+	base->exit_status = status_code;
+	if (message)
+		ft_printf(2, message);
+	if (exit_code != 0)
+	{
+		ft_free(*base);
+		exit(exit_code);
+	}
+	return (-1);
+}
 
 void	ft_error(t_base *base)
 {

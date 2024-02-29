@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/30 14:32:09 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/27 11:48:22 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:25:10 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,5 @@ void	update_pwd_env(t_base *base, char *new_value)
 	update_linked_env(base, new_value);
 	free(base->curdir);
 	base->curdir = ft_strdup(new_value);
-    free(new_value);
+	free(new_value);
 }

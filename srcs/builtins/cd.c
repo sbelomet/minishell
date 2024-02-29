@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:22 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/21 11:43:56 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:07:26 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,18 @@ int	exec_cd(t_base *base, t_cmd *cmd)
 	if (args)
 	{
 		if (cd_path(base, args) == -1)
+		{
+			base->exit_status = 1;
 			return (1);
-	}	
+		}
+	}
 	else
 	{
 		if (cd_home(base) == -1)
+		{
+			base->exit_status = 1;
 			return (1);
+		}
 	}
 	return (0);
 }

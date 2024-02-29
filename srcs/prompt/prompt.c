@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 10:28:27 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 15:10:00 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:04:19 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	exec_line(t_base *base, char *line)
 {
 	int	error;
-	// implement (&& -- ||) and check number of commands
+
 	ft_lexer_start(base, line);
-	if (!errors_lexer(base))
+	if (errors_lexer(base) != 1)
 	{
 		error = format_redirections(base);
 		if (error == -2 || error == -3)
@@ -30,12 +30,10 @@ static void	exec_line(t_base *base, char *line)
 		{
 			if (base->pipe == 1)
 			{
-				printf("EXEC MULTIPLE PIPES\n");
 				exec_pipes(base);
 			}	
 			else
 			{
-				//printf("EXEC SINGLE PIPE\n");
 				exec_single_cmd(base);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:06:39 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/22 15:57:49 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:06:21 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int	print_env(t_base *base, t_cmd *cmd)
 	if (cmd->first_arg)
 	{
 		ft_putstr_fd("env: too many arguments.\n", 2);
+		base->exit_status = 1;
 		return (-1);
 	}
 	_print(base, base->first_var);

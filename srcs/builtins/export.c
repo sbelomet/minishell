@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:07:05 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/27 15:59:11 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/29 11:10:53 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,10 @@ int	builtin_export(t_base *base, t_cmd *cmd)
 	else
 	{
 		if (handle_export_args(base, cmd) == -1)
+		{
+			base->exit_status = 1;
 			return (-1);
+		}
 	}
 	return (0);
 }

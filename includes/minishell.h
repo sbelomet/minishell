@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 13:00:59 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/28 15:37:02 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:05:58 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,8 @@ void	ft_free(t_base base);
 int		errors_lexer(t_base *base);
 void	ft_error(t_base *base);
 int		check_err_token_redirec(t_token *token);
+int		error_manager(t_base *base, int status_code,
+			char *message, int exit_code);
 
 /* FREEING TOKENS */
 void	ft_free_tokens(t_token *first_token);
@@ -225,8 +227,12 @@ int		check_permission(char *path);
 int		exec_single_cmd(t_base *base);
 int		init_heredoc(t_base *base, t_redir *redir, t_cmd *cmd);
 
+/* EXEC 2 */
+void	closing_all_fd(t_base *base);
+int		switching_in_out(t_base *base, t_cmd *cmd);
+
 /* BUILTINS */
-int		echo(t_cmd *cmd);
+int		echo(t_base *base, t_cmd *cmd);
 int		pwd(t_base *base);
 int		is_child_builtin(t_cmd *cmd);
 int		is_parent_builtin(t_cmd *cmd);

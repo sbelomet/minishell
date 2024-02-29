@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:09:11 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/28 15:01:31 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 09:57:23 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	exec_parent_builtin(t_base *base, t_cmd *cmd)
 int	exec_child_builtin(t_base *base, t_cmd *cmd)
 {
 	if (ft_equal_strs(cmd->name, "echo"))
-		return (echo(cmd));
+		return (echo(base, cmd));
 	if (ft_equal_strs(cmd->name, "pwd"))
 		return (pwd(base));
 	if (ft_equal_strs(cmd->name, "export")

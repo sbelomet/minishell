@@ -6,7 +6,7 @@
 /*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:34:24 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/28 15:47:34 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/02/29 10:42:34 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,15 @@ char	*ft_extract_quotes(t_base *base, char *line, int *i, char quote)
 	{
 		(*i)++;
 		len++;
+		if (!line[*i])
+			break ;
 	}
 	res = ft_substr(line, start, len);
 	if (!res)
 		ft_error(base);
 	if (quote == '"')
-	{
 		res = ft_get_developped_vars(base, res);
-	}
-	(*i)++;
+	if (ft_isquote(line[*i]))
+		(*i)++;
 	return (res);
 }

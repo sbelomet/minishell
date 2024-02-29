@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_utils1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 13:11:46 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 10:03:57 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:25:51 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	ft_get_env_vars(t_base *base, char **env)
 	}
 }
 
-static	char	*get_value_var(t_base *base,char *input)
+static	char	*get_value_var(t_base *base, char *input)
 {
 	char	*value;
 

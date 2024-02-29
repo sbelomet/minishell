@@ -6,7 +6,7 @@
 /*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 14:11:00 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/28 11:42:11 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 15:56:28 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,14 @@ static int	manage_pipe(t_base *base, t_token *token)
 	{
 		ft_putstr_fd("syntax near unexpected token '|'\n", STDERR_FILENO);
 		base->exit_status = 258;
-		return (-1);
+		return (-2);
 	}
 	else if (!token->next)
 	{
-		prompt_cmd(base);
-		if (errors_lexer(base))
-		{
-			printf("ERROR\n");
+		if (prompt_cmd(base) == -1)
 			return (-2);
-		}
+		if (errors_lexer(base) == 1)
+			return (-2);
 	}
 	if (pipe_redir(token) == -1)
 		return (-1);
@@ -125,8 +123,8 @@ int	format_redirections(t_base *base)
 		}
 		else if (is_token_pipe(token))
 		{
-			if (manage_pipe(base, token) < 0)
-				return (-1);
+			if (manage_pipe(base, token) == -2)
+				return (-2);
 		}
 		else if (token->id == TOKEN_REDIR_HDOC)
 		{

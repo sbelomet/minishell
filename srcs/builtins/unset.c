@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:07:23 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/27 14:39:33 by lgosselk         ###   ########.fr       */
+/*   Updated: 2024/02/29 14:23:26 by sbelomet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	ft_del_var_node(t_var **del_var)
 	free(to_del->name);
 	if (to_del->value)
 		free(to_del->value);
-	free(to_del);	
+	free(to_del);
 }
 
 int	unset(t_base *base, t_cmd *cmd)
