@@ -6,7 +6,7 @@
 #    By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/17 12:53:58 by sbelomet          #+#    #+#              #
-#    Updated: 2024/02/29 15:01:02 by lgosselk         ###   ########.fr        #
+#    Updated: 2024/03/01 09:54:25 by lgosselk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ OBJ_DIR		=	objs/
 LIBFTPRINTF =   libs/ft_printf/libftprintf.a
 LIBRL		=	-L $(HOME)/.brew/Cellar/readline/8.2.7/lib
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS		=	-Wall -Wextra -Werror
 LEAKS		=	leaks --atExit -- 
 
 D_MAIN		=	main_utils/

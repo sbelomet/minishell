@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 10:07:23 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/29 14:23:26 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:01:46 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*static void	ft_del_var_node(t_var *del_var)
+static void	ft_del_var_node(t_var *del_var)
 {
 	t_var	*prev_var;
 	t_var	*next_var;
@@ -31,33 +31,6 @@
 			free(del_var->value);
 		free(del_var);
 	}	
-}*/
-
-static void	ft_del_var_node(t_var **del_var)
-{
-	t_var	*to_del;
-
-	to_del = *del_var;
-	*del_var = (*del_var)->next;
-	if ((*del_var)->prev && !(*del_var)->next)
-	{
-		*del_var = (*del_var)->prev;
-		(*del_var)->next = NULL;
-	}
-	else if ((*del_var)->next && !(*del_var)->prev)
-	{
-		*del_var = (*del_var)->next;
-		(*del_var)->prev = NULL;
-	}
-	else
-	{
-		*del_var = (*del_var)->next;
-		(*del_var)->prev = to_del->prev;
-	}
-	free(to_del->name);
-	if (to_del->value)
-		free(to_del->value);
-	free(to_del);
 }
 
 int	unset(t_base *base, t_cmd *cmd)
@@ -70,7 +43,7 @@ int	unset(t_base *base, t_cmd *cmd)
 	{
 		var = ft_findvar(base->first_var, var_name->name);
 		if (var)
-			ft_del_var_node(&var);
+			ft_del_var_node(var);
 		var_name = var_name->next;
 	}
 	return (0);

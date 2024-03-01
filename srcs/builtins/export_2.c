@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 11:27:27 by lgosselk          #+#    #+#             */
-/*   Updated: 2024/02/27 15:58:04 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:15:08 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,11 @@ void	add_export(t_base *base, char **array, int equal)
 		return ;
 	if (check_if_exist(base->first_var, array[0]) == 0)
 	{
-		printf("DEBBUG01 add\n");
 		add_var_export(base, array, equal);
 		update_tab_env_export(base);
 	}
 	else
 	{
-		printf("DEBBUG01 update\n");
 		update_var_export(base, array);
 		update_tab_env_export(base);
 	}

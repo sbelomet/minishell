@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_format.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:44:17 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/28 12:27:22 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:02:26 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	*ft_format_prompt(t_base *base)
 void	ft_free_after_prompt(t_base *base, char *rl, char *line, char *prompt)
 {
 	ft_free_tokens(base->first_token);
+	free_nodes(base);
 	base->first_token = NULL;
 	base->pipe = 0;
 	free(rl);

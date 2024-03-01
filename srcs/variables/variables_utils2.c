@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   variables_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sbelomet <sbelomet@42lausanne.ch>          +#+  +:+       +#+        */
+/*   By: lgosselk <lgosselk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/02 13:26:22 by sbelomet          #+#    #+#             */
-/*   Updated: 2024/02/27 14:12:51 by sbelomet         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:50:14 by lgosselk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,9 @@ char	*ft_extract_var_name_strict(char *raw_name)
 	while (raw_name[i] && !ft_isspecial(raw_name[i])
 		&& raw_name[i] != '$' && raw_name[i] != ':')
 	{
-		printf("letter n %d: %c is ok\n", i, raw_name[i]);
 		i++;
 		len++;
 	}
-	printf("len = %d\n", len);
 	if (len == 1)
 		return ("");
 	res = ft_substr(raw_name, start, len);
