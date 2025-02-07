@@ -8,7 +8,7 @@ We had to code a shell from scratch in C. It had to be able to display a prompt,
 
 ### Usage
 
-Important note - This was coded on Mac
+Prerequisites: This was coded on Mac, the readline library needs to be installed (the include paths in the Makefile may need to be changed)
 1. `make`
 2. `./minishell`
 3. exit or Ctrl+D on empty line to quit the program
