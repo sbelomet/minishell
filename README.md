@@ -2,7 +2,7 @@
 
 `Making a simplified shell, based on bash`
 
-### Objectives
+### What to do
 
 We had to code a shell from scratch in C. It had to be able to display a prompt, execute commands, handle quotes, pipes, redirections, environment variables and signals. We also had to implement built-in commands (echo, cd, pwd, export, unset, env, exit)
 
